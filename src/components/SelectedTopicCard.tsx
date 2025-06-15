@@ -1,5 +1,4 @@
 
-```tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -72,4 +71,3 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
 };
 
 export default SelectedTopicCard;
-```
