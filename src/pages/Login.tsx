@@ -2,41 +2,80 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-// 심플한 사이트 로고 SVG 예시
-const AppLogo = () => (
-  <svg width="40" height="40" viewBox="0 0 32 32" className="mx-auto mb-6" aria-hidden>
-    <circle cx="16" cy="16" r="16" fill="var(--primary)" opacity="0.14" />
-    <path d="M8 16a8 8 0 1 1 16 0" stroke="var(--foreground)" strokeWidth="2.5" fill="none" />
-  </svg>
+import { ArrowLeft } from "lucide-react";
+
+const Logo = () => (
+  <a
+    href="/"
+    className="flex items-center gap-2 mb-8 select-none"
+    aria-label="탐구 연구소 홈"
+    tabIndex={-1}
+  >
+    {/* 탐구 연구소 - 메인 브랜드 로고 SVG */}
+    <svg fill="none" height="36" width="36" viewBox="0 0 36 36">
+      <path d="M18 2L3 10.5v15L18 34l15-8.5v-15z" fill="currentColor" stroke="currentColor" strokeLinejoin="round" strokeWidth="2"/>
+      <path d="M18 32.5l-13-7.5-1.5-1v-1.5l1.5-1 13-7.5 13 7.5 1.5 1v1.5l-1.5 1z" fill="currentColor" />
+      <path d="M3 10.5L18 18l15-7.5" stroke="#fff" strokeLinejoin="round" strokeWidth="2"/>
+      <path d="M18 34V18" stroke="#fff" strokeLinejoin="round" strokeWidth="2"/>
+    </svg>
+    <span className="text-lg font-bold text-foreground tracking-tight">탐구 연구소</span>
+  </a>
 );
 
 const Login = () => {
+  // 뒤로가기: 히스토리가 있으면 뒤로, 아니면 /
+  const handleBack = () => {
+    if (window.history.length > 1) window.history.back();
+    else window.location.href = "/";
+  };
+
   return (
-    <div className={cn(
-      "min-h-screen flex items-center justify-center",
-      "bg-background/80",
-      "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))]",
-      "from-muted/80 to-background"
-    )}>
-      <div className={cn(
-        "relative rounded-2xl shadow-xl border border-border bg-card/90 mx-4",
-        "backdrop-blur-lg flex flex-col items-center w-full max-w-sm px-7 py-10"
-      )}>
-        <AppLogo />
+    <div
+      className={cn(
+        "min-h-screen flex items-center justify-center",
+        "bg-background/80",
+        "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))]",
+        "from-muted/80 to-background"
+      )}
+    >
+      <div
+        className={cn(
+          "relative rounded-2xl shadow-xl border border-border bg-card/90 mx-4",
+          "backdrop-blur-lg flex flex-col items-center w-full max-w-sm px-7 py-10",
+          "transition-all"
+        )}
+      >
+        {/* 상단 뒤로가기 버튼 + 로고 */}
+        <div className="w-full flex items-center justify-between mb-1 -mt-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleBack}
+            className="rounded-full"
+            aria-label="뒤로가기"
+            type="button"
+          >
+            <ArrowLeft size={22} className="text-muted-foreground" />
+          </Button>
+          <span className="flex-1 flex justify-center pointer-events-none">
+            <Logo />
+          </span>
+          <span className="w-9" /> {/* 우측정렬용 여백 */}
+        </div>
         <h1 className="text-xl font-semibold mb-8 text-center text-foreground tracking-tight">
           탐구 연구소에 오신 것을<br />환영합니다
         </h1>
         <div className="flex flex-col gap-3 w-full">
           <Button
-            variant="secondary"
+            variant="outline"
             className={cn(
-              "w-full h-11 font-medium text-base gap-2 shadow-sm",
+              "w-full h-11 font-medium text-base gap-2 shadow-sm border-2 border-primary hover:border-primary-focus",
               "justify-center flex items-center"
             )}
-            // 실제 구글 로그인 핸들러와 연결 필요시 여기에
+            disabled
             type="button"
           >
-            {/* Lucide 아이콘 사용: Google */}
+            {/* Lucide가 아닌 Google 공식 아이콘 사용(색상차) */}
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
               <g>
                 <path d="M21.805 11.203c0-.781-.07-1.563-.211-2.313H11.2v4.387h5.93a5.046 5.046 0 01-2.15 3.313v2.75h3.467c2.03-1.905 3.212-4.713 3.212-8.137z" fill="#E8EAED"/>
@@ -49,15 +88,22 @@ const Login = () => {
           </Button>
           <Button
             variant="outline"
-            className="w-full h-11 font-medium text-base shadow-sm border border-muted"
+            className={cn(
+              "w-full h-11 font-medium text-base gap-2 shadow-sm border-2 border-muted hover:border-primary"
+            )}
+            disabled
             type="button"
           >
             이메일로 계속하기
           </Button>
         </div>
+        <div className="mt-6 text-sm text-muted-foreground text-center">
+          <span className="font-medium text-foreground">로그인 기능은 Supabase 연동 후 제공됩니다.</span><br/>
+          (기능이 필요한 경우 우측 상단의 Supabase 버튼을 눌러 연동해주세요)
+        </div>
       </div>
     </div>
   );
 };
-export default Login;
 
+export default Login;
