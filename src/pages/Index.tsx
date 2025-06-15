@@ -25,7 +25,7 @@ const Index = () => {
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">탐구 주제 만들기</TabsTrigger>
                 <TabsTrigger value="changelog">학생부 준비 방법</TabsTrigger>
-                <TabsTrigger value="announcements">Announcements</TabsTrigger>
+                <TabsTrigger value="announcements">빠른 피드백 받기</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
