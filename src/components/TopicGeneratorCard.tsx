@@ -11,6 +11,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Toggle } from "@/components/ui/toggle";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -94,34 +100,45 @@ const TopicGeneratorCard = ({
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center w-full gap-4">
-                <div className="w-[110px] flex-shrink-0">
-                    {showFollowUp ? (
-                      <Toggle
-                        pressed={isFollowUp}
-                        onPressedChange={(pressed) => onFollowUpChange && onFollowUpChange(pressed)}
-                        variant="outline"
-                        size="sm"
-                        className="w-full whitespace-nowrap data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-                        aria-label="후속 탐구"
-                      >
-                        후속 탐구
-                      </Toggle>
-                    ) : (
-                    <Button variant="secondary" size="sm" className="w-full">
-                        주제 유형
-                    </Button>
-                    )}
-                </div>
-                <Select onValueChange={setTopicType} value={topicType}>
-                    <SelectTrigger className="w-full">
-                    <SelectValue placeholder="주제 유형 선택" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="보고서 주제">보고서 주제</SelectItem>
-                      <SelectItem value="실험 주제">실험 주제</SelectItem>
-                      <SelectItem value="제작 주제">제작 주제</SelectItem>
-                    </SelectContent>
-                </Select>
+              <div className="w-[110px] flex-shrink-0">
+                {showFollowUp ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Toggle
+                          pressed={isFollowUp}
+                          onPressedChange={(pressed) =>
+                            onFollowUpChange && onFollowUpChange(pressed)
+                          }
+                          variant="outline"
+                          size="sm"
+                          className="w-full whitespace-nowrap data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                          aria-label="후속 탐구"
+                        >
+                          후속 탐구
+                        </Toggle>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>이전 주제에서 이어지는 후속 탐구를 원하면 클릭하세요</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <Button variant="secondary" size="sm" className="w-full">
+                    주제 유형
+                  </Button>
+                )}
+              </div>
+              <Select onValueChange={setTopicType} value={topicType}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="주제 유형 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="보고서 주제">보고서 주제</SelectItem>
+                  <SelectItem value="실험 주제">실험 주제</SelectItem>
+                  <SelectItem value="제작 주제">제작 주제</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
