@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -118,7 +119,7 @@ const TopicGeneratorCard = ({
                         </Toggle>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>이전 주제에서 이어지는 후속 탐구를 원하면 클릭하세요</p>
+                        <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
