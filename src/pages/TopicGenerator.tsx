@@ -67,7 +67,7 @@ const TopicGenerator = () => {
           <Separator />
         </div>
 
-        <section id="topic-generator-section" className="scroll-mt-[150px]">
+        <section id="topic-generator-section" className="scroll-mt-[150px] pb-96">
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">주제 생성기</h2>
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
