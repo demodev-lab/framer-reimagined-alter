@@ -8,21 +8,21 @@ const TopicResultsCard = () => {
     <Card>
       <CardContent className="p-6 flex flex-col gap-6">
         <Card>
-          <CardContent className="py-10 px-4 flex items-center">
+          <CardContent className="p-4">
             <Button variant="secondary" size="sm">
               주제 1
             </Button>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="py-10 px-4 flex items-center">
+          <CardContent className="p-4">
             <Button variant="secondary" size="sm">
               주제 2
             </Button>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="py-10 px-4 flex items-center">
+          <CardContent className="p-4">
             <Button variant="secondary" size="sm">
               주제 3
             </Button>
