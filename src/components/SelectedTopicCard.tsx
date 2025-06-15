@@ -48,22 +48,26 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       </CardHeader>
       <CardContent className="flex-grow">
         <div>
-          <dl className="space-y-2">
-            {subject && (
-              <div className="flex">
-                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
-                <dd className="font-medium">{subject}</dd>
-              </div>
-            )}
-            {concept && (
-              <div className="flex">
-                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
-                <dd className="font-medium">{concept}</dd>
-              </div>
-            )}
-          </dl>
-          {(subject || concept) && <div className="border-t my-4" />}
           <p className="text-lg font-semibold">{topic}</p>
+          {(subject || concept) && (
+            <>
+              <div className="border-t my-4" />
+              <dl className="space-y-2">
+                {subject && (
+                  <div className="flex">
+                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
+                    <dd className="font-medium">{subject}</dd>
+                  </div>
+                )}
+                {concept && (
+                  <div className="flex">
+                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
+                    <dd className="font-medium">{concept}</dd>
+                  </div>
+                )}
+              </dl>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>
