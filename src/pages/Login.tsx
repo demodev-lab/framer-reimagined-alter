@@ -33,6 +33,7 @@ const Login = () => {
     <div
       className={cn(
         "min-h-screen flex items-center justify-center",
+        // 배경은 기존 그라디언트 유지
         "bg-background/80",
         "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))]",
         "from-muted/80 to-background"
@@ -66,16 +67,23 @@ const Login = () => {
           탐구 연구소에 오신 것을<br />환영합니다
         </h1>
         <div className="flex flex-col gap-3 w-full">
+          {/* 구글 로그인 버튼 */}
           <Button
-            variant="outline"
             className={cn(
-              "w-full h-11 font-medium text-base gap-2 shadow-sm border-2 border-primary hover:border-primary-focus",
-              "justify-center flex items-center"
+              // 기본 스타일 제거: 색상 및 폰트 강조
+              "w-full h-11 font-semibold text-base gap-2 rounded-xl shadow-sm border-0",
+              "bg-primary text-primary-foreground",
+              "hover:bg-primary/80 active:bg-primary/90 transition-colors",
+              "drop-shadow-[0_2px_8px_rgba(40,60,220,0.08)]",
             )}
             disabled
             type="button"
+            style={{
+              // 배경 primary 계열 색상, disabled 시도 자연스럽게
+              background:
+                "linear-gradient(90deg, hsl(var(--primary)) 94%, hsl(var(--primary)/.98) 100%)",
+            }}
           >
-            {/* Lucide가 아닌 Google 공식 아이콘 사용(색상차) */}
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
               <g>
                 <path d="M21.805 11.203c0-.781-.07-1.563-.211-2.313H11.2v4.387h5.93a5.046 5.046 0 01-2.15 3.313v2.75h3.467c2.03-1.905 3.212-4.713 3.212-8.137z" fill="#E8EAED"/>
@@ -84,17 +92,21 @@ const Login = () => {
                 <path d="M11.201 5.5c1.482 0 2.78.51 3.814 1.512l2.856-2.856C16.169 2.775 13.899 2 11.202 2A9.803 9.803 0 002.426 6.082l4.611 2.845C6.76 7.125 8.794 5.5 11.201 5.5z" fill="#EA4335"/>
               </g>
             </svg>
-            <span>Google로 계속하기</span>
+            <span className="tracking-tight">Google로 계속하기</span>
           </Button>
+          {/* 이메일 로그인 버튼 */}
           <Button
-            variant="outline"
             className={cn(
-              "w-full h-11 font-medium text-base gap-2 shadow-sm border-2 border-muted hover:border-primary"
+              "w-full h-11 font-semibold text-base gap-2 rounded-xl shadow-sm border-0",
+              // 중간톤의 깔끔한 배경, 텍스트 강조
+              "bg-muted text-foreground/80 hover:bg-muted/70 active:bg-muted/80",
+              "transition-colors",
+              "drop-shadow-[0_1px_6px_rgba(40,60,80,0.07)]"
             )}
             disabled
             type="button"
           >
-            이메일로 계속하기
+            <span className="tracking-tight">이메일로 계속하기</span>
           </Button>
         </div>
         <div className="mt-6 text-sm text-muted-foreground text-center">
@@ -107,3 +119,4 @@ const Login = () => {
 };
 
 export default Login;
+
