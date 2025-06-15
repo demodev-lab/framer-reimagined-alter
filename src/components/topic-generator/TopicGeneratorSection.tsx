@@ -37,7 +37,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
           <div className="py-8 flex flex-col gap-8">
             {topicRows.map((row, index) => (
               <div key={row.id} className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px]">
-                <div>
+                <div className="h-full">
                   {row.stage === "topic_selected" ? (
                     <SelectedTopicCard
                       topic={row.selectedTopic!}
@@ -64,7 +64,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                     />
                   )}
                 </div>
-                <div>
+                <div className="h-full">
                   {row.stage === "topic_selected" ? (
                     <TopicResultsCard
                       title="탐구 방법"
