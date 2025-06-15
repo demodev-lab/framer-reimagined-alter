@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -74,6 +73,7 @@ const Index = () => {
                               concept: row.concept,
                               careerPath: row.careerPath,
                               request: row.request,
+                              topicType: row.topicType,
                             }}
                           />
                         )}

@@ -3,19 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
     subject: string;
     concept: string;
     careerPath: string;
-    request: string;
+    topicType: string;
   }) => void;
   initialValues?: {
     subject: string;
     concept: string;
     careerPath: string;
     request: string;
+    topicType: string;
   };
 }
 
@@ -26,17 +34,19 @@ const TopicGeneratorCard = ({
   const [subject, setSubject] = useState(initialValues?.subject || "");
   const [concept, setConcept] = useState(initialValues?.concept || "");
   const [careerPath, setCareerPath] = useState(initialValues?.careerPath || "");
-  const [request, setRequest] = useState(initialValues?.request || "");
+  const [topicType, setTopicType] = useState(
+    initialValues?.topicType || "보고서 주제"
+  );
 
   const handleClear = () => {
     setSubject("");
     setConcept("");
     setCareerPath("");
-    setRequest("");
+    setTopicType("보고서 주제");
   };
 
   const handleGenerateClick = () => {
-    onGenerate({ subject, concept, careerPath, request });
+    onGenerate({ subject, concept, careerPath, topicType });
   };
 
   return (
@@ -94,13 +104,18 @@ const TopicGeneratorCard = ({
               size="sm"
               className="w-[110px] flex-shrink-0"
             >
-              요청 사항
+              주제 유형
             </Button>
-            <Input
-              placeholder="(선택) 구체적인 요청 사항"
-              value={request}
-              onChange={(e) => setRequest(e.target.value)}
-            />
+            <Select onValueChange={setTopicType} value={topicType}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="주제 유형 선택" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="보고서 주제">보고서 주제</SelectItem>
+                <SelectItem value="실험 주제">실험 주제</SelectItem>
+                <SelectItem value="제작 주제">제작 주제</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-6">

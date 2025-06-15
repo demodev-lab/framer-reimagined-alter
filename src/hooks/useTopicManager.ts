@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
@@ -53,7 +52,7 @@ export const useTopicManager = () => {
     ]);
   };
 
-  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; careerPath: string; request: string; }) => {
+  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; careerPath: string; topicType: string; }) => {
     console.log("Generating topics for row:", rowId, "with inputs:", inputs);
     if (!inputs.subject && !inputs.concept && !inputs.careerPath) {
       alert("교과 과목, 교과 개념, 진로 중 하나 이상을 입력해주세요.");
@@ -69,7 +68,7 @@ export const useTopicManager = () => {
         `'${inputs.subject || '선택 과목'}'와 '${inputs.concept || '주요 개념'}'을(를) 활용한 '${inputs.careerPath || '희망 진로'}' 관련 탐구 주제`,
         `'${inputs.concept || '주요 개념'}'을 '${inputs.careerPath || '희망 진로'}' 분야에 적용하는 방안 연구`,
         `'${inputs.subject || '선택 과목'}' 심화 탐구: '${inputs.careerPath || '희망 진로'}'를 위한 제언`,
-        `${inputs.request ? `요청사항(${inputs.request})을 반영한 ` : ''}맞춤형 탐구 주제 제안`
+        `'${inputs.topicType}' 유형으로 맞춤형 탐구 주제 제안`
       ].filter(Boolean);
 
       setTopicRows(prevRows => prevRows.map(row =>
