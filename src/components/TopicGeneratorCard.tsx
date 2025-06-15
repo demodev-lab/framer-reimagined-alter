@@ -57,8 +57,6 @@ const TopicGeneratorCard = ({
     onGenerate({ subject, concept, topicType });
   };
 
-  const isInputDisabled = isFollowUp;
-
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
@@ -71,7 +69,6 @@ const TopicGeneratorCard = ({
               variant="secondary"
               size="sm"
               className="w-[110px] flex-shrink-0"
-              disabled={isInputDisabled}
             >
               교과 과목
             </Button>
@@ -79,7 +76,6 @@ const TopicGeneratorCard = ({
               placeholder="예) 화학, 생명과학"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              disabled={isInputDisabled}
             />
           </div>
           <div className="flex items-center gap-4">
@@ -87,7 +83,6 @@ const TopicGeneratorCard = ({
               variant="secondary"
               size="sm"
               className="w-[110px] flex-shrink-0"
-              disabled={isInputDisabled}
             >
               교과 개념
             </Button>
@@ -95,7 +90,6 @@ const TopicGeneratorCard = ({
               placeholder="예) 산화와 환원"
               value={concept}
               onChange={(e) => setConcept(e.target.value)}
-              disabled={isInputDisabled}
             />
           </div>
           <div className="flex items-center gap-4">
@@ -107,7 +101,7 @@ const TopicGeneratorCard = ({
                         onPressedChange={(pressed) => onFollowUpChange && onFollowUpChange(pressed)}
                         variant="outline"
                         size="sm"
-                        className="w-full whitespace-nowrap"
+                        className="w-full whitespace-nowrap data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
                         aria-label="후속 탐구"
                       >
                         후속 탐구
