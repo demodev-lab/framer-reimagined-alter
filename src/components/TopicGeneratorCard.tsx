@@ -1,12 +1,9 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
-
 const TopicGeneratorCard = () => {
-  return (
-    <Card className="flex flex-col">
-      <CardContent className="p-6 flex flex-col flex-grow justify-between">
+  return <Card className="flex flex-col">
+      <CardContent className="p-6 flex flex-col flex-grow justify-between py-0 my-[45px]">
         <div className="space-y-4 pt-4">
           <div className="flex items-center gap-4">
             <Button variant="secondary" size="sm">
@@ -32,8 +29,6 @@ const TopicGeneratorCard = () => {
           <Button>주제 생성</Button>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default TopicGeneratorCard;
