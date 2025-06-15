@@ -3,6 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
 import { RefreshCw, Lock, X, Settings } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -32,18 +37,46 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>세특 주제 {topicNumber}</CardTitle>
         <div className="flex gap-1">
-          <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onLock} aria-label={isLocked ? "주제 잠금 해제" : "주제 잠금"}>
-            <Lock className={`h-4 w-4 ${isLocked ? "text-primary" : ""}`} />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onDelete} aria-label="주제 삭제" disabled={isLocked}>
-            <X className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
-            <Settings className="h-4 w-4" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>주제 목록으로 돌아가기</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onLock} aria-label={isLocked ? "주제 잠금 해제" : "주제 잠금"}>
+                <Lock className={`h-4 w-4 ${isLocked ? "text-primary" : ""}`} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{isLocked ? "주제 잠금 해제" : "주제 잠금"}</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onDelete} aria-label="주제 삭제" disabled={isLocked}>
+                <X className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>주제 삭제</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
+                <Settings className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>탐구 방법 다시 생성</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -75,3 +108,4 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
 };
 
 export default SelectedTopicCard;
+
