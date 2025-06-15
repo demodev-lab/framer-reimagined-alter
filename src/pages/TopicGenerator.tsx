@@ -63,7 +63,20 @@ const TopicGenerator = () => {
           <Separator />
         </div>
         <CareerSentenceGeneratorSection />
-        <TopicGeneratorSection {...topicManager} />
+        
+        <div className="max-w-3xl mx-auto my-12">
+          <Separator />
+        </div>
+
+        <section id="topic-generator-section" className="scroll-mt-[150px]">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight">주제 생성기</h2>
+            <p className="mt-3 max-w-xl mx-auto text-lg text-muted-foreground">
+                관심 분야와 교과 개념을 연결하여 깊이 있는 탐구 주제를 생성합니다.
+            </p>
+          </div>
+          <TopicGeneratorSection {...topicManager} />
+        </section>
       </main>
     </div>;
 };

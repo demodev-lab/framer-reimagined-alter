@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
 interface TopicRow {
-  id: string;
+  id: number;
   stage: 'input' | 'topic_selected';
   subject: string;
   concept: string;
@@ -25,13 +25,13 @@ interface TopicRow {
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
   handleAddRow: () => void;
-  handleGenerate: (id: string, inputs: { subject: string; concept: string; careerPath: string; topicType: string; }) => void;
-  handleSelectTopic: (id: string, topic: string) => void;
-  handleRefreshTopic: (id: string) => void;
-  handleLockTopic: (id: string) => void;
-  handleDeleteTopic: (id: string) => void;
-  handleRegenerateMethods: (id:string) => void;
-  handleTopicTypeChange: (id: string, type: string) => void;
+  handleGenerate: (id: number, inputs: { subject: string; concept: string; careerPath: string; topicType: string; }) => void;
+  handleSelectTopic: (id: number, topic: string) => void;
+  handleRefreshTopic: (id: number) => void;
+  handleLockTopic: (id: number) => void;
+  handleDeleteTopic: (id: number) => void;
+  handleRegenerateMethods: (id: number) => void;
+  handleTopicTypeChange: (id: number, type: string) => void;
 }
 
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
@@ -46,7 +46,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleTopicTypeChange,
 }) => {
   return (
-    <section id="topic-generator-section" className="flex flex-col items-center scroll-mt-[150px]">
+    <section className="flex flex-col items-center">
       <div className="w-full max-w-4xl px-[182px]">
         <div className="-mx-[182px]">
           <div className="py-8 flex flex-col gap-8">
@@ -114,3 +114,4 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
 };
 
 export default TopicGeneratorSection;
+
