@@ -9,6 +9,7 @@ import TopicGenerator from "./pages/TopicGenerator";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import FaqChat from "./components/FaqChat";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <FaqChat />
     </TooltipProvider>
   </QueryClientProvider>
 );
