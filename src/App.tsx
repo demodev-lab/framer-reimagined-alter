@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import TopicGenerator from "./pages/TopicGenerator";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/topic-generator" element={<TopicGenerator />} />
           <Route path="/feedback" element={<Feedback />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

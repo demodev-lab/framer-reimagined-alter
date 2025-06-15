@@ -38,10 +38,15 @@ const Header = () => {
               {link.name}
             </a>)}
         </nav>
-        <div className="flex items-center">
-          <Button>Log in</Button>
+        <div className="flex items-center gap-1">
+          <Button asChild>
+            <a href="/login" className="whitespace-nowrap font-medium">
+              로그인
+            </a>
+          </Button>
         </div>
       </div>
     </header>;
 };
 export default Header;
+
