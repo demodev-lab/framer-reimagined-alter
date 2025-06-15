@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -17,6 +18,7 @@ interface TopicGeneratorCardProps {
     concept: string;
     careerPath: string;
     topicType: string;
+    request: string;
   }) => void;
   initialValues?: {
     subject: string;
@@ -37,16 +39,18 @@ const TopicGeneratorCard = ({
   const [topicType, setTopicType] = useState(
     initialValues?.topicType || "보고서 주제"
   );
+  const [request, setRequest] = useState(initialValues?.request || "");
 
   const handleClear = () => {
     setSubject("");
     setConcept("");
     setCareerPath("");
     setTopicType("보고서 주제");
+    setRequest("");
   };
 
   const handleGenerateClick = () => {
-    onGenerate({ subject, concept, careerPath, topicType });
+    onGenerate({ subject, concept, careerPath, topicType, request });
   };
 
   return (
@@ -116,6 +120,26 @@ const TopicGeneratorCard = ({
                 <SelectItem value="제작 주제">제작 주제</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="flex items-start gap-4">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="w-[110px] flex-shrink-0"
+            >
+              요청 사항
+            </Button>
+            <div className="w-full space-y-1">
+              <Textarea
+                placeholder="프롬프트를 직접 입력하세요 (선택 사항).&#10;예: {subject}의 {concept} 개념을 {careerPath}와 연관지어..."
+                value={request}
+                onChange={(e) => setRequest(e.target.value)}
+                className="h-20"
+              />
+              <p className="text-xs text-muted-foreground px-1">
+                {`{subject}, {concept}, {careerPath}, {topicType} 키워드 사용 가능`}
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-6">
