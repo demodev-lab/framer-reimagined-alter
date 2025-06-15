@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { changelogData } from "@/data/changelogData";
@@ -32,7 +33,7 @@ const Feedback = () => {
             송쌤
           </span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
-            빠른 피드백 받기
+            빠른 피드백
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
             신속하고 정확한 피드백으로 학생부를 개선하세요.

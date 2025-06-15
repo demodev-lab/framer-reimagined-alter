@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -20,10 +21,10 @@ const Index = () => {
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <a href="/topic-generator">탐구 주제 만들기</a>
+              <a href="/topic-generator">탐구 주제</a>
             </Button>
             <Button variant="outline" asChild size="lg">
-              <a href="/feedback">빠른 피드백 받기</a>
+              <a href="/feedback">빠른 피드백</a>
             </Button>
           </div>
         </section>

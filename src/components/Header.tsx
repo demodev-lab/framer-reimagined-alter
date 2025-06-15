@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,11 +18,11 @@ const Header = () => {
 
   const navLinks = [
     {
-      name: "탐구 주제 만들기",
+      name: "탐구 주제",
       href: "/topic-generator",
     },
     {
-      name: "빠른 피드백 받기",
+      name: "빠른 피드백",
       href: "/feedback",
     },
   ];
