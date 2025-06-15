@@ -50,21 +50,22 @@ const TopicGenerator = () => {
     label: "주제 생성기"
   }];
 
-  // 진로 문장 생성기 탭 클릭 시 sticky nav 아래 정확히 section 시작이 오도록 스크롤 + 충분한 offset
+  // 진로 문장 생성기 탭 클릭 시 오직 해당 섹션이 sticky nav 바로 아래 딱 나타나도록 스크롤 및 offset 제어
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
     const target = document.getElementById(id);
     if (target) {
+      // scrollIntoView로 먼저 맞추고, sticky nav 높이만큼 추가로 올려서 딱 맞게!
       target.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: id === "career-sentence-generator" ? 'start' : 'start',
       });
       if (id === "career-sentence-generator") {
-        // sticky nav + 상단 여백만큼 offset! (예: 160px)
+        // sticky nav 높이(약 72px)만큼 추가 offset 조정
         setTimeout(() => {
-          window.scrollBy({ top: -160, behavior: "smooth" });
-        }, 400);
+          window.scrollBy({ top: -68, behavior: "smooth" });
+        }, 370);
       }
     }
   };
@@ -88,7 +89,7 @@ const TopicGenerator = () => {
           <Separator />
         </div>
 
-        <section id="topic-generator-section" className="scroll-mt-[150px] pb-[300px]">
+        <section id="topic-generator-section" className="scroll-mt-[150px] pb-96">
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">주제 생성기</h2>
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
@@ -106,3 +107,4 @@ const TopicGenerator = () => {
   );
 };
 export default TopicGenerator;
+
