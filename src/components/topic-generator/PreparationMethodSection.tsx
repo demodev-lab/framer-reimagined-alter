@@ -25,8 +25,8 @@ const PreparationMethodSection = () => {
   return (
     <section id="preparation-method" className="scroll-mt-[150px]">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold tracking-tight">학생부 준비 방법</h2>
-        <p className="mt-3 max-w-xl mx-auto text-lg text-muted-foreground">
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">학생부 준비 방법</h2>
+        <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">
           영상 가이드를 통해 학생부 준비를 완벽하게 마스터하세요.
         </p>
       </div>
