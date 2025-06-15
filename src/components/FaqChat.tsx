@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
+import { Square } from "lucide-react";
 
 const FaqChat = () => {
   return (
@@ -20,9 +20,9 @@ const FaqChat = () => {
         <Button
           variant="default"
           size="icon"
-          className="fixed bottom-8 right-8 z-50 h-16 w-16 rounded-full shadow-lg"
+          className="fixed bottom-8 right-8 z-50 h-16 w-16 shadow-lg"
         >
-          <MessageCircle className="h-8 w-8" />
+          <Square className="h-8 w-8" />
           <span className="sr-only">Open FAQ</span>
         </Button>
       </DrawerTrigger>
