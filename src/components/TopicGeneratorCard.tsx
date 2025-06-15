@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 
@@ -30,9 +30,12 @@ const TopicGeneratorCard = ({ onGenerate }: TopicGeneratorCardProps) => {
     onGenerate({ subject, concept, careerPath, request });
   }
 
-  return <Card className="flex flex-col py-0 my-0">
-      <CardContent className="p-6 flex flex-col flex-grow justify-between py-0 my-[45px]">
-        <div className="space-y-4 pt-4">
+  return <Card className="flex flex-col">
+      <CardHeader>
+        <CardTitle>주제 생성기</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col flex-grow justify-between pt-0">
+        <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
               교과 과목
@@ -58,7 +61,7 @@ const TopicGeneratorCard = ({ onGenerate }: TopicGeneratorCardProps) => {
             <Input placeholder="(선택) 구체적인 요청 사항" value={request} onChange={e => setRequest(e.target.value)} />
           </div>
         </div>
-        <div className="flex justify-end gap-2 py-[10px]">
+        <div className="flex justify-end gap-2 pt-6">
           <Button variant="ghost" onClick={handleClear}>
             지우기
           </Button>
