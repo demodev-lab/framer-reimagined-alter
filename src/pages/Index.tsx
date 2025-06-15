@@ -24,7 +24,7 @@ const Index = () => {
             <Tabs defaultValue="all-posts" className="w-full max-w-4xl px-[182px]">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">탐구 주제 만들기</TabsTrigger>
-                <TabsTrigger value="changelog">Changelog</TabsTrigger>
+                <TabsTrigger value="changelog">학생부 준비 방법</TabsTrigger>
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
