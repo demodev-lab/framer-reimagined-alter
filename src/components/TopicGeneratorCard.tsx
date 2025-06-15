@@ -40,7 +40,7 @@ const TopicGeneratorCard = ({
   };
 
   return (
-    <Card className="flex flex-col">
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>주제 생성기</CardTitle>
       </CardHeader>

@@ -28,7 +28,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onRegenerateMethods,
 }) => {
   return (
-    <Card className="flex flex-col">
+    <Card className="h-full flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>세특 주제 {topicNumber}</CardTitle>
         <div className="flex gap-1">
