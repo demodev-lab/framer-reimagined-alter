@@ -15,13 +15,11 @@ interface TopicGeneratorCardProps {
   onGenerate: (data: {
     subject: string;
     concept: string;
-    careerPath: string;
     topicType: string;
   }) => void;
   initialValues?: {
     subject: string;
     concept: string;
-    careerPath: string;
     request: string;
     topicType: string;
   };
@@ -33,7 +31,6 @@ const TopicGeneratorCard = ({
 }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState(initialValues?.subject || "");
   const [concept, setConcept] = useState(initialValues?.concept || "");
-  const [careerPath, setCareerPath] = useState(initialValues?.careerPath || "");
   const [topicType, setTopicType] = useState(
     initialValues?.topicType || "보고서 주제"
   );
@@ -41,12 +38,11 @@ const TopicGeneratorCard = ({
   const handleClear = () => {
     setSubject("");
     setConcept("");
-    setCareerPath("");
     setTopicType("보고서 주제");
   };
 
   const handleGenerateClick = () => {
-    onGenerate({ subject, concept, careerPath, topicType });
+    onGenerate({ subject, concept, topicType });
   };
 
   return (
@@ -82,20 +78,6 @@ const TopicGeneratorCard = ({
               placeholder="예) 산화와 환원"
               value={concept}
               onChange={(e) => setConcept(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-[110px] flex-shrink-0"
-            >
-              진로
-            </Button>
-            <Input
-              placeholder="예) 의사, 약사"
-              value={careerPath}
-              onChange={(e) => setCareerPath(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-4">

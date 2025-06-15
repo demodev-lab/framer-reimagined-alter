@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
@@ -12,13 +13,13 @@ const generateMethods = (topic: string) => {
 };
 
 export const useTopicManager = () => {
+  const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
   const [topicRows, setTopicRows] = useState<TopicRow[]>([
     {
       id: 1,
       stage: 'initial',
       subject: '',
       concept: '',
-      careerPath: '',
       request: '',
       generatedTopics: [],
       isLoadingTopics: false,
@@ -39,7 +40,6 @@ export const useTopicManager = () => {
         stage: 'initial',
         subject: '',
         concept: '',
-        careerPath: '',
         request: '',
         generatedTopics: [],
         isLoadingTopics: false,
@@ -52,10 +52,14 @@ export const useTopicManager = () => {
     ]);
   };
 
-  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; careerPath: string; topicType: string; }) => {
+  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {
     console.log("Generating topics for row:", rowId, "with inputs:", inputs);
-    if (!inputs.subject && !inputs.concept && !inputs.careerPath) {
-      alert("교과 과목, 교과 개념, 진로 중 하나 이상을 입력해주세요.");
+    if (!selectedCareerSentence) {
+      toast.warning("진로 문장을 먼저 생성하거나 선택해주세요.");
+      return;
+    }
+    if (!inputs.subject && !inputs.concept) {
+      toast.warning("교과 과목, 교과 개념 중 하나 이상을 입력해주세요.");
       return;
     }
     
@@ -65,11 +69,10 @@ export const useTopicManager = () => {
 
     setTimeout(() => {
       const newTopics = [
-        `'${inputs.subject || '선택 과목'}'와 '${inputs.concept || '주요 개념'}'을(를) 활용한 '${inputs.careerPath || '희망 진로'}' 관련 탐구 주제`,
-        `'${inputs.concept || '주요 개념'}'을 '${inputs.careerPath || '희망 진로'}' 분야에 적용하는 방안 연구`,
-        `'${inputs.subject || '선택 과목'}' 심화 탐구: '${inputs.careerPath || '희망 진로'}'를 위한 제언`,
-        `'${inputs.topicType}' 유형으로 맞춤형 탐구 주제 제안`
-      ].filter(Boolean);
+        `'${selectedCareerSentence}'을(를) 바탕으로, '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}'과(와) 연계한 탐구`,
+        `'${inputs.concept || '주요 개념'}'을(를) '${selectedCareerSentence}'에 적용하여 문제 해결 방안을 모색하는 연구`,
+        `'${selectedCareerSentence}'의 관점에서 '${inputs.subject || '선택 과목'}' 심화 탐구`,
+      ];
 
       setTopicRows(prevRows => prevRows.map(row =>
         row.id === rowId
@@ -142,7 +145,6 @@ export const useTopicManager = () => {
               stage: 'initial',
               subject: '',
               concept: '',
-              careerPath: '',
               request: '',
               generatedTopics: [],
               isLoadingTopics: false,
@@ -189,6 +191,8 @@ export const useTopicManager = () => {
   return {
     topicRows,
     lockedTopics,
+    selectedCareerSentence,
+    setSelectedCareerSentence,
     handleAddRow,
     handleGenerate,
     handleSelectTopic,

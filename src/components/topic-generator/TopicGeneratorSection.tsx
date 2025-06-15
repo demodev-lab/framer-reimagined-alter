@@ -1,3 +1,4 @@
+
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -9,7 +10,7 @@ import { TopicRow } from '@/types';
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
   handleAddRow: () => void;
-  handleGenerate: (id: number, inputs: { subject: string; concept: string; careerPath: string; topicType: string; }) => void;
+  handleGenerate: (id: number, inputs: { subject: string; concept: string; topicType: string; }) => void;
   handleSelectTopic: (id: number, topic: string) => void;
   handleRefreshTopic: (id: number) => void;
   handleLockTopic: (id: number) => void;
@@ -57,7 +58,6 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                       initialValues={{
                         subject: row.subject,
                         concept: row.concept,
-                        careerPath: row.careerPath,
                         request: row.request,
                         topicType: row.topicType,
                       }}
