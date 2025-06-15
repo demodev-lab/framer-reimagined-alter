@@ -1,9 +1,10 @@
+
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
-import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import TopicGeneratorCard from '@/components/TopicGeneratorCard';
+
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
@@ -29,8 +30,8 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <Card className="h-72 py-0 my-0"></Card>
-                  <Card className="h-72"></Card>
+                  <TopicGeneratorCard />
+                  <TopicGeneratorCard />
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
