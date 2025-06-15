@@ -1,4 +1,5 @@
 
+```tsx
 import React, { useState, useEffect } from "react";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -76,6 +77,15 @@ const TopicGenerator = () => {
     { id: "topic-generator-section", label: "주제 생성기" },
   ];
 
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    setActiveTab(id);
+    document.getElementById(id)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background font-sans">
       <Header />
@@ -99,7 +109,7 @@ const TopicGenerator = () => {
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                onClick={() => setActiveTab(item.id)}
+                onClick={(e) => handleNavLinkClick(e, item.id)}
                 className={`text-sm font-medium px-5 py-1.5 rounded-full transition-colors duration-200 ${
                   activeTab === item.id
                     ? 'bg-background shadow-md text-foreground'
@@ -251,4 +261,4 @@ const TopicGenerator = () => {
 };
 
 export default TopicGenerator;
-
+```
