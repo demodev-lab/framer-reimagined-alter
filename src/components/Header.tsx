@@ -34,7 +34,7 @@ const Header = () => {
           </a>
         </div>
         <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 md:flex">
-          {navLinks.map(link => <a key={link.name} href={link.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          {navLinks.map(link => <a key={link.name} href={link.href} className="text-base font-medium text-foreground transition-colors">
               {link.name}
             </a>)}
         </nav>
