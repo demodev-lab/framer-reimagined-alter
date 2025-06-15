@@ -6,6 +6,7 @@ import TopicResultsCard from "@/components/TopicResultsCard";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { TopicRow } from '@/types';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
@@ -95,9 +96,16 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 </div>
               </div>
             ))}
-            <Button variant="outline" className="w-full py-6" onClick={handleAddRow}>
-              <Plus className="h-5 w-5" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" className="w-full py-6" onClick={handleAddRow}>
+                  <Plus className="h-5 w-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>탐구 주제를 추가하려면 클릭하세요.</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </div>
