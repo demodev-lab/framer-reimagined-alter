@@ -167,7 +167,7 @@ const TopicGenerator = () => {
               진로 문장 생성기
             </h2>
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">
-              핵심 키워드를 조합하여 학생부에 활용할 수 있는 문장을 생성합니다.
+              진로 문장을 통해 중구난방인 학생부를 막을 수 있습니다.
             </p>
           </div>
           <div className="w-full max-w-4xl px-[182px]">
