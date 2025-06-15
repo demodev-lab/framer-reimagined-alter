@@ -50,16 +50,23 @@ const TopicGenerator = () => {
     label: "주제 생성기"
   }];
 
-  // 스크롤 시 해당 섹션이 화면 중앙에 오도록 block: 'center'로 변경
+  // 진로 문장 생성기 탭 클릭 시 오직 해당 섹션이 sticky nav 바로 아래 딱 나타나도록 스크롤 및 offset 제어
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
     const target = document.getElementById(id);
     if (target) {
+      // scrollIntoView로 먼저 맞추고, sticky nav 높이만큼 추가로 올려서 딱 맞게!
       target.scrollIntoView({
         behavior: 'smooth',
-        block: id === "career-sentence-generator" ? 'center' : 'start', // 진로 문장 생성기는 항상 중앙에 위치
+        block: id === "career-sentence-generator" ? 'start' : 'start',
       });
+      if (id === "career-sentence-generator") {
+        // sticky nav 높이(약 72px)만큼 추가 offset 조정
+        setTimeout(() => {
+          window.scrollBy({ top: -68, behavior: "smooth" });
+        }, 370);
+      }
     }
   };
 
@@ -69,17 +76,14 @@ const TopicGenerator = () => {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
 
-        {/* 섹션별 위아래 마진 조정: 진로 문장 생성기 부분만 크게 마진 부여 */}
         <PreparationMethodSection />
 
         <div className="max-w-3xl mx-auto my-6">
           <Separator />
         </div>
 
-        {/* 진로 문장 생성기: 위아래 충분한 마진 */}
-        <div className="my-24 md:my-32" id="career-sentence-generator-anchor">
-          <CareerSentenceGeneratorSection onSelectCareerSentence={setSelectedCareerSentence} />
-        </div>
+        {/* 진로 문장 생성기 섹션에는 외부 div나 margin 없이 section만 바로! */}
+        <CareerSentenceGeneratorSection onSelectCareerSentence={setSelectedCareerSentence} />
 
         <div className="max-w-3xl mx-auto my-6">
           <Separator />
@@ -103,3 +107,4 @@ const TopicGenerator = () => {
   );
 };
 export default TopicGenerator;
+

@@ -13,7 +13,6 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
 
   const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; file: File | null; aspiration: string; }) => {
     onSelectCareerSentence(null);
-    console.log("Generating career sentence with inputs:", inputs);
     setIsCareerSentenceLoading(true);
     setGeneratedCareerSentences([]);
     setTimeout(() => {
@@ -52,12 +51,12 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
     }, 1500);
   };
 
-  // 섹션 바깥에 my-0, 내부에 충분한 padding-top, padding-bottom 처리
+  // 최소한의 위/아래 여백, minHeight 조정
   return (
     <section
       id="career-sentence-generator"
-      className="flex flex-col items-center scroll-mt-[50vh] pt-12 pb-12 md:pt-20 md:pb-20 bg-background"
-      style={{ minHeight: "60vh" }}
+      className="flex flex-col items-center scroll-mt-[80px] pt-6 pb-8 md:pt-10 md:pb-12 bg-background"
+      style={{ minHeight: "42vh" }}
     >
       <div className="text-center mb-4">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
@@ -94,3 +93,4 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
 };
 
 export default CareerSentenceGeneratorSection;
+
