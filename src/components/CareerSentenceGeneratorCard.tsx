@@ -11,6 +11,7 @@ interface CareerSentenceGeneratorCardProps {
     careerField: string;
     activity: string;
     realization: string;
+    problem: string;
     file: File | null;
   }) => void;
 }
@@ -20,6 +21,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
 }) => {
   const [careerField, setCareerField] = useState("");
   const [request, setRequest] = useState("");
+  const [problem, setProblem] = useState("");
   const [realization, setRealization] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
@@ -36,6 +38,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
   const handleClear = () => {
     setCareerField("");
     setRequest("");
+    setProblem("");
     setRealization("");
     setFile(null);
     const fileInput = document.querySelector('#file-upload') as HTMLInputElement;
@@ -57,6 +60,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
       careerField,
       activity: request,
       realization,
+      problem,
       file
     });
   };
@@ -69,7 +73,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">직업</Button>
-            <Input placeholder="예) 인공지능 전문가" value={careerField} onChange={e => setCareerField(e.target.value)} />
+            <Input placeholder="예) 생명공학자" value={careerField} onChange={e => setCareerField(e.target.value)} />
           </div>
           <div className="flex items-center gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
@@ -108,9 +112,15 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
           )}
           <div className="flex items-start gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
-              깨달은 점
+              해결할 문제
             </Button>
-            <Textarea placeholder="예) 모델의 정확도를 높이기 위해선 양질의 데이터셋 확보와 하이퍼파라미터 튜닝이 매우 중요하다는 것을 깨달음." value={realization} onChange={e => setRealization(e.target.value)} className="min-h-[80px]" />
+            <Textarea placeholder="예) 유전성 희귀 질환의 비활성 유전자 문제" value={problem} onChange={e => setProblem(e.target.value)} className="min-h-[80px]" />
+          </div>
+          <div className="flex items-start gap-4">
+            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
+              해결 방법
+            </Button>
+            <Textarea placeholder="예) 유전자 스위치 조절 기술" value={realization} onChange={e => setRealization(e.target.value)} className="min-h-[80px]" />
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-6">
@@ -123,4 +133,3 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
     </Card>;
 };
 export default CareerSentenceGeneratorCard;
-
