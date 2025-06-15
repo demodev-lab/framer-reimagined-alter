@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
-import IntroSection from "@/components/topic-generator/IntroSection";
 import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
@@ -59,7 +58,6 @@ const TopicGenerator = () => {
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <IntroSection />
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
         <PreparationMethodSection />
         <div className="max-w-3xl mx-auto my-12">
