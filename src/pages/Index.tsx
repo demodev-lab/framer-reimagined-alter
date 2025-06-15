@@ -20,7 +20,7 @@ const Index = () => {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg">
+            <Button variant="outline" asChild size="lg">
               <a href="/topic-generator">탐구 주제</a>
             </Button>
             <Button variant="outline" asChild size="lg">
