@@ -6,13 +6,14 @@ interface SelectedTopicCardProps {
   topic: string;
   subject: string;
   concept: string;
+  topicNumber: number;
 }
 
-const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({ topic, subject, concept }) => {
+const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({ topic, subject, concept, topicNumber }) => {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
-        <CardTitle>선택된 주제</CardTitle>
+        <CardTitle>세특 주제 {topicNumber}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col gap-4">
         <dl className="space-y-2">

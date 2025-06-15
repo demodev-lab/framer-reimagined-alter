@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -130,7 +129,7 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 flex flex-col gap-8">
-                  {topicRows.map((row) => (
+                  {topicRows.map((row, index) => (
                     <div key={row.id} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div>
                         {row.stage === 'topic_selected' ? (
@@ -138,6 +137,7 @@ const Index = () => {
                             topic={row.selectedTopic!}
                             subject={row.subject}
                             concept={row.concept}
+                            topicNumber={index + 1}
                           />
                         ) : (
                           <TopicGeneratorCard
@@ -154,6 +154,7 @@ const Index = () => {
                             onSelectTopic={(method) => console.log('Method selected:', method)}
                             isLoading={row.isLoadingMethods}
                             isSelectable={false}
+                            scrollable={true}
                           />
                         ) : (
                           <TopicResultsCard

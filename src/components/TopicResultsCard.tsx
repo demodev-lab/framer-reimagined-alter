@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
 
 interface TopicResultsCardProps {
@@ -10,6 +11,7 @@ interface TopicResultsCardProps {
   onSelectTopic: (topic: string) => void;
   isLoading: boolean;
   isSelectable?: boolean;
+  scrollable?: boolean;
 }
 
 const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
@@ -19,21 +21,46 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   onSelectTopic,
   isLoading,
   isSelectable = true,
+  scrollable = false,
 }) => {
-  return <Card className="h-full">
+  const topicsList = (
+    <div className="flex flex-col gap-2">
+      {topics.map((topic, index) => (
+        <Button
+          key={index}
+          variant="outline"
+          className="justify-start text-left h-auto whitespace-normal py-2"
+          onClick={() => isSelectable && onSelectTopic(topic)}
+          disabled={!isSelectable}
+        >
+          {topic}
+        </Button>
+      ))}
+    </div>
+  );
+
+  return (
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent>
-        {isLoading ? <div className="flex items-center justify-center py-8">
+      <CardContent className="flex-grow overflow-hidden">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
             <p>생성 중...</p>
-          </div> : topics.length === 0 ? <p className="text-muted-foreground text-center py-8">{placeholder}</p> : <div className="flex flex-col gap-2">
-            {topics.map((topic, index) => <Button key={index} variant="outline" className="justify-start text-left h-auto whitespace-normal py-2" onClick={() => isSelectable && onSelectTopic(topic)} disabled={!isSelectable}>
-                {topic}
-              </Button>)}
-          </div>}
+          </div>
+        ) : topics.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-muted-foreground text-center">{placeholder}</p>
+          </div>
+        ) : scrollable ? (
+          <ScrollArea className="h-full pr-4">{topicsList}</ScrollArea>
+        ) : (
+          topicsList
+        )}
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 
 export default TopicResultsCard;
