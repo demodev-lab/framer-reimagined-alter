@@ -30,7 +30,7 @@ const Index = () => {
         </section>
 
         <div className="flex flex-col items-center">
-            <Tabs defaultValue="changelog" className="w-full max-w-xl">
+            <Tabs defaultValue="changelog" className="w-full max-w-4xl">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">All Posts</TabsTrigger>
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
@@ -48,7 +48,7 @@ const Index = () => {
               </TabsContent>
               <TabsContent value="changelog">
                 <div className="py-8">
-                  <div className="grid gap-8 md:grid-cols-2">
+                  <div className="flex flex-col gap-8">
                     {allEntries.map(entry => (
                       <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />
                     ))}
