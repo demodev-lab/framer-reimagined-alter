@@ -7,42 +7,89 @@ import TopicGeneratorCard from '@/components/TopicGeneratorCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import TopicResultsCard from '@/components/TopicResultsCard';
+import SelectedTopicCard from '@/components/SelectedTopicCard';
+
+interface TopicRow {
+  id: number;
+  stage: 'initial' | 'topics_generated' | 'topic_selected';
+  generatedTopics: string[];
+  isLoadingTopics: boolean;
+  selectedTopic: string | null;
+  researchMethods: string[];
+  isLoadingMethods: boolean;
+}
 
 const Index = () => {
-  const [topicGenerators, setTopicGenerators] = useState([{ id: 1 }]);
-  const [generatedTopics, setGeneratedTopics] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [topicRows, setTopicRows] = useState<TopicRow[]>([
+    {
+      id: 1,
+      stage: 'initial',
+      generatedTopics: [],
+      isLoadingTopics: false,
+      selectedTopic: null,
+      researchMethods: [],
+      isLoadingMethods: false,
+    },
+  ]);
 
-  const handleAddGenerator = () => {
-    setTopicGenerators(prev => [...prev, { id: Date.now() }]);
+  const handleAddRow = () => {
+    setTopicRows(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        stage: 'initial',
+        generatedTopics: [],
+        isLoadingTopics: false,
+        selectedTopic: null,
+        researchMethods: [],
+        isLoadingMethods: false,
+      },
+    ]);
   };
 
-  const handleGenerate = (inputs: { subject: string; concept: string; careerPath: string; request: string; }) => {
-    console.log("Generating topics with inputs:", inputs);
+  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; careerPath: string; request: string; }) => {
+    console.log("Generating topics for row:", rowId, "with inputs:", inputs);
     if (!inputs.subject && !inputs.concept && !inputs.careerPath) {
-      // Basic validation
       alert("교과 과목, 교과 개념, 진로 중 하나 이상을 입력해주세요.");
       return;
     }
-    setIsLoading(true);
-    setGeneratedTopics([]);
+    
+    setTopicRows(prevRows => prevRows.map(row =>
+      row.id === rowId ? { ...row, isLoadingTopics: true, generatedTopics: [] } : row
+    ));
 
-    // Simulate API call to generate topics
     setTimeout(() => {
-      setGeneratedTopics([
+      const newTopics = [
         `'${inputs.subject || '선택 과목'}'와 '${inputs.concept || '주요 개념'}'을(를) 활용한 '${inputs.careerPath || '희망 진로'}' 관련 탐구 주제`,
         `'${inputs.concept || '주요 개념'}'을 '${inputs.careerPath || '희망 진로'}' 분야에 적용하는 방안 연구`,
         `'${inputs.subject || '선택 과목'}' 심화 탐구: '${inputs.careerPath || '희망 진로'}'를 위한 제언`,
         `${inputs.request ? `요청사항(${inputs.request})을 반영한 ` : ''}맞춤형 탐구 주제 제안`
-      ].filter(Boolean));
-      setIsLoading(false);
+      ].filter(Boolean);
+
+      setTopicRows(prevRows => prevRows.map(row =>
+        row.id === rowId
+          ? { ...row, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
+          : row
+      ));
     }, 1500);
   };
 
-  const handleSelectTopic = (topic: string) => {
-    console.log("Selected topic:", topic);
-    // Further implementation for what happens after selection can be added here.
-    alert(`선택된 주제: ${topic}`);
+  const handleSelectTopic = (rowId: number, topic: string) => {
+    console.log("Selected topic for row:", rowId, "topic:", topic);
+    setTopicRows(prevRows => prevRows.map(row =>
+      row.id === rowId ? { ...row, selectedTopic: topic, stage: 'topic_selected', isLoadingMethods: true, researchMethods: [] } : row
+    ));
+
+    setTimeout(() => {
+      const methods = [
+        `'${topic}'에 대한 문헌 연구 방법`,
+        `'${topic}' 관련 설문조사 설계 및 분석`,
+        `'${topic}'을 주제로 한 실험 계획 제안`,
+      ];
+      setTopicRows(prevRows => prevRows.map(row =>
+        row.id === rowId ? { ...row, isLoadingMethods: false, researchMethods: methods } : row
+      ));
+    }, 1500);
   };
 
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
@@ -69,22 +116,43 @@ const Index = () => {
                 <TabsTrigger value="announcements">빠른 피드백 받기</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
-                <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="flex flex-col gap-4">
-                    {topicGenerators.map(generator => (
-                      <TopicGeneratorCard key={generator.id} onGenerate={handleGenerate} />
-                    ))}
-                    <Button variant="outline" className="w-full py-6" onClick={handleAddGenerator}>
-                      <Plus className="h-5 w-5" />
-                    </Button>
-                  </div>
-                  <div className="flex flex-col gap-4">
-                    <TopicResultsCard 
-                      topics={generatedTopics}
-                      onSelectTopic={handleSelectTopic}
-                      isLoading={isLoading}
-                    />
-                  </div>
+                <div className="py-8 flex flex-col gap-8">
+                  {topicRows.map((row) => (
+                    <div key={row.id} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div>
+                        {row.stage === 'topic_selected' ? (
+                          <SelectedTopicCard topic={row.selectedTopic!} />
+                        ) : (
+                          <TopicGeneratorCard
+                            onGenerate={(inputs) => handleGenerate(row.id, inputs)}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        {row.stage === 'topic_selected' ? (
+                          <TopicResultsCard
+                            title="탐구 방법"
+                            placeholder="탐구 방법을 생성 중입니다..."
+                            topics={row.researchMethods}
+                            onSelectTopic={(method) => console.log('Method selected:', method)}
+                            isLoading={row.isLoadingMethods}
+                            isSelectable={false}
+                          />
+                        ) : (
+                          <TopicResultsCard
+                            title="탐구 주제 후보"
+                            placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다."
+                            topics={row.generatedTopics}
+                            onSelectTopic={(topic) => handleSelectTopic(row.id, topic)}
+                            isLoading={row.isLoadingTopics}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <Button variant="outline" className="w-full py-6" onClick={handleAddRow}>
+                    <Plus className="h-5 w-5" />
+                  </Button>
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
