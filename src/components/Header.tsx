@@ -1,37 +1,31 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  const navLinks = [
-    { name: 'Features', href: '#' },
-    { name: 'Pricing', href: '#' },
-    { name: 'Changelog', href: '/' },
-    { name: 'Contact', href: '#' },
-  ];
-
-  return (
-    <header className={cn(
-      "sticky top-0 z-50 w-full border-b transition-all duration-300",
-      scrolled
-        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
-        : "border-transparent"
-    )}>
+  const navLinks = [{
+    name: 'Features',
+    href: '#'
+  }, {
+    name: 'Pricing',
+    href: '#'
+  }, {
+    name: 'Changelog',
+    href: '/'
+  }, {
+    name: 'Contact',
+    href: '#'
+  }];
+  return <header className={cn("sticky top-0 z-50 w-full border-b transition-all duration-300", scrolled ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm" : "border-transparent")}>
       <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
@@ -40,18 +34,14 @@ const Header = () => {
           </a>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          {navLinks.map(link => <a key={link.name} href={link.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               {link.name}
-            </a>
-          ))}
+            </a>)}
         </nav>
         <div className="flex items-center">
-          <Button>Get Template</Button>
+          <Button>Log in</Button>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 };
-
 export default Header;
