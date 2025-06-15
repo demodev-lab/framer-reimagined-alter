@@ -1,8 +1,11 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 interface CareerSentenceGeneratorCardProps {
   onGenerate: (data: {
     careerField: string;
@@ -10,24 +13,28 @@ interface CareerSentenceGeneratorCardProps {
     realization: string;
   }) => void;
 }
+
 const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = ({
   onGenerate
 }) => {
   const [careerField, setCareerField] = useState("");
-  const [activity, setActivity] = useState("");
+  const [request, setRequest] = useState("");
   const [realization, setRealization] = useState("");
+
   const handleClear = () => {
     setCareerField("");
-    setActivity("");
+    setRequest("");
     setRealization("");
   };
+
   const handleGenerateClick = () => {
     onGenerate({
       careerField,
-      activity,
+      activity: request,
       realization
     });
   };
+
   return <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>진로 문장 생성기</CardTitle>
@@ -38,11 +45,20 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">직업</Button>
             <Input placeholder="예) 인공지능 전문가" value={careerField} onChange={e => setCareerField(e.target.value)} />
           </div>
-          <div className="flex items-start gap-4">
-            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
-              활동 내용
+          <div className="flex items-center gap-4">
+            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
+              요청 사항
             </Button>
-            <Textarea placeholder="예) 교내 AI 동아리에서 '이미지 인식 모델 만들기' 프로젝트를 진행함." value={activity} onChange={e => setActivity(e.target.value)} className="min-h-[80px]" />
+            <Select value={request} onValueChange={setRequest}>
+              <SelectTrigger>
+                <SelectValue placeholder="요청 사항을 선택하세요." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="이전 활동이 존재합니다.">이전 활동이 존재합니다.</SelectItem>
+                <SelectItem value="직업을 가진 후 하고 싶은 것이 있습니다.">직업을 가진 후 하고 싶은 것이 있습니다.</SelectItem>
+                <SelectItem value="요청 사항 없음.">요청 사항 없음.</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex items-start gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
