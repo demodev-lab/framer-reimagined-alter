@@ -27,7 +27,7 @@ const Index = () => {
         <div className="flex flex-col items-center">
             <Tabs defaultValue="changelog" className="w-full max-w-xl">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all-posts" className="text-slate-400">All Posts</TabsTrigger>
+                <TabsTrigger value="all-posts" className="text-slate-50 bg-zinc-800 hover:bg-zinc-700">All Posts</TabsTrigger>
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
                 <TabsTrigger value="changelog">Changelog</TabsTrigger>
               </TabsList>
