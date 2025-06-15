@@ -2,13 +2,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, Settings } from "lucide-react";
+import { RefreshCw, Lock, X, Settings, ChevronDown } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -72,9 +78,39 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               <p>주제 삭제</p>
             </TooltipContent>
           </Tooltip>
+          <DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="주제 유형 선택" disabled={isLocked}>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>주제 유형 변경</p>
+              </TooltipContent>
+            </Tooltip>
+            <DropdownMenuContent>
+              <DropdownMenuRadioGroup
+                value={topicType}
+                onValueChange={onTopicTypeChange}
+              >
+                <DropdownMenuRadioItem value="보고서 주제">
+                  보고서 주제
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="실험 주제">
+                  실험 주제
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="제작 주제">
+                  제작 주제
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성" disabled={isLocked}>
+              <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
                 <Settings className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
@@ -88,7 +124,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
         <div>
           <p className="text-lg font-semibold">{topic}</p>
           <div className="border-t my-4" />
-          <dl className="space-y-4">
+          <dl className="space-y-2">
             {subject && (
               <div className="flex">
                 <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
@@ -101,30 +137,9 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                 <dd className="font-medium">{concept}</dd>
               </div>
             )}
-            <div className="flex items-start">
-              <dt className="w-20 font-semibold text-muted-foreground shrink-0 pt-2">주제 유형</dt>
-              <dd className="font-medium flex-1">
-                <ToggleGroup
-                  type="single"
-                  value={topicType}
-                  onValueChange={(value) => {
-                    if (value) onTopicTypeChange(value);
-                  }}
-                  disabled={isLocked}
-                  size="sm"
-                  className="justify-start flex-wrap gap-2"
-                >
-                  <ToggleGroupItem value="보고서 주제" aria-label="보고서 주제">
-                    보고서 주제
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="실험 주제" aria-label="실험 주제">
-                    실험 주제
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="제작 주제" aria-label="제작 주제">
-                    제작 주제
-                  </ToggleGroupItem>
-                </ToggleGroup>
-              </dd>
+            <div className="flex">
+              <dt className="w-20 font-semibold text-muted-foreground shrink-0">주제 유형</dt>
+              <dd className="font-medium">{topicType}</dd>
             </div>
           </dl>
         </div>
