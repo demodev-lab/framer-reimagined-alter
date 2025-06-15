@@ -1,26 +1,10 @@
-
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-
-interface TopicRow {
-  id: number;
-  stage: 'input' | 'topic_selected';
-  subject: string;
-  concept: string;
-  careerPath: string;
-  request: string;
-  topicType: string;
-  generatedTopics: string[];
-  isLoadingTopics: boolean;
-  selectedTopic: string | null;
-  isLocked: boolean;
-  researchMethods: string[];
-  isLoadingMethods: boolean;
-}
+import { TopicRow } from '@/types';
 
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
@@ -114,4 +98,3 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
 };
 
 export default TopicGeneratorSection;
-
