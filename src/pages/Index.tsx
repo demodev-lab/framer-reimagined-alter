@@ -20,10 +20,10 @@ const Index = () => {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" asChild size="lg">
+            <Button variant="outline" asChild size="lg" className="w-40">
               <a href="/topic-generator">탐구 주제</a>
             </Button>
-            <Button variant="outline" asChild size="lg">
+            <Button variant="outline" asChild size="lg" className="w-40">
               <a href="/feedback">빠른 피드백</a>
             </Button>
           </div>
