@@ -4,9 +4,6 @@ import React from 'react';
 const IntroSection = () => {
   return (
     <section className="text-center py-16 md:py-[30px]">
-      <span className="inline-block bg-muted text-muted-foreground rounded-full px-4 py-1.5 text-xs font-medium mb-4">
-        송쌤
-      </span>
       <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl">
         탐구 주제 만들기
       </h1>

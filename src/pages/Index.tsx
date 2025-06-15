@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -9,9 +8,6 @@ const Index = () => {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <section className="text-center py-16 md:py-[53px]">
-          <span className="inline-block bg-muted text-muted-foreground rounded-full px-4 py-1.5 text-xs font-medium mb-4">
-            송쌤
-          </span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
             학생부 제대로 준비하기
           </h1>
