@@ -3,8 +3,8 @@ import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
-import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bot } from 'lucide-react';
 
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
@@ -23,7 +23,7 @@ const Index = () => {
         </section>
 
         <div className="flex flex-col items-center">
-            <Tabs defaultValue="changelog" className="w-full max-w-4xl px-[182px]">
+            <Tabs defaultValue="all-posts" className="w-full max-w-4xl px-[182px]">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">All Posts</TabsTrigger>
                 <TabsTrigger value="changelog">Changelog</TabsTrigger>
@@ -31,38 +31,32 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts">
                 <div className="py-8">
-                  <div className="flex flex-col gap-8">
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
-                      <div className="flex flex-col p-6 px-[29px] mx-[70px]">
-                        <div className="flex items-center gap-3 mb-4">
-                          <Skeleton className="h-10 w-10 rounded-full" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[100px]" />
-                            <Skeleton className="h-4 w-[80px]" />
-                          </div>
+                  <div className="flex flex-row gap-8">
+                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300">
+                      <CardHeader className="flex flex-row items-center gap-4 pb-2">
+                        <div className="p-2 bg-primary/10 rounded-full">
+                          <Bot className="w-6 h-6 text-primary" />
                         </div>
-                        <Skeleton className="h-7 w-3/4 mb-2" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-11/12" />
-                        </div>
-                      </div>
+                        <CardTitle className="text-lg">AI 웹서비스 1</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          여기에 멋진 AI 웹서비스에 대한 설명이 들어갑니다.
+                        </p>
+                      </CardContent>
                     </Card>
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
-                      <div className="flex flex-col p-6 px-[29px] mx-[70px]">
-                        <div className="flex items-center gap-3 mb-4">
-                          <Skeleton className="h-10 w-10 rounded-full" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[100px]" />
-                            <Skeleton className="h-4 w-[80px]" />
-                          </div>
+                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300">
+                      <CardHeader className="flex flex-row items-center gap-4 pb-2">
+                        <div className="p-2 bg-primary/10 rounded-full">
+                          <Bot className="w-6 h-6 text-primary" />
                         </div>
-                        <Skeleton className="h-7 w-3/4 mb-2" />
-                        <div className="space-y-2">
-                          <Skeleton className="h-4 w-full" />
-                          <Skeleton className="h-4 w-11/12" />
-                        </div>
-                      </div>
+                        <CardTitle className="text-lg">AI 웹서비스 2</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          여기에 또 다른 멋진 AI 웹서비스에 대한 설명이 들어갑니다.
+                        </p>
+                      </CardContent>
                     </Card>
                   </div>
                 </div>
