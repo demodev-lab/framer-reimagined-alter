@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
 import SelectedTopicCard from "@/components/SelectedTopicCard";
@@ -40,6 +40,40 @@ const TopicGenerator = () => {
   ];
 
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState("preparation-method");
+
+  useEffect(() => {
+    const sections = ["preparation-method", "topic-generator-section"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-120px 0px -50% 0px",
+      }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
+      });
+    };
+  }, []);
+
+  const navItems = [
+    { id: "preparation-method", label: "학생부 준비 방법" },
+    { id: "topic-generator-section", label: "주제 생성기" },
+  ];
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -57,8 +91,28 @@ const TopicGenerator = () => {
           </p>
         </section>
 
+        {/* Sticky Nav */}
+        <div className="sticky top-[60px] z-40 bg-background/95 backdrop-blur-sm py-4 flex justify-center mb-12">
+          <div className="p-1 bg-muted rounded-full flex items-center space-x-1 shadow-sm">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setActiveTab(item.id)}
+                className={`text-sm font-medium px-5 py-1.5 rounded-full transition-colors duration-200 ${
+                  activeTab === item.id
+                    ? 'bg-background shadow text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* 유튜브 영상 섹션 */}
-        <section className="mb-12">
+        <section id="preparation-method" className="mb-12 scroll-mt-[120px]">
           <div className="max-w-4xl mx-auto">
             <div className="bg-card rounded-lg border p-6">
               <div className="flex items-center gap-2 mb-4">
@@ -109,7 +163,7 @@ const TopicGenerator = () => {
           </div>
         </section>
 
-        <div className="flex flex-col items-center">
+        <section id="topic-generator-section" className="flex flex-col items-center scroll-mt-[120px]">
           <div className="w-full max-w-4xl px-[182px]">
             <div className="-mx-[182px]">
               <div className="py-8 flex flex-col gap-8">
@@ -189,7 +243,7 @@ const TopicGenerator = () => {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );
