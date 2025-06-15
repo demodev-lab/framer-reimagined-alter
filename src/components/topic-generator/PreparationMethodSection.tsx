@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Play } from 'lucide-react';
 
 const videoData = [
   {
@@ -25,11 +24,28 @@ const PreparationMethodSection = () => {
 
   return (
     <section id="preparation-method" className="scroll-mt-[150px]">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold tracking-tight">학생부 준비 방법</h2>
+        <p className="mt-3 max-w-xl mx-auto text-lg text-muted-foreground">
+          영상 가이드를 통해 학생부 준비를 완벽하게 마스터하세요.
+        </p>
+      </div>
       <div className="max-w-3xl mx-auto">
         <div className="bg-card rounded-lg border p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Play className="h-5 w-5 text-red-500" />
-            <h2 className="text-lg font-semibold">학생부 준비 방법</h2>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {videoData.map((video, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedVideoIndex(index)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  selectedVideoIndex === index
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                }`}
+              >
+                {video.title}
+              </button>
+            ))}
           </div>
 
           <div className="aspect-video w-full mb-4 rounded-lg overflow-hidden bg-muted">
@@ -51,22 +67,6 @@ const PreparationMethodSection = () => {
             <p className="text-xs text-muted-foreground">
               {videoData[selectedVideoIndex].description}
             </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {videoData.map((video, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedVideoIndex(index)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                  selectedVideoIndex === index
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {video.title}
-              </button>
-            ))}
           </div>
         </div>
       </div>
