@@ -1,18 +1,35 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
-const TopicGeneratorCard = () => {
+
+interface TopicGeneratorCardProps {
+  onGenerate: (data: {
+    subject: string;
+    concept: string;
+    careerPath: string;
+    request: string;
+  }) => void;
+}
+
+const TopicGeneratorCard = ({ onGenerate }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState("");
   const [concept, setConcept] = useState("");
   const [careerPath, setCareerPath] = useState("");
   const [request, setRequest] = useState("");
+
   const handleClear = () => {
     setSubject("");
     setConcept("");
     setCareerPath("");
     setRequest("");
   };
+
+  const handleGenerateClick = () => {
+    onGenerate({ subject, concept, careerPath, request });
+  }
+
   return <Card className="flex flex-col py-0 my-0">
       <CardContent className="p-6 flex flex-col flex-grow justify-between py-0 my-[45px]">
         <div className="space-y-4 pt-4">
@@ -45,7 +62,7 @@ const TopicGeneratorCard = () => {
           <Button variant="ghost" onClick={handleClear}>
             지우기
           </Button>
-          <Button>주제 생성</Button>
+          <Button onClick={handleGenerateClick}>주제 생성</Button>
         </div>
       </CardContent>
     </Card>;

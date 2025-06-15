@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -7,12 +6,43 @@ import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import TopicResultsCard from '@/components/TopicResultsCard';
 
 const Index = () => {
   const [topicGenerators, setTopicGenerators] = useState([{ id: 1 }]);
+  const [generatedTopics, setGeneratedTopics] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddGenerator = () => {
     setTopicGenerators(prev => [...prev, { id: Date.now() }]);
+  };
+
+  const handleGenerate = (inputs: { subject: string; concept: string; careerPath: string; request: string; }) => {
+    console.log("Generating topics with inputs:", inputs);
+    if (!inputs.subject && !inputs.concept && !inputs.careerPath) {
+      // Basic validation
+      alert("교과 과목, 교과 개념, 진로 중 하나 이상을 입력해주세요.");
+      return;
+    }
+    setIsLoading(true);
+    setGeneratedTopics([]);
+
+    // Simulate API call to generate topics
+    setTimeout(() => {
+      setGeneratedTopics([
+        `'${inputs.subject || '선택 과목'}'와 '${inputs.concept || '주요 개념'}'을(를) 활용한 '${inputs.careerPath || '희망 진로'}' 관련 탐구 주제`,
+        `'${inputs.concept || '주요 개념'}'을 '${inputs.careerPath || '희망 진로'}' 분야에 적용하는 방안 연구`,
+        `'${inputs.subject || '선택 과목'}' 심화 탐구: '${inputs.careerPath || '희망 진로'}'를 위한 제언`,
+        `${inputs.request ? `요청사항(${inputs.request})을 반영한 ` : ''}맞춤형 탐구 주제 제안`
+      ].filter(Boolean));
+      setIsLoading(false);
+    }, 1500);
+  };
+
+  const handleSelectTopic = (topic: string) => {
+    console.log("Selected topic:", topic);
+    // Further implementation for what happens after selection can be added here.
+    alert(`선택된 주제: ${topic}`);
   };
 
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
@@ -42,16 +72,18 @@ const Index = () => {
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col gap-4">
                     {topicGenerators.map(generator => (
-                      <TopicGeneratorCard key={generator.id} />
+                      <TopicGeneratorCard key={generator.id} onGenerate={handleGenerate} />
                     ))}
                     <Button variant="outline" className="w-full py-6" onClick={handleAddGenerator}>
                       <Plus className="h-5 w-5" />
                     </Button>
                   </div>
                   <div className="flex flex-col gap-4">
-                    {topicGenerators.map(generator => (
-                      <TopicGeneratorCard key={generator.id} />
-                    ))}
+                    <TopicResultsCard 
+                      topics={generatedTopics}
+                      onSelectTopic={handleSelectTopic}
+                      isLoading={isLoading}
+                    />
                   </div>
                 </div>
               </TabsContent>
