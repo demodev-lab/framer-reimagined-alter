@@ -53,24 +53,15 @@ const TopicGenerator = () => {
     }
   ];
 
-  // 진로 문장 생성기 탭 클릭 시 오직 해당 섹션이 sticky nav 바로 아래 딱 나타나도록 스크롤 및 offset 제어
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
     const target = document.getElementById(id);
     if (target) {
-      // scrollIntoView로 먼저 맞추고, 동일 타이밍에 추가 offset 이동 → 반드시 scrollIntoView와 window.scrollBy가 중복해서 동작하지 않게 타이밍 조정
       target.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
-      // 진로 문장 생성기일 때만 sticky nav 높이(72px)만큼 offset (scrollIntoView가 끝나는 시점에!)
-      if (id === "career-sentence-generator") {
-        setTimeout(() => {
-          // scrollBy에 behavior: "auto"를 명시하여 추가 스크롤이 중첩 애니메이션 없이 깔끔하게 동작
-          window.scrollBy({ top: -72, behavior: "auto" });
-        }, 400); // scrollIntoView animation 후(400ms) offset 이동
-      }
     }
   };
 

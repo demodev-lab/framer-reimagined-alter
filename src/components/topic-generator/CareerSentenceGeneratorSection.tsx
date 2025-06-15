@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -55,7 +54,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
   return (
     <section
       id="career-sentence-generator"
-      className="flex flex-col items-center scroll-mt-[80px] pt-6 pb-8 md:pt-10 md:pb-12 bg-background"
+      className="flex flex-col items-center scroll-mt-[150px] pt-6 pb-8 md:pt-10 md:pb-12 bg-background"
       style={{ minHeight: "42vh" }}
     >
       <div className="text-center mb-4">
@@ -93,4 +92,3 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
 };
 
 export default CareerSentenceGeneratorSection;
-
