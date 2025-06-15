@@ -103,7 +103,7 @@ const TopicGeneratorCard = ({
               <div className="w-[110px] flex-shrink-0">
                 {showFollowUp ? (
                   <TooltipProvider>
-                    <Tooltip>
+                    <Tooltip delayDuration={100}>
                       <TooltipTrigger asChild>
                         <Toggle
                           pressed={isFollowUp}
