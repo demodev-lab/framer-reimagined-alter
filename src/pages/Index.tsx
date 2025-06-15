@@ -24,6 +24,7 @@ interface TopicRow {
   researchMethods: string[];
   isLoadingMethods: boolean;
   isLocked: boolean;
+  topicType: string;
 }
 
 const Index = () => {
@@ -41,6 +42,7 @@ const Index = () => {
       researchMethods: [],
       isLoadingMethods: false,
       isLocked: false,
+      topicType: '보고서 주제',
     },
   ]);
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
@@ -61,6 +63,7 @@ const Index = () => {
         researchMethods: [],
         isLoadingMethods: false,
         isLocked: false,
+        topicType: '보고서 주제',
       },
     ]);
   };
@@ -198,6 +201,15 @@ const Index = () => {
     }, 1500);
   };
 
+  const handleTopicTypeChange = (rowId: number, topicType: string) => {
+    setTopicRows(prevRows =>
+      prevRows.map(row =>
+        row.id === rowId ? { ...row, topicType } : row
+      )
+    );
+    toast.info(`주제 유형이 '${topicType}'(으)로 변경되었습니다.`);
+  };
+
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
     ...entry,
@@ -237,6 +249,8 @@ const Index = () => {
                             onLock={() => handleLockTopic(row.id)}
                             onDelete={() => handleDeleteTopic(row.id)}
                             onRegenerateMethods={() => handleRegenerateMethods(row.id)}
+                            topicType={row.topicType}
+                            onTopicTypeChange={(type) => handleTopicTypeChange(row.id, type)}
                           />
                         ) : (
                           <TopicGeneratorCard

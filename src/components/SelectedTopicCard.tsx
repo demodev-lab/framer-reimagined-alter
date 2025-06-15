@@ -2,12 +2,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, Settings } from "lucide-react";
+import { RefreshCw, Lock, X, Settings, ChevronDown } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -19,6 +26,8 @@ interface SelectedTopicCardProps {
   onLock: () => void;
   onDelete: () => void;
   onRegenerateMethods: () => void;
+  topicType: string;
+  onTopicTypeChange: (type: string) => void;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -31,6 +40,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onLock,
   onDelete,
   onRegenerateMethods,
+  topicType,
+  onTopicTypeChange,
 }) => {
   return (
     <Card className="h-full flex flex-col">
@@ -67,6 +78,36 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               <p>주제 삭제</p>
             </TooltipContent>
           </Tooltip>
+          <DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="주제 유형 선택" disabled={isLocked}>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>주제 유형 변경</p>
+              </TooltipContent>
+            </Tooltip>
+            <DropdownMenuContent>
+              <DropdownMenuRadioGroup
+                value={topicType}
+                onValueChange={onTopicTypeChange}
+              >
+                <DropdownMenuRadioItem value="보고서 주제">
+                  보고서 주제
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="실험 주제">
+                  실험 주제
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="제작 주제">
+                  제작 주제
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
@@ -82,25 +123,25 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       <CardContent className="flex-grow">
         <div>
           <p className="text-lg font-semibold">{topic}</p>
-          {(subject || concept) && (
-            <>
-              <div className="border-t my-4" />
-              <dl className="space-y-2">
-                {subject && (
-                  <div className="flex">
-                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
-                    <dd className="font-medium">{subject}</dd>
-                  </div>
-                )}
-                {concept && (
-                  <div className="flex">
-                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
-                    <dd className="font-medium">{concept}</dd>
-                  </div>
-                )}
-              </dl>
-            </>
-          )}
+          <div className="border-t my-4" />
+          <dl className="space-y-2">
+            {subject && (
+              <div className="flex">
+                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
+                <dd className="font-medium">{subject}</dd>
+              </div>
+            )}
+            {concept && (
+              <div className="flex">
+                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
+                <dd className="font-medium">{concept}</dd>
+              </div>
+            )}
+            <div className="flex">
+              <dt className="w-20 font-semibold text-muted-foreground shrink-0">주제 유형</dt>
+              <dd className="font-medium">{topicType}</dd>
+            </div>
+          </dl>
         </div>
       </CardContent>
     </Card>
@@ -108,4 +149,3 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
 };
 
 export default SelectedTopicCard;
-
