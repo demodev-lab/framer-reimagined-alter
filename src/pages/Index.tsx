@@ -1,10 +1,7 @@
-
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
-import { Card } from '@/components/ui/card';
-
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
@@ -29,15 +26,8 @@ const Index = () => {
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts">
-                <div className="py-8">
-                  <div className="flex flex-col gap-8">
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
-                      <div className="flex flex-col p-6 px-[29px] mx-[70px] h-[150px]" />
-                    </Card>
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
-                      <div className="flex flex-col p-6 px-[29px] mx-[70px] h-[150px]" />
-                    </Card>
-                  </div>
+                <div className="text-center py-20 text-muted-foreground">
+                  All posts will be displayed here.
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
