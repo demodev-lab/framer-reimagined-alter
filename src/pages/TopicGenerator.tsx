@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -39,16 +38,20 @@ const TopicGenerator = () => {
     };
   }, []);
 
-  const navItems = [{
-    id: "preparation-method",
-    label: "학생부 준비 방법"
-  }, {
-    id: "career-sentence-generator",
-    label: "진로 문장 생성기"
-  }, {
-    id: "topic-generator-section",
-    label: "주제 생성기"
-  }];
+  const navItems = [
+    {
+      id: "preparation-method",
+      label: "학생부 준비 방법"
+    },
+    {
+      id: "career-sentence-generator",
+      label: "진로 문장 생성기"
+    },
+    {
+      id: "topic-generator-section",
+      label: "주제 생성기"
+    }
+  ];
 
   // 진로 문장 생성기 탭 클릭 시 오직 해당 섹션이 sticky nav 바로 아래 딱 나타나도록 스크롤 및 offset 제어
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -56,16 +59,17 @@ const TopicGenerator = () => {
     setActiveTab(id);
     const target = document.getElementById(id);
     if (target) {
-      // scrollIntoView로 먼저 맞추고, sticky nav 높이만큼 추가로 올려서 딱 맞게!
+      // scrollIntoView로 먼저 맞추고, 동일 타이밍에 추가 offset 이동 → 반드시 scrollIntoView와 window.scrollBy가 중복해서 동작하지 않게 타이밍 조정
       target.scrollIntoView({
         behavior: 'smooth',
-        block: id === "career-sentence-generator" ? 'start' : 'start',
+        block: 'start',
       });
+      // 진로 문장 생성기일 때만 sticky nav 높이(72px)만큼 offset (scrollIntoView가 끝나는 시점에!)
       if (id === "career-sentence-generator") {
-        // sticky nav 높이(약 72px)만큼 추가 offset 조정
         setTimeout(() => {
-          window.scrollBy({ top: -68, behavior: "smooth" });
-        }, 370);
+          // scrollBy에 behavior: "auto"를 명시하여 추가 스크롤이 중첩 애니메이션 없이 깔끔하게 동작
+          window.scrollBy({ top: -72, behavior: "auto" });
+        }, 400); // scrollIntoView animation 후(400ms) offset 이동
       }
     }
   };
@@ -107,4 +111,3 @@ const TopicGenerator = () => {
   );
 };
 export default TopicGenerator;
-
