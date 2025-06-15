@@ -11,7 +11,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isCareerSentenceLoading, setIsCareerSentenceLoading] = useState(false);
 
-  const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; }) => {
+  const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; file: File | null; aspiration: string; }) => {
     onSelectCareerSentence(null);
     console.log("Generating career sentence with inputs:", inputs);
     setIsCareerSentenceLoading(true);
@@ -23,17 +23,19 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
 
       switch (inputs.activity) {
         case "이전 활동이 존재합니다.":
+          const fileName = inputs.file?.name ? `'${inputs.file.name}' 파일에 기록된 활동` : "이전 활동";
           newSentences = [
-            `심화된 전공 지식을 활용하여 기존 기술의 한계를 극복하는 ${job}`,
-            `구체적인 활동 경험을 바탕으로 실제 현장의 문제를 해결하는 ${job}`,
-            `데이터 분석 및 활용 능력을 통해 미래 산업의 새로운 가능성을 탐색하는 ${job}`
+            `${fileName} 경험을 통해 발견한 문제점을 해결하여 전문성을 강화하는 ${job}`,
+            `${fileName}에서 얻은 역량을 바탕으로 새로운 가치를 창출하는 ${job}`,
+            `심화된 전공 지식을 ${fileName}과 연결하여 융합적 역량을 갖춘 ${job}`
           ];
           break;
         case "직업을 가진 후 하고 싶은 것이 있습니다.":
+          const aspiration = inputs.aspiration.trim() || "사회에 기여";
           newSentences = [
-            `혁신적인 기술을 통해 인류가 직면한 난제를 해결하는 데 기여하는 ${job}`,
-            `지속 가능한 발전을 목표로 사회 및 환경 문제를 해결하는 ${job}`,
-            `기술을 통해 사회적 약자를 돕고 더 나은 세상을 만드는 데 기여하는 ${job}`
+            `'${aspiration}'을(를) 목표로 삼아 사회 발전에 기여하는 ${job}`,
+            `'${aspiration}'을(를) 실현하기 위한 구체적인 기술적, 사회적 해결책을 탐구하는 ${job}`,
+            `'${aspiration}'이라는 비전을 통해 인류의 삶에 긍정적인 영향을 미치는 ${job}`
           ];
           break;
         default: // "요청 사항 없음."
