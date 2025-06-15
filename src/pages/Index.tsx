@@ -28,16 +28,7 @@ const Index = () => {
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts">
-                <div className="py-8">
-                  <div className="flex flex-row gap-8">
-                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px] px-[240px]">
-                      
-                    </Card>
-                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px] px-[240px]">
-                      
-                    </Card>
-                  </div>
-                </div>
+                
               </TabsContent>
               <TabsContent value="announcements">
                 <div className="text-center py-20 text-muted-foreground">
