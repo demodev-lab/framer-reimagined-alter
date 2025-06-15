@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -11,6 +10,7 @@ import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSe
 
 const TopicGenerator = () => {
   const topicManager = useTopicManager();
+  const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState("preparation-method");
   useEffect(() => {
@@ -62,7 +62,7 @@ const TopicGenerator = () => {
         <div className="max-w-3xl mx-auto my-12">
           <Separator />
         </div>
-        <CareerSentenceGeneratorSection />
+        <CareerSentenceGeneratorSection onSelectCareerSentence={setSelectedCareerSentence} />
         
         <div className="max-w-3xl mx-auto my-12">
           <Separator />
@@ -75,6 +75,14 @@ const TopicGenerator = () => {
                 관심 분야와 교과 개념을 연결하여 깊이 있는 탐구 주제를 생성합니다.
             </p>
           </div>
+          {selectedCareerSentence && (
+            <div className="w-full max-w-4xl mx-auto mb-8">
+              <div className="p-4 border rounded-lg bg-muted">
+                <p className="font-semibold text-center text-muted-foreground mb-2">선택된 진로 문장</p>
+                <p className="text-center text-foreground">{selectedCareerSentence}</p>
+              </div>
+            </div>
+          )}
           <TopicGeneratorSection {...topicManager} />
         </section>
       </main>

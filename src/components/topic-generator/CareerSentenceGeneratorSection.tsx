@@ -3,11 +3,16 @@ import React, { useState } from 'react';
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
 
-const CareerSentenceGeneratorSection = () => {
+interface CareerSentenceGeneratorSectionProps {
+  onSelectCareerSentence: (sentence: string | null) => void;
+}
+
+const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionProps> = ({ onSelectCareerSentence }) => {
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isCareerSentenceLoading, setIsCareerSentenceLoading] = useState(false);
 
   const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; file: File | null; aspiration: string; }) => {
+    onSelectCareerSentence(null);
     console.log("Generating career sentence with inputs:", inputs);
     setIsCareerSentenceLoading(true);
     setGeneratedCareerSentences([]);
@@ -75,9 +80,9 @@ const CareerSentenceGeneratorSection = () => {
                   title="생성된 진로 문장"
                   placeholder="'문장 생성' 버튼을 누르면 진로 문장 3개가 생성됩니다."
                   topics={generatedCareerSentences}
-                  onSelectTopic={() => {}}
+                  onSelectTopic={onSelectCareerSentence}
                   isLoading={isCareerSentenceLoading}
-                  isSelectable={false}
+                  isSelectable={true}
                   scrollable={true}
                 />
               </div>
