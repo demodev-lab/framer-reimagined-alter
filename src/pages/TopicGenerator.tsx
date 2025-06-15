@@ -7,6 +7,7 @@ import { Plus, Play } from "lucide-react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
+import { Separator } from "@/components/ui/separator";
 
 const TopicGenerator = () => {
   const {
@@ -122,7 +123,7 @@ const TopicGenerator = () => {
         </div>
 
         {/* 유튜브 영상 섹션 */}
-        <section id="preparation-method" className="mb-12 scroll-mt-[120px]">
+        <section id="preparation-method" className="scroll-mt-[120px]">
           <div className="max-w-3xl mx-auto">
             <div className="bg-card rounded-lg border p-6">
               <div className="flex items-center gap-2 mb-4">
@@ -154,6 +155,10 @@ const TopicGenerator = () => {
             </div>
           </div>
         </section>
+
+        <div className="max-w-3xl mx-auto my-12">
+          <Separator />
+        </div>
 
         {/* 진로 문장 생성기 섹션 */}
         <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[120px] mb-12">
