@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -175,6 +174,7 @@ const Index = () => {
               researchMethods: [],
               isLoadingMethods: false,
               isLocked: false,
+              topicType: '보고서 주제',
             }
           : row
       )
