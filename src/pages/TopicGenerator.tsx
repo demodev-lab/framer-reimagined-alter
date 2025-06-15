@@ -7,11 +7,9 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
-
 const TopicGenerator = () => {
   const topicManager = useTopicManager();
   const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
-
   const [activeTab, setActiveTab] = useState("preparation-method");
   useEffect(() => {
     const sections = ["preparation-method", "career-sentence-generator", "topic-generator-section"];
@@ -75,14 +73,12 @@ const TopicGenerator = () => {
                 관심 분야와 교과 개념을 연결하여 깊이 있는 탐구 주제를 생성합니다.
             </p>
           </div>
-          {selectedCareerSentence && (
-            <div className="w-full max-w-4xl mx-auto mb-8">
+          {selectedCareerSentence && <div className="w-full max-w-4xl mx-auto mb-8">
               <div className="p-4 border rounded-lg bg-muted">
-                <p className="font-semibold text-center text-muted-foreground mb-2">선택된 진로 문장</p>
+                <p className="font-semibold text-center text-muted-foreground mb-2">진로 문장</p>
                 <p className="text-center text-foreground">{selectedCareerSentence}</p>
               </div>
-            </div>
-          )}
+            </div>}
           <TopicGeneratorSection {...topicManager} />
         </section>
       </main>
