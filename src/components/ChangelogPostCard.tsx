@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardTitle } from '@/components/ui/card';
 import { ChangelogEntryType } from '@/data/changelogData';
@@ -13,7 +12,7 @@ const ChangelogPostCard = ({
   month,
   year
 }: ChangelogPostCardProps) => {
-  return <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
+  return <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px] mx-[182px]">
       <div className="flex flex-col p-6 px-[29px] mx-[70px]">
         <div className="flex items-center gap-3 mb-4">
           <Avatar>

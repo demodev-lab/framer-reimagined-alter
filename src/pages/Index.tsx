@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,34 +29,32 @@ const Index = () => {
         </section>
 
         <div className="flex flex-col items-center">
-            <div className="w-full max-w-[916px]">
-              <Tabs defaultValue="changelog" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="all-posts">All Posts</TabsTrigger>
-                  <TabsTrigger value="changelog">Changelog</TabsTrigger>
-                  <TabsTrigger value="announcements">Announcements</TabsTrigger>
-                </TabsList>
-                <TabsContent value="all-posts">
-                  <div className="text-center py-20 text-muted-foreground">
-                    All posts will be displayed here.
+            <Tabs defaultValue="changelog" className="w-full max-w-4xl">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="all-posts">All Posts</TabsTrigger>
+                <TabsTrigger value="changelog">Changelog</TabsTrigger>
+                <TabsTrigger value="announcements">Announcements</TabsTrigger>
+              </TabsList>
+              <TabsContent value="all-posts">
+                <div className="text-center py-20 text-muted-foreground">
+                  All posts will be displayed here.
+                </div>
+              </TabsContent>
+              <TabsContent value="announcements">
+                <div className="text-center py-20 text-muted-foreground">
+                  Announcements will be displayed here.
+                </div>
+              </TabsContent>
+              <TabsContent value="changelog">
+                <div className="py-8">
+                  <div className="flex flex-col gap-8">
+                    {allEntries.map(entry => (
+                      <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />
+                    ))}
                   </div>
-                </TabsContent>
-                <TabsContent value="announcements">
-                  <div className="text-center py-20 text-muted-foreground">
-                    Announcements will be displayed here.
-                  </div>
-                </TabsContent>
-                <TabsContent value="changelog">
-                  <div className="py-8">
-                    <div className="flex flex-col gap-8">
-                      {allEntries.map(entry => (
-                        <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
+                </div>
+              </TabsContent>
+            </Tabs>
         </div>
       </main>
     </div>
