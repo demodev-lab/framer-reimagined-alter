@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CareerSentenceGeneratorCardProps {
@@ -11,6 +11,7 @@ interface CareerSentenceGeneratorCardProps {
     careerField: string;
     activity: string;
     realization: string;
+    file: File | null;
   }) => void;
 }
 
@@ -20,18 +21,43 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
   const [careerField, setCareerField] = useState("");
   const [request, setRequest] = useState("");
   const [realization, setRealization] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (request !== "이전 활동이 존재합니다.") {
+      setFile(null);
+      const fileInput = document.getElementById('file-upload') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = "";
+      }
+    }
+  }, [request]);
 
   const handleClear = () => {
     setCareerField("");
     setRequest("");
     setRealization("");
+    setFile(null);
+    const fileInput = document.querySelector('#file-upload') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    } else {
+      setFile(null);
+    }
   };
 
   const handleGenerateClick = () => {
     onGenerate({
       careerField,
       activity: request,
-      realization
+      realization,
+      file
     });
   };
 
@@ -60,6 +86,26 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
               </SelectContent>
             </Select>
           </div>
+          {request === "이전 활동이 존재합니다." && (
+            <div className="flex items-start gap-4">
+               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
+                파일 첨부
+              </Button>
+               <div className="w-full">
+                <Input
+                  id="file-upload"
+                  type="file"
+                  accept=".pdf,image/*"
+                  onChange={handleFileChange}
+                />
+                {file && (
+                  <p className="text-sm text-muted-foreground mt-2">
+                    선택된 파일: {file.name}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
           <div className="flex items-start gap-4">
             <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
               깨달은 점
@@ -77,3 +123,4 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
     </Card>;
 };
 export default CareerSentenceGeneratorCard;
+
