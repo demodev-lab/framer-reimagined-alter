@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -110,17 +109,37 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
               </div>
             </div>
           )}
-          <div className="flex items-start gap-4">
-            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
+          <div className="flex items-center gap-4">
+            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
               해결할 문제
             </Button>
-            <Textarea placeholder="예) 유전성 희귀 질환의 비활성 유전자 문제" value={problem} onChange={e => setProblem(e.target.value)} className="min-h-[80px]" />
+            <Select value={problem} onValueChange={setProblem}>
+              <SelectTrigger>
+                <SelectValue placeholder="해결할 문제를 선택하세요." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="유전성 희귀 질환의 비활성 유전자 문제">유전성 희귀 질환의 비활성 유전자 문제</SelectItem>
+                <SelectItem value="플라스틱 폐기물로 인한 해양 오염">플라스틱 폐기물로 인한 해양 오염</SelectItem>
+                <SelectItem value="기후 변화로 인한 식량 안보 위기">기후 변화로 인한 식량 안보 위기</SelectItem>
+                <SelectItem value="고령화 사회의 돌봄 시스템 부재">고령화 사회의 돌봄 시스템 부재</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex items-start gap-4">
-            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0 mt-2">
+          <div className="flex items-center gap-4">
+            <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
               해결 방법
             </Button>
-            <Textarea placeholder="예) 유전자 스위치 조절 기술" value={realization} onChange={e => setRealization(e.target.value)} className="min-h-[80px]" />
+            <Select value={realization} onValueChange={setRealization}>
+              <SelectTrigger>
+                <SelectValue placeholder="해결 방법을 선택하세요." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="유전자 스위치 조절 기술">유전자 스위치 조절 기술</SelectItem>
+                <SelectItem value="생분해성 플라스틱 개발">생분해성 플라스틱 개발</SelectItem>
+                <SelectItem value="수직 농업 기술을 이용한 스마트팜">수직 농업 기술을 이용한 스마트팜</SelectItem>
+                <SelectItem value="AI 기반 개인 맞춤형 돌봄 로봇">AI 기반 개인 맞춤형 돌봄 로봇</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div className="flex justify-end gap-2 pt-6">
