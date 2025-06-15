@@ -6,8 +6,8 @@ import React from "react";
 const TopicGeneratorCard = () => {
   return (
     <Card className="flex flex-col">
-      <CardContent className="p-6 flex flex-col flex-grow">
-        <div className="flex-grow space-y-4 pt-4">
+      <CardContent className="p-6 flex flex-col flex-grow justify-between">
+        <div className="space-y-4 pt-4">
           <div className="flex items-center gap-4">
             <Button variant="secondary" size="sm">
               교과 과목
