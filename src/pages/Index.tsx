@@ -1,7 +1,11 @@
+
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
+import { Card } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
@@ -26,8 +30,41 @@ const Index = () => {
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts">
-                <div className="text-center py-20 text-muted-foreground">
-                  All posts will be displayed here.
+                <div className="py-8">
+                  <div className="flex flex-col gap-8">
+                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
+                      <div className="flex flex-col p-6 px-[29px] mx-[70px]">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Skeleton className="h-10 w-10 rounded-full" />
+                          <div className="space-y-2">
+                            <Skeleton className="h-4 w-[100px]" />
+                            <Skeleton className="h-4 w-[80px]" />
+                          </div>
+                        </div>
+                        <Skeleton className="h-7 w-3/4 mb-2" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-11/12" />
+                        </div>
+                      </div>
+                    </Card>
+                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
+                      <div className="flex flex-col p-6 px-[29px] mx-[70px]">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Skeleton className="h-10 w-10 rounded-full" />
+                          <div className="space-y-2">
+                            <Skeleton className="h-4 w-[100px]" />
+                            <Skeleton className="h-4 w-[80px]" />
+                          </div>
+                        </div>
+                        <Skeleton className="h-7 w-3/4 mb-2" />
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-11/12" />
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
