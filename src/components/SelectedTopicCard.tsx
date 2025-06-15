@@ -32,8 +32,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       <CardHeader>
         <CardTitle>세특 주제 {topicNumber}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex items-start gap-4">
-        <div className="flex-grow flex flex-col gap-4">
+      <CardContent className="flex-grow flex flex-col justify-between">
+        <div>
           <dl className="space-y-2">
             {subject && (
               <div className="flex">
@@ -48,10 +48,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               </div>
             )}
           </dl>
-          {(subject || concept) && <div className="border-t" />}
+          {(subject || concept) && <div className="border-t my-4" />}
           <p className="text-lg font-semibold">{topic}</p>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex justify-end gap-1 pt-4">
           <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
             <RefreshCw className="h-4 w-4" />
           </Button>
