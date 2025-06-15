@@ -1,11 +1,9 @@
-
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
 import TopicResultsCard from '@/components/TopicResultsCard';
-
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
@@ -25,9 +23,9 @@ const Index = () => {
         <div className="flex flex-col items-center">
             <Tabs defaultValue="all-posts" className="w-full max-w-4xl px-[182px]">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="all-posts">All Posts</TabsTrigger>
-                <TabsTrigger value="changelog">Changelog</TabsTrigger>
-                <TabsTrigger value="announcements">Announcements</TabsTrigger>
+                <TabsTrigger value="all-posts">탐구 주제 만들기</TabsTrigger>
+                <TabsTrigger value="changelog">학생부 준비 방법</TabsTrigger>
+                <TabsTrigger value="announcements"></TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
