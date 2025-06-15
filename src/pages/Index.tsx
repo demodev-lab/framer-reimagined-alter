@@ -34,8 +34,10 @@ const Index = () => {
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
-                <div className="text-center py-20 text-muted-foreground">
-                  Announcements will be displayed here.
+                <div className="py-8">
+                  <div className="flex flex-col gap-8">
+                    {allEntries.map(entry => <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />)}
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="changelog">
