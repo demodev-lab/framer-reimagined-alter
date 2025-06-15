@@ -5,7 +5,6 @@ import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
-import TopicResultsCard from '@/components/TopicResultsCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 
@@ -49,7 +48,11 @@ const Index = () => {
                       <Plus className="h-5 w-5" />
                     </Button>
                   </div>
-                  <TopicResultsCard />
+                  <div className="flex flex-col gap-4">
+                    {topicGenerators.map(generator => (
+                      <TopicGeneratorCard key={generator.id} />
+                    ))}
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="announcements">
