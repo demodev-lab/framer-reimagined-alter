@@ -1,16 +1,27 @@
+
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
 import TopicResultsCard from '@/components/TopicResultsCard';
+import { announcementsData } from '@/data/announcementsData';
+
 const Index = () => {
-  const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
-  const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
+  const changelogYears = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
+  const allEntries = changelogYears.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
     ...entry,
     year,
     month
   })))).sort((a, b) => new Date(`${b.month} 1, ${b.year}`).getTime() - new Date(`${a.month} 1, ${a.year}`).getTime());
+
+  const announcementYears = Object.keys(announcementsData).sort((a, b) => Number(b) - Number(a));
+  const allAnnouncements = announcementYears.flatMap(year => Object.keys(announcementsData[year]).flatMap(month => announcementsData[year][month].map(entry => ({
+    ...entry,
+    year,
+    month
+  })))).sort((a, b) => new Date(`${b.month} 1, ${b.year}`).getTime() - new Date(`${a.month} 1, ${a.year}`).getTime());
+
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +47,7 @@ const Index = () => {
               <TabsContent value="announcements">
                 <div className="py-8">
                   <div className="flex flex-col gap-8">
-                    {allEntries.map(entry => <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />)}
+                    {allAnnouncements.map(entry => <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />)}
                   </div>
                 </div>
               </TabsContent>
