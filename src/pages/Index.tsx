@@ -4,6 +4,7 @@ import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
+import TopicResultsCard from '@/components/TopicResultsCard';
 
 const Index = () => {
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
@@ -31,7 +32,7 @@ const Index = () => {
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                   <TopicGeneratorCard />
-                  <TopicGeneratorCard />
+                  <TopicResultsCard />
                 </div>
               </TabsContent>
               <TabsContent value="announcements">

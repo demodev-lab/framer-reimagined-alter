@@ -5,7 +5,7 @@ import React from "react";
 
 const TopicGeneratorCard = () => {
   return (
-    <Card className="h-72 flex flex-col">
+    <Card className="flex flex-col">
       <CardContent className="p-6 flex flex-col flex-grow">
         <div className="flex-grow space-y-4 pt-4">
           <div className="flex items-center gap-4">
