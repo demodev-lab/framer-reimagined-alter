@@ -1,4 +1,5 @@
 
+```tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -29,10 +30,24 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
 }) => {
   return (
     <Card className="h-full flex flex-col">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>세특 주제 {topicNumber}</CardTitle>
+        <div className="flex gap-1">
+          <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
+            <RefreshCw className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={onLock} aria-label={isLocked ? "주제 잠금 해제" : "주제 잠금"}>
+            <Lock className={`h-4 w-4 ${isLocked ? "text-primary" : ""}`} />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={onDelete} aria-label="주제 삭제" disabled={isLocked}>
+            <X className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
+            <Settings className="h-4 w-4" />
+          </Button>
+        </div>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col justify-between">
+      <CardContent className="flex-grow">
         <div>
           <dl className="space-y-2">
             {subject && (
@@ -51,23 +66,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           {(subject || concept) && <div className="border-t my-4" />}
           <p className="text-lg font-semibold">{topic}</p>
         </div>
-        <div className="flex justify-end gap-1 pt-4">
-          <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onLock} aria-label={isLocked ? "주제 잠금 해제" : "주제 잠금"}>
-            <Lock className={`h-4 w-4 ${isLocked ? "text-primary" : ""}`} />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onDelete} aria-label="주제 삭제" disabled={isLocked}>
-            <X className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
-            <Settings className="h-4 w-4" />
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
 };
 
 export default SelectedTopicCard;
+```
