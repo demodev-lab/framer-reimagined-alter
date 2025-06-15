@@ -1,16 +1,28 @@
+
+import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChangelogPostCard from '@/components/ChangelogPostCard';
 import TopicGeneratorCard from '@/components/TopicGeneratorCard';
 import TopicResultsCard from '@/components/TopicResultsCard';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+
 const Index = () => {
+  const [topicGenerators, setTopicGenerators] = useState([{ id: 1 }]);
+
+  const handleAddGenerator = () => {
+    setTopicGenerators(prev => [...prev, { id: Date.now() }]);
+  };
+
   const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
   const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
     ...entry,
     year,
     month
   })))).sort((a, b) => new Date(`${b.month} 1, ${b.year}`).getTime() - new Date(`${a.month} 1, ${a.year}`).getTime());
+  
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +41,14 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <TopicGeneratorCard />
+                  <div className="flex flex-col gap-4">
+                    {topicGenerators.map(generator => (
+                      <TopicGeneratorCard key={generator.id} />
+                    ))}
+                    <Button variant="outline" className="w-full py-6" onClick={handleAddGenerator}>
+                      <Plus className="h-5 w-5" />
+                    </Button>
+                  </div>
                   <TopicResultsCard />
                 </div>
               </TabsContent>
