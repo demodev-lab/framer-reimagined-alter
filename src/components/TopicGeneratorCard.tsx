@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Toggle } from "@/components/ui/toggle";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -43,7 +43,6 @@ const TopicGeneratorCard = ({
   const [topicType, setTopicType] = useState(
     initialValues?.topicType || "보고서 주제"
   );
-  const followUpId = `follow-up-${rowId}`;
 
   const handleClear = () => {
     setSubject("");
@@ -103,15 +102,16 @@ const TopicGeneratorCard = ({
             <div className="flex items-center w-full gap-4">
                 <div className="w-[110px] flex-shrink-0">
                     {showFollowUp ? (
-                    <div className="flex items-center space-x-2">
-                        <Checkbox id={followUpId} checked={isFollowUp} onCheckedChange={onFollowUpChange} />
-                        <label
-                        htmlFor={followUpId}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 whitespace-nowrap"
-                        >
+                      <Toggle
+                        pressed={isFollowUp}
+                        onPressedChange={(pressed) => onFollowUpChange && onFollowUpChange(pressed)}
+                        variant="outline"
+                        size="sm"
+                        className="w-full whitespace-nowrap"
+                        aria-label="후속 탐구"
+                      >
                         후속 탐구
-                        </label>
-                    </div>
+                      </Toggle>
                     ) : (
                     <Button variant="secondary" size="sm" className="w-full">
                         주제 유형
@@ -123,9 +123,9 @@ const TopicGeneratorCard = ({
                     <SelectValue placeholder="주제 유형 선택" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectItem value="보고서 주제">보고서 주제</SelectItem>
-                    <SelectItem value="실험 주제">실험 주제</SelectItem>
-                    <SelectItem value="제작 주제">제작 주제</SelectItem>
+                      <SelectItem value="보고서 주제">보고서 주제</SelectItem>
+                      <SelectItem value="실험 주제">실험 주제</SelectItem>
+                      <SelectItem value="제작 주제">제작 주제</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
