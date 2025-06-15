@@ -1,5 +1,4 @@
 
-```tsx
 import React, { useState, useEffect } from "react";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -261,4 +260,3 @@ const TopicGenerator = () => {
 };
 
 export default TopicGenerator;
-```
