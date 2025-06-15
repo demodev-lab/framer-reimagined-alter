@@ -53,7 +53,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
   };
 
   return (
-    <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[150px] mb-12">
+    <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[150px]">
       <div className="text-center mb-8">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           진로 문장 생성기
