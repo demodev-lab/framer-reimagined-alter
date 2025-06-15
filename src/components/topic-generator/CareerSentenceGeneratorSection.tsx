@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -7,30 +6,26 @@ const CareerSentenceGeneratorSection = () => {
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isCareerSentenceLoading, setIsCareerSentenceLoading] = useState(false);
 
-  const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; realization: string; problem: string; file: File | null }) => {
+  const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; file: File | null }) => {
     console.log("Generating career sentence with inputs:", inputs);
     setIsCareerSentenceLoading(true);
     setGeneratedCareerSentences([]);
     setTimeout(() => {
       const job = inputs.careerField || "희망 직업";
-      const problem = inputs.problem || "사회/과학적 문제";
-      const solution = inputs.realization || "창의적 해결 방안";
-
-      const corePhrase = `'${solution}'을(를) 활용하여 '${problem}'을(를) 해결하는 '${job}'`;
       
       let newSentences: string[];
 
       if (inputs.file) {
         newSentences = [
-          `${corePhrase}가 되고자 함.`,
-          `'${inputs.file.name}' 파일의 내용을 바탕으로, ${corePhrase}가 되기 위한 구체적인 계획을 세움.`,
-          `'${inputs.file.name}'에서 발견된 '${problem}'을(를) '${solution}'을(를) 통해 해결하는 '${job}'로서의 역할을 탐색함.`
+          `'${job}'가(이) 되고자 하는 목표를 구체화하기 위해 '${inputs.file.name}' 활동을 진행함.`,
+          `이전 활동('${inputs.file.name}')을 통해 '${job}'에 대한 이해를 심화시키고, 필요한 역량을 탐색함.`,
+          `'${inputs.file.name}'의 경험을 바탕으로 '${job}'가 되기 위한 자신만의 로드맵을 그림.`
         ];
       } else {
         newSentences = [
-          `${corePhrase}가 되고자 함.`,
-          `'${job}'로서 '${problem}' 해결에 '${solution}'을(를) 적용하는 방안에 대해 깊이 고민하는 모습을 보임.`,
-          `장차 ${corePhrase}가 되어 사회에 기여하고 싶다는 강한 의지를 드러냄.`
+          `'${job}'가(이) 되어 사회에 기여하고 싶다는 포부를 밝힘.`,
+          `'${job}'라는 장래희망을 이루기 위해 꾸준히 노력하는 모습을 보임.`,
+          `자신의 강점과 '${job}'을(를) 연결하여 진로에 대한 깊이 있는 탐색을 수행함.`
         ];
       }
       setGeneratedCareerSentences(newSentences);
