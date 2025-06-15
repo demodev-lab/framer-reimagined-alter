@@ -162,6 +162,14 @@ const TopicGenerator = () => {
 
         {/* 진로 문장 생성기 섹션 */}
         <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[120px] mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+              진로 문장 생성기
+            </h2>
+            <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">
+              핵심 키워드를 조합하여 학생부에 활용할 수 있는 문장을 생성합니다.
+            </p>
+          </div>
           <div className="w-full max-w-4xl px-[182px]">
             <div className="-mx-[182px]">
               <div className="py-8">
