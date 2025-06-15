@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -12,25 +13,19 @@ const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const navLinks = [{
-    name: 'Features',
-    href: '#'
-  }, {
-    name: 'Pricing',
-    href: '#'
-  }, {
-    name: 'Changelog',
-    href: '/'
-  }, {
-    name: 'Contact',
-    href: '#'
-  }];
+  const navLinks = [
+    { name: '탐구 주제 만들기', href: '#topic-generator' },
+    { name: '학생부 준비 방법', href: '#how-to-prepare' },
+    { name: '빠른 피드백 받기', href: '#feedback' },
+  ];
   return <header className={cn("sticky top-0 z-50 w-full border-b transition-all duration-300", scrolled ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm" : "border-transparent")}>
       <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
-            <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path><path d="m12 21.333-9.53125-5.5-1.21875-.75v-1.166l1.21875-.75 9.53125-5.5 9.5313 5.5 1.2187 0.75v1.1666l-1.2187.75z" fill="currentColor"></path><path d="m1.25 7.5 10.75 6.25 10.75-6.25" stroke="var(--background)" stroke-linejoin="round" stroke-width="1.5"></path><path d="m12 26.25v-12.5" stroke="var(--background)" stroke-linejoin="round" stroke-width="1.5"></path></svg>
-            <span className="font-bold">Alter</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M4 0C1.79086 0 0 1.79086 0 4V20C0 22.2091 1.79086 24 4 24H20C22.2091 24 24 22.2091 24 20V4C24 1.79086 22.2091 0 20 0H4ZM6 6V18H18V6H6Z" />
+            </svg>
+            <span className="font-bold">Cuadro</span>
           </a>
         </div>
         <nav className="hidden md:flex items-center gap-6">
@@ -39,7 +34,7 @@ const Header = () => {
             </a>)}
         </nav>
         <div className="flex items-center">
-          <Button>Log in</Button>
+          <Button>로그인</Button>
         </div>
       </div>
     </header>;
