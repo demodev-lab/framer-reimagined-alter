@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,14 +22,17 @@ const Index = () => {
         </section>
 
         <div className="flex flex-col items-center">
-            <Tabs defaultValue="changelog" className="w-full max-w-4xl px-[182px]">
+            <Tabs defaultValue="all-posts" className="w-full max-w-4xl px-[182px]">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">All Posts</TabsTrigger>
                 <TabsTrigger value="changelog">Changelog</TabsTrigger>
                 <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
-              <TabsContent value="all-posts">
-                
+              <TabsContent value="all-posts" className="-mx-[182px]">
+                <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <Card className="h-72"></Card>
+                  <Card className="h-72"></Card>
+                </div>
               </TabsContent>
               <TabsContent value="announcements">
                 <div className="text-center py-20 text-muted-foreground">
