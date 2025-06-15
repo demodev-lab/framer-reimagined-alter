@@ -103,7 +103,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>탐구 주제를 추가하려면 클릭하세요.</p>
+                <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
               </TooltipContent>
             </Tooltip>
           </div>
