@@ -31,8 +31,8 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts">
                 <div className="py-8">
-                  <div className="flex flex-col gap-8">
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
+                  <div className="flex flex-row gap-8">
+                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
                       <div className="flex flex-col p-6 px-[29px] mx-[70px]">
                         <div className="flex items-center gap-3 mb-4">
                           <Skeleton className="h-10 w-10 rounded-full" />
@@ -48,7 +48,7 @@ const Index = () => {
                         </div>
                       </div>
                     </Card>
-                    <Card className="overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
+                    <Card className="flex-1 overflow-hidden rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-lg transition-shadow duration-300 my-[10px] py-[12px]">
                       <div className="flex flex-col p-6 px-[29px] mx-[70px]">
                         <div className="flex items-center gap-3 mb-4">
                           <Skeleton className="h-10 w-10 rounded-full" />
