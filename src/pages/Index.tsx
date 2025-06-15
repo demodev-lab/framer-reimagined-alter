@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -240,6 +241,12 @@ const Index = () => {
                         ) : (
                           <TopicGeneratorCard
                             onGenerate={(inputs) => handleGenerate(row.id, inputs)}
+                            initialValues={{
+                              subject: row.subject,
+                              concept: row.concept,
+                              careerPath: row.careerPath,
+                              request: row.request,
+                            }}
                           />
                         )}
                       </div>
