@@ -21,7 +21,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   onSelectTopic,
   isLoading,
   isSelectable = true,
-  scrollable = false,
+  scrollable = true,
 }) => {
   const topicsList = (
     <div className="flex flex-col gap-2">
