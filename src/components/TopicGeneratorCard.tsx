@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -112,7 +111,7 @@ const TopicGeneratorCard = ({
                           }
                           variant="outline"
                           size="sm"
-                          className="w-full whitespace-nowrap data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                          className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
                           aria-label="후속 탐구"
                         >
                           후속 탐구
