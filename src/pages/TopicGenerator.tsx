@@ -67,7 +67,7 @@ const TopicGenerator = () => {
         }
       });
     }, {
-      rootMargin: "-120px 0px -50% 0px"
+      rootMargin: "-150px 0px -50% 0px"
     });
     sections.forEach(id => {
       const el = document.getElementById(id);
@@ -123,7 +123,7 @@ const TopicGenerator = () => {
         </div>
 
         {/* 유튜브 영상 섹션 */}
-        <section id="preparation-method" className="scroll-mt-[120px]">
+        <section id="preparation-method" className="scroll-mt-[150px]">
           <div className="max-w-3xl mx-auto">
             <div className="bg-card rounded-lg border p-6">
               <div className="flex items-center gap-2 mb-4">
@@ -161,7 +161,7 @@ const TopicGenerator = () => {
         </div>
 
         {/* 진로 문장 생성기 섹션 */}
-        <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[120px] mb-12">
+        <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[150px] mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
               진로 문장 생성기
@@ -194,7 +194,7 @@ const TopicGenerator = () => {
           </div>
         </section>
 
-        <section id="topic-generator-section" className="flex flex-col items-center scroll-mt-[120px]">
+        <section id="topic-generator-section" className="flex flex-col items-center scroll-mt-[150px]">
           <div className="w-full max-w-4xl px-[182px]">
             <div className="-mx-[182px]">
               <div className="py-8 flex flex-col gap-8">
