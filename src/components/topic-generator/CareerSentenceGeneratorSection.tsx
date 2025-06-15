@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -54,7 +53,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
 
   return (
     <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[150px]">
-      <div className="text-center mb-8">
+      <div className="text-center mb-4">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           진로 문장 생성기
         </h2>
@@ -64,7 +63,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
       </div>
       <div className="w-full max-w-4xl px-[182px]">
         <div className="-mx-[182px]">
-          <div className="py-8">
+          <div className="py-0">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px]">
               <div>
                 <CareerSentenceGeneratorCard onGenerate={handleGenerateCareerSentence} />
