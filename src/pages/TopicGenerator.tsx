@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -101,11 +102,11 @@ const TopicGenerator = () => {
 
         {/* 유튜브 영상 섹션 */}
         <section id="preparation-method" className="mb-12 scroll-mt-[120px]">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <div className="bg-card rounded-lg border p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Play className="h-5 w-5 text-red-500" />
-                <h2 className="text-xl font-semibold">학생부 준비 방법</h2>
+                <h2 className="text-lg font-semibold">학생부 준비 방법</h2>
               </div>
 
               {/* 유튜브 영상 임베딩 */}
@@ -118,14 +119,14 @@ const TopicGenerator = () => {
                 <h3 className="font-medium text-foreground">
                   {videoData[selectedVideoIndex].title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   {videoData[selectedVideoIndex].description}
                 </p>
               </div>
 
               {/* 영상 선택 라벨들 */}
               <div className="flex flex-wrap gap-2">
-                {videoData.map((video, index) => <button key={index} onClick={() => setSelectedVideoIndex(index)} className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedVideoIndex === index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
+                {videoData.map((video, index) => <button key={index} onClick={() => setSelectedVideoIndex(index)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${selectedVideoIndex === index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
                     {video.title}
                   </button>)}
               </div>
