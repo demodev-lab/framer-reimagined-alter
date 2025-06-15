@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -94,7 +93,7 @@ const TopicGenerator = () => {
         {/* Sticky Nav */}
         <div className="sticky top-[60px] z-40 bg-background/95 backdrop-blur-sm py-4 flex justify-center mb-12">
           <div className="p-1 bg-muted rounded-full flex items-center space-x-1 shadow-sm border">
-            {navItems.map(item => <a key={item.id} href={`#${item.id}`} onClick={e => handleNavLinkClick(e, item.id)} className={`text-sm font-medium px-5 py-1.5 rounded-full transition-colors duration-200 ${activeTab === item.id ? 'bg-background shadow-md text-foreground' : 'text-foreground/70 hover:text-foreground'}`}>
+            {navItems.map(item => <a key={item.id} href={`#${item.id}`} onClick={e => handleNavLinkClick(e, item.id)} className={`text-sm font-medium px-5 py-1.5 rounded-full transition-all duration-200 ${activeTab === item.id ? 'bg-background shadow-md text-foreground' : 'text-muted-foreground hover:bg-background/50 hover:text-foreground'}`}>
                 {item.label}
               </a>)}
           </div>
