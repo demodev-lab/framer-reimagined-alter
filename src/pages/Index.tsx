@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
@@ -12,6 +13,10 @@ import SelectedTopicCard from '@/components/SelectedTopicCard';
 interface TopicRow {
   id: number;
   stage: 'initial' | 'topics_generated' | 'topic_selected';
+  subject: string;
+  concept: string;
+  careerPath: string;
+  request: string;
   generatedTopics: string[];
   isLoadingTopics: boolean;
   selectedTopic: string | null;
@@ -24,6 +29,10 @@ const Index = () => {
     {
       id: 1,
       stage: 'initial',
+      subject: '',
+      concept: '',
+      careerPath: '',
+      request: '',
       generatedTopics: [],
       isLoadingTopics: false,
       selectedTopic: null,
@@ -38,6 +47,10 @@ const Index = () => {
       {
         id: Date.now(),
         stage: 'initial',
+        subject: '',
+        concept: '',
+        careerPath: '',
+        request: '',
         generatedTopics: [],
         isLoadingTopics: false,
         selectedTopic: null,
@@ -55,7 +68,7 @@ const Index = () => {
     }
     
     setTopicRows(prevRows => prevRows.map(row =>
-      row.id === rowId ? { ...row, isLoadingTopics: true, generatedTopics: [] } : row
+      row.id === rowId ? { ...row, ...inputs, isLoadingTopics: true, generatedTopics: [] } : row
     ));
 
     setTimeout(() => {
@@ -121,7 +134,11 @@ const Index = () => {
                     <div key={row.id} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div>
                         {row.stage === 'topic_selected' ? (
-                          <SelectedTopicCard topic={row.selectedTopic!} />
+                          <SelectedTopicCard
+                            topic={row.selectedTopic!}
+                            subject={row.subject}
+                            concept={row.concept}
+                          />
                         ) : (
                           <TopicGeneratorCard
                             onGenerate={(inputs) => handleGenerate(row.id, inputs)}
