@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,7 +19,16 @@ export default {
 			}
 		},
 		extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
 			colors: {
+        'tag-new': 'hsl(142.1 76.2% 36.3%)',
+        'tag-new-foreground': 'hsl(142.1 90% 80%)',
+        'tag-improvement': 'hsl(217.2 91.2% 59.8%)',
+        'tag-improvement-foreground': 'hsl(217.2 90% 85%)',
+        'tag-fix': 'hsl(262.1 83.3% 57.8%)',
+        'tag-fix-foreground': 'hsl(262.1 90% 85%)',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
