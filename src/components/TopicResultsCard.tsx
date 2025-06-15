@@ -44,7 +44,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow overflow-hidden">
+      <CardContent className="flex-grow overflow-hidden min-h-0">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
             <p>생성 중...</p>

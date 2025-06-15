@@ -15,6 +15,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { ScrollArea } from "./ui/scroll-area";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -120,29 +121,31 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           </Tooltip>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow">
-        <div>
-          <p className="text-lg font-semibold">{topic}</p>
-          <div className="border-t my-4" />
-          <dl className="space-y-2">
-            {subject && (
+      <CardContent className="flex-grow overflow-hidden min-h-0">
+        <ScrollArea className="h-full pr-4">
+          <div>
+            <p className="text-lg font-semibold">{topic}</p>
+            <div className="border-t my-4" />
+            <dl className="space-y-2">
+              {subject && (
+                <div className="flex">
+                  <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
+                  <dd className="font-medium">{subject}</dd>
+                </div>
+              )}
+              {concept && (
+                <div className="flex">
+                  <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
+                  <dd className="font-medium">{concept}</dd>
+                </div>
+              )}
               <div className="flex">
-                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
-                <dd className="font-medium">{subject}</dd>
+                <dt className="w-20 font-semibold text-muted-foreground shrink-0">주제 유형</dt>
+                <dd className="font-medium">{topicType}</dd>
               </div>
-            )}
-            {concept && (
-              <div className="flex">
-                <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
-                <dd className="font-medium">{concept}</dd>
-              </div>
-            )}
-            <div className="flex">
-              <dt className="w-20 font-semibold text-muted-foreground shrink-0">주제 유형</dt>
-              <dd className="font-medium">{topicType}</dd>
-            </div>
-          </dl>
-        </div>
+            </dl>
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );
