@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,8 +32,8 @@ const Index = () => {
             <Tabs defaultValue="changelog" className="w-full max-w-4xl">
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="all-posts">All Posts</TabsTrigger>
-                <TabsTrigger value="announcements">Announcements</TabsTrigger>
                 <TabsTrigger value="changelog">Changelog</TabsTrigger>
+                <TabsTrigger value="announcements">Announcements</TabsTrigger>
               </TabsList>
               <TabsContent value="all-posts">
                 <div className="text-center py-20 text-muted-foreground">
