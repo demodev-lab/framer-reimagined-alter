@@ -31,7 +31,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleTopicTypeChange,
 }) => {
   return (
-    <section className="flex flex-col items-center">
+    <section className="flex flex-col items-center pb-16">
       <div className="w-full max-w-4xl px-[182px]">
         <div className="-mx-[182px]">
           <div className="py-8 flex flex-col gap-8">
