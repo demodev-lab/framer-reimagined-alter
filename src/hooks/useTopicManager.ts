@@ -31,12 +31,33 @@ export const useTopicManager = () => {
     },
   ]);
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
+  const [followUpStates, setFollowUpStates] = useState<Record<number, boolean>>({ 1: false });
+
+  const handleFollowUpChange = (rowId: number, isChecked: boolean) => {
+    setFollowUpStates(prev => ({
+      ...prev,
+      [rowId]: isChecked
+    }));
+
+    if (isChecked) {
+      const rowIndex = topicRows.findIndex(r => r.id === rowId);
+      if (rowIndex > 0) {
+        const previousRow = topicRows[rowIndex - 1];
+        if (previousRow.stage !== 'topic_selected' || !previousRow.selectedTopic) {
+          toast.info("후속 탐구를 위해서는 이전 주제를 먼저 선택해야 합니다.");
+        } else {
+          toast.success(`'${previousRow.selectedTopic}'에 대한 후속 탐구를 준비합니다.`);
+        }
+      }
+    }
+  };
 
   const handleAddRow = () => {
+    const newId = Date.now();
     setTopicRows(prev => [
       ...prev,
       {
-        id: Date.now(),
+        id: newId,
         stage: 'initial',
         subject: '',
         concept: '',
@@ -50,6 +71,7 @@ export const useTopicManager = () => {
         topicType: '보고서 주제',
       },
     ]);
+    setFollowUpStates(prev => ({ ...prev, [newId]: false }));
   };
 
   const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {
@@ -58,7 +80,22 @@ export const useTopicManager = () => {
       toast.warning("진로 문장을 먼저 생성하거나 선택해주세요.");
       return;
     }
-    if (!inputs.subject && !inputs.concept) {
+
+    const rowIndex = topicRows.findIndex(r => r.id === rowId);
+    const isFollowUp = followUpStates[rowId];
+
+    if (isFollowUp) {
+      if (rowIndex > 0) {
+        const previousRow = topicRows[rowIndex - 1];
+        if (previousRow.stage !== 'topic_selected' || !previousRow.selectedTopic) {
+          toast.warning("이전 주제가 선택되지 않았습니다. 후속 탐구를 생성할 수 없습니다.");
+          return;
+        }
+      } else {
+        toast.warning("첫 주제는 후속 탐구가 될 수 없습니다.");
+        return;
+      }
+    } else if (!inputs.subject && !inputs.concept) {
       toast.warning("교과 과목, 교과 개념 중 하나 이상을 입력해주세요.");
       return;
     }
@@ -68,11 +105,21 @@ export const useTopicManager = () => {
     ));
 
     setTimeout(() => {
-      const newTopics = [
-        `'${selectedCareerSentence}'을(를) 바탕으로, '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}'과(와) 연계한 탐구`,
-        `'${inputs.concept || '주요 개념'}'을(를) '${selectedCareerSentence}'에 적용하여 문제 해결 방안을 모색하는 연구`,
-        `'${selectedCareerSentence}'의 관점에서 '${inputs.subject || '선택 과목'}' 심화 탐구`,
-      ];
+      let newTopics;
+      if (isFollowUp && rowIndex > 0) {
+        const previousTopic = topicRows[rowIndex - 1].selectedTopic!;
+        newTopics = [
+          `'${previousTopic}'의 한계점을 보완하는 후속 연구`,
+          `'${previousTopic}'의 방법론을 다른 사례에 적용하는 탐구`,
+          `'${previousTopic}'에서 파생된 추가 질문에 대한 심화 탐구`,
+        ];
+      } else {
+        newTopics = [
+          `'${selectedCareerSentence}'을(를) 바탕으로, '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}'과(와) 연계한 탐구`,
+          `'${inputs.concept || '주요 개념'}'을(를) '${selectedCareerSentence}'에 적용하여 문제 해결 방안을 모색하는 연구`,
+          `'${selectedCareerSentence}'의 관점에서 '${inputs.subject || '선택 과목'}' 심화 탐구`,
+        ];
+      }
 
       setTopicRows(prevRows => prevRows.map(row =>
         row.id === rowId
@@ -157,6 +204,7 @@ export const useTopicManager = () => {
           : row
       )
     );
+    setFollowUpStates(prev => ({ ...prev, [rowId]: false }));
     toast.warning("주제가 삭제되었습니다. 새로 검색해주세요.");
   };
 
@@ -193,6 +241,7 @@ export const useTopicManager = () => {
     lockedTopics,
     selectedCareerSentence,
     setSelectedCareerSentence,
+    followUpStates,
     handleAddRow,
     handleGenerate,
     handleSelectTopic,
@@ -201,5 +250,6 @@ export const useTopicManager = () => {
     handleDeleteTopic,
     handleRegenerateMethods,
     handleTopicTypeChange,
+    handleFollowUpChange,
   };
 };

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -8,6 +9,7 @@ import { TopicRow } from '@/types';
 
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
+  followUpStates: Record<number, boolean>;
   handleAddRow: () => void;
   handleGenerate: (id: number, inputs: { subject: string; concept: string; topicType: string; }) => void;
   handleSelectTopic: (id: number, topic: string) => void;
@@ -16,6 +18,7 @@ interface TopicGeneratorSectionProps {
   handleDeleteTopic: (id: number) => void;
   handleRegenerateMethods: (id: number) => void;
   handleTopicTypeChange: (id: number, type: string) => void;
+  handleFollowUpChange: (id: number, checked: boolean) => void;
 }
 
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
@@ -28,6 +31,8 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleDeleteTopic,
   handleRegenerateMethods,
   handleTopicTypeChange,
+  followUpStates,
+  handleFollowUpChange,
 }) => {
   return (
     <section className="flex flex-col items-center pb-8">
@@ -60,6 +65,10 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                         request: row.request,
                         topicType: row.topicType,
                       }}
+                      showFollowUp={index > 0}
+                      isFollowUp={followUpStates[row.id] || false}
+                      onFollowUpChange={(checked) => handleFollowUpChange(row.id, checked as boolean)}
+                      rowId={row.id}
                     />
                   )}
                 </div>
