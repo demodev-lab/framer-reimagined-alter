@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import { changelogData } from '@/data/changelogData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,7 +14,7 @@ const Index = () => {
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="text-center py-16 md:py-[50px]">
+        <section className="text-center py-16 md:py-[53px]">
           <span className="inline-block bg-muted text-muted-foreground rounded-full px-4 py-1.5 text-xs font-medium mb-4">송쌤</span>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">학생부 제대로 준비하기</h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">여러분의 학생부는 절대 '중구난방'이 되어서는 안됩니다.</p>
@@ -30,7 +29,7 @@ const Index = () => {
               </TabsList>
               <TabsContent value="all-posts" className="-mx-[182px]">
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <Card className="h-72"></Card>
+                  <Card className="h-72 py-0 my-0"></Card>
                   <Card className="h-72"></Card>
                 </div>
               </TabsContent>
