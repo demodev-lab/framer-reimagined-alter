@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -6,6 +7,7 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -13,6 +15,7 @@ const TopicGenerator = () => {
     ...topicManager
   } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
+
   useEffect(() => {
     const sections = ["preparation-method", "career-sentence-generator", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -35,6 +38,7 @@ const TopicGenerator = () => {
       });
     };
   }, []);
+
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -45,24 +49,38 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
+
+  // 스크롤 시 해당 섹션이 화면 중앙에 오도록 block: 'center'로 변경
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: id === "career-sentence-generator" ? 'center' : 'start', // 진로 문장 생성기는 항상 중앙에 위치
+      });
+    }
   };
-  return <div className="min-h-screen bg-background font-sans">
+
+  return (
+    <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
+
+        {/* 섹션별 위아래 마진 조정: 진로 문장 생성기 부분만 크게 마진 부여 */}
         <PreparationMethodSection />
+
         <div className="max-w-3xl mx-auto my-6">
           <Separator />
         </div>
-        <CareerSentenceGeneratorSection onSelectCareerSentence={setSelectedCareerSentence} />
-        
+
+        {/* 진로 문장 생성기: 위아래 충분한 마진 */}
+        <div className="my-24 md:my-32" id="career-sentence-generator-anchor">
+          <CareerSentenceGeneratorSection onSelectCareerSentence={setSelectedCareerSentence} />
+        </div>
+
         <div className="max-w-3xl mx-auto my-6">
           <Separator />
         </div>
@@ -73,14 +91,15 @@ const TopicGenerator = () => {
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
           </div>
           {selectedCareerSentence && <div className="w-full max-w-4xl mx-auto mb-6">
-              <div className="p-4 border rounded-lg bg-muted">
-                <p className="font-semibold text-center text-muted-foreground mb-2">진로 문장</p>
-                <p className="text-center text-foreground">{selectedCareerSentence}</p>
-              </div>
-            </div>}
+            <div className="p-4 border rounded-lg bg-muted">
+              <p className="font-semibold text-center text-muted-foreground mb-2">진로 문장</p>
+              <p className="text-center text-foreground">{selectedCareerSentence}</p>
+            </div>
+          </div>}
           <TopicGeneratorSection {...topicManager} />
         </section>
       </main>
-    </div>;
+    </div>
+  );
 };
 export default TopicGenerator;

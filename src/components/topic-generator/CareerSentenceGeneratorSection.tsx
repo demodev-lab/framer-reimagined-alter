@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import TopicResultsCard from "@/components/TopicResultsCard";
@@ -51,8 +52,13 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
     }, 1500);
   };
 
+  // 섹션 바깥에 my-0, 내부에 충분한 padding-top, padding-bottom 처리
   return (
-    <section id="career-sentence-generator" className="flex flex-col items-center scroll-mt-[150px]">
+    <section
+      id="career-sentence-generator"
+      className="flex flex-col items-center scroll-mt-[50vh] pt-12 pb-12 md:pt-20 md:pb-20 bg-background"
+      style={{ minHeight: "60vh" }}
+    >
       <div className="text-center mb-4">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           진로 문장 생성기
