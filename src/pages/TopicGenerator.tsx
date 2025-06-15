@@ -6,11 +6,13 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
-
 const TopicGenerator = () => {
-  const { selectedCareerSentence, setSelectedCareerSentence, ...topicManager } = useTopicManager();
+  const {
+    selectedCareerSentence,
+    setSelectedCareerSentence,
+    ...topicManager
+  } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
-  
   useEffect(() => {
     const sections = ["preparation-method", "career-sentence-generator", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -33,7 +35,6 @@ const TopicGenerator = () => {
       });
     };
   }, []);
-
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -44,7 +45,6 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
-  
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -53,7 +53,6 @@ const TopicGenerator = () => {
       block: 'start'
     });
   };
-
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,9 +70,7 @@ const TopicGenerator = () => {
         <section id="topic-generator-section" className="scroll-mt-[150px]">
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">주제 생성기</h2>
-            <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">
-                관심 분야와 교과 개념을 연결하여 깊이 있는 탐구 주제를 생성합니다.
-            </p>
+            <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
           </div>
           {selectedCareerSentence && <div className="w-full max-w-4xl mx-auto mb-6">
               <div className="p-4 border rounded-lg bg-muted">
@@ -86,5 +83,4 @@ const TopicGenerator = () => {
       </main>
     </div>;
 };
-
 export default TopicGenerator;
