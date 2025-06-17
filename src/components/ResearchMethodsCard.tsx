@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, ChevronRight } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
 import React from "react";
 
 interface ResearchMethodsCardProps {
@@ -15,12 +15,16 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
   researchMethods,
   isLoading,
 }) => {
-  const handleRegenerate = () => {
-    console.log("재생성 버튼 클릭");
+  const handleIncreaseDifficulty = () => {
+    console.log("난이도 증가 버튼 클릭");
+  };
+
+  const handleDecreaseDifficulty = () => {
+    console.log("난이도 감소 버튼 클릭");
   };
 
   const handleMoreDetails = () => {
-    console.log("더 자세히 버튼 클릭");
+    console.log("초등학생 수준 상세 설명 생성 버튼 클릭");
   };
 
   return (
@@ -29,20 +33,33 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
         <CardTitle>탐구 방법</CardTitle>
         <div className="flex gap-2">
           <Button 
-            onClick={handleRegenerate}
+            onClick={handleDecreaseDifficulty}
             variant="outline"
             size="sm"
-            className="flex items-center gap-2"
+            className="flex items-center gap-1"
             disabled={isLoading}
+            title="난이도 낮추기"
           >
-            <RefreshCw className="h-4 w-4" />
-            재생성
+            <ChevronDown className="h-4 w-4" />
+            난이도 ↓
+          </Button>
+          <Button 
+            onClick={handleIncreaseDifficulty}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-1"
+            disabled={isLoading}
+            title="난이도 높이기"
+          >
+            <ChevronUp className="h-4 w-4" />
+            난이도 ↑
           </Button>
           <Button 
             onClick={handleMoreDetails}
             size="sm"
             className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
             disabled={isLoading}
+            title="초등학생도 할 수 있는 상세한 단계별 설명"
           >
             <ChevronRight className="h-4 w-4" />
             더 자세히
