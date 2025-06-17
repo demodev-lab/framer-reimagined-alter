@@ -62,55 +62,8 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
 
   return (
     <Card className="h-full flex flex-col relative">
-      <CardHeader className="relative">
+      <CardHeader>
         <CardTitle>진로 문장 생성기</CardTitle>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="absolute top-4 right-4 text-xs px-2 py-1 h-8"
-                  >
-                    2, 3학년은 클릭🖱️
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-4xl w-full">
-                  <DialogHeader>
-                    <DialogTitle>학생부 준비 가이드</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div className="aspect-video">
-                      <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src="https://www.youtube.com/embed/z4HfvrPA_kI" 
-                        title="학생부 작성 가이드" 
-                        frameBorder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowFullScreen 
-                        className="rounded-lg"
-                      />
-                    </div>
-                    <div className="flex justify-center">
-                      <Button 
-                        onClick={handleNavigateToFeedback}
-                        className="bg-primary hover:bg-primary/90"
-                      >
-                        학생부 심폐 소생하기
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>학생부가 이미 기록된 것이 있다면 반드시 눌러주세요</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       </CardHeader>
       <CardContent className="flex flex-col flex-grow justify-between pt-0">
         <div className="space-y-4">
@@ -157,11 +110,60 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
             </div>
           )}
         </div>
-        <div className="flex justify-end gap-2 pt-6">
-          <Button variant="ghost" onClick={handleClear}>
-            지우기
-          </Button>
-          <Button onClick={handleGenerateClick}>문장 생성</Button>
+        <div className="flex justify-between items-center pt-6">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-xs px-2 py-1 h-8"
+                    >
+                      2, 3학년은 클릭🖱️
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl w-full">
+                    <DialogHeader>
+                      <DialogTitle>학생부 준비 가이드</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="aspect-video">
+                        <iframe 
+                          width="100%" 
+                          height="100%" 
+                          src="https://www.youtube.com/embed/z4HfvrPA_kI" 
+                          title="학생부 작성 가이드" 
+                          frameBorder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowFullScreen 
+                          className="rounded-lg"
+                        />
+                      </div>
+                      <div className="flex justify-center">
+                        <Button 
+                          onClick={handleNavigateToFeedback}
+                          className="bg-primary hover:bg-primary/90"
+                        >
+                          학생부 심폐 소생하기
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>학생부가 이미 기록된 것이 있다면 반드시 눌러주세요</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={handleClear}>
+              지우기
+            </Button>
+            <Button onClick={handleGenerateClick}>문장 생성</Button>
+          </div>
         </div>
       </CardContent>
     </Card>
