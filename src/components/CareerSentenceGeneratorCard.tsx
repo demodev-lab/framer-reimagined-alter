@@ -91,35 +91,42 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
             </div>}
         </div>
         <div className="flex justify-between items-center pt-6">
-          <TooltipProvider>
+          <TooltipProvider delayDuration={100}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="default" className="font-bold">2,3학년 클릭 🖱️</Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-4xl w-full">
-                    <DialogHeader>
-                      <DialogTitle>학생부 준비 가이드</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div className="aspect-video">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4HfvrPA_kI" title="학생부 작성 가이드" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="rounded-lg" />
-                      </div>
-                      <div className="flex justify-center">
-                        <Button onClick={handleNavigateToFeedback} className="bg-primary hover:bg-primary/90">
-                          학생부 심폐 소생하기
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <Button 
+                  variant="outline" 
+                  size="default" 
+                  className="font-bold"
+                  onClick={() => setIsVideoPopupOpen(true)}
+                >
+                  2,3학년 클릭 🖱️
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>학생부가 이미 기록된 것이 있다면 반드시 눌러주세요</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+
+          <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
+            <DialogContent className="max-w-4xl w-full">
+              <DialogHeader>
+                <DialogTitle>학생부 준비 가이드</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="aspect-video">
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4HfvrPA_kI" title="학생부 작성 가이드" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="rounded-lg" />
+                </div>
+                <div className="flex justify-center">
+                  <Button onClick={handleNavigateToFeedback} className="bg-primary hover:bg-primary/90">
+                    학생부 심폐 소생하기
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           <div className="flex gap-2">
             <Button variant="ghost" onClick={handleClear}>
               지우기
