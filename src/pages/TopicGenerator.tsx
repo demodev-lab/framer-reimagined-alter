@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -67,9 +68,6 @@ const TopicGenerator = () => {
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
 
         <section className="text-center py-20 md:py-0">
-          {/* Tag */}
-          
-
           {/* Logo and Title Section */}
           <div className="flex flex-col items-center justify-center gap-6 mb-6">
             <div className="w-11 h-11 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -77,10 +75,7 @@ const TopicGenerator = () => {
                 <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="white" stroke="white" strokeLinejoin="round" strokeWidth="1.5" />
               </svg>
             </div>
-            
           </div>
-
-          
         </section>
 
         <PreparationMethodSection />
