@@ -190,8 +190,9 @@ const Archive = () => {
                 <TableRow>
                   <TableHead className="w-[100px]">No.</TableHead>
                   <TableHead>Title</TableHead>
+                  <TableHead className="w-[120px]">과목</TableHead>
+                  <TableHead className="w-[120px]">주제 유형</TableHead>
                   <TableHead>탐구 방법</TableHead>
-                  <TableHead>Priority</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -203,12 +204,22 @@ const Archive = () => {
                         <div className="font-medium">{topic.title}</div>
                         <div className="flex gap-2 text-sm text-muted-foreground">
                           {topic.concept && <span>{topic.concept}</span>}
-                          {topic.subject && <span>• {topic.subject}</span>}
                         </div>
-                        <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
-                          {topic.topicType}
-                        </Badge>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {topic.subject ? (
+                        <Badge variant="outline" className="text-xs">
+                          {topic.subject}
+                        </Badge>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
+                        {topic.topicType}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Dialog>
@@ -292,29 +303,6 @@ const Archive = () => {
                             </div>}
                         </DialogContent>
                       </Dialog>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 p-2">
-                            <Badge variant={getPriorityBadgeVariant(topic.priority)}>
-                              {topic.priority}
-                            </Badge>
-                            <ChevronDown className="ml-1 h-3 w-3" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuRadioGroup 
-                            value={topic.priority} 
-                            onValueChange={(value) => updateTopicPriority(topic.id, value as ArchivedTopic['priority'])}
-                          >
-                            <DropdownMenuRadioItem value="High">High</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Medium">Medium</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Low">Low</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="None">None</DropdownMenuRadioItem>
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon" onClick={() => deleteTopic(topic.id)} className="h-8 w-8 text-destructive hover:text-destructive">
