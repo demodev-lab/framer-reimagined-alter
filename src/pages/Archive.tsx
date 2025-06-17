@@ -217,8 +217,8 @@ const Archive = () => {
                             <ChevronDown className="ml-1 h-3 w-3" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl max-h-[70vh] overflow-y-auto">
-                          <DialogHeader>
+                        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                          <DialogHeader className="text-center">
                             <DialogTitle>탐구 방법</DialogTitle>
                             <DialogDescription>
                               {topic.title}에 대한 탐구 방법입니다.
@@ -226,39 +226,39 @@ const Archive = () => {
                           </DialogHeader>
                           
                           {getTopicResearchMethods(topic.id).length > 0 ? <div className="space-y-4">
-                              <div className="flex items-center justify-between">
+                              <div className="flex items-center justify-center gap-2">
                                 <span className="text-sm font-medium">
                                   {getTopicResearchMethods(topic.id).length}개의 탐구 방법
                                 </span>
-                                <div className="flex items-center gap-2">
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    onClick={() => handleDifficultyUp(topic.id)} 
-                                    disabled={isRegeneratingMethods[topic.id]} 
-                                    className="flex items-center gap-1"
-                                  > 
-                                    난이도 ⬆️ 
-                                  </Button>
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    onClick={() => handleDifficultyDown(topic.id)} 
-                                    disabled={isRegeneratingMethods[topic.id]} 
-                                    className="flex items-center gap-1"
-                                  >
-                                    난이도 ⬇️ 
-                                  </Button>
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    onClick={() => handleMoreDetailed(topic.id)} 
-                                    disabled={isRegeneratingMethods[topic.id]} 
-                                    className="flex items-center gap-2"
-                                  >
-                                    더 자세히
-                                  </Button>
-                                </div>
+                              </div>
+                              <div className="flex items-center justify-center gap-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => handleDifficultyUp(topic.id)} 
+                                  disabled={isRegeneratingMethods[topic.id]} 
+                                  className="flex items-center gap-1"
+                                > 
+                                  난이도 ⬆️ 
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => handleDifficultyDown(topic.id)} 
+                                  disabled={isRegeneratingMethods[topic.id]} 
+                                  className="flex items-center gap-1"
+                                >
+                                  난이도 ⬇️ 
+                                </Button>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => handleMoreDetailed(topic.id)} 
+                                  disabled={isRegeneratingMethods[topic.id]} 
+                                  className="flex items-center gap-2"
+                                >
+                                  더 자세히
+                                </Button>
                               </div>
                               <div className="space-y-3">
                                 {getTopicResearchMethods(topic.id).map((method, methodIndex) => <div key={methodIndex} className="p-3 bg-muted rounded-lg">
@@ -270,20 +270,22 @@ const Archive = () => {
                               <div className="text-muted-foreground">
                                 아직 탐구 방법이 생성되지 않았습니다.
                               </div>
-                              <Button 
-                                onClick={() => handleGenerateResearchMethods(topic.id)} 
-                                disabled={isRegeneratingMethods[topic.id]} 
-                                className="flex items-center gap-2"
-                              >
-                                {isRegeneratingMethods[topic.id] ? (
-                                  <>
-                                    <RefreshCw className="h-4 w-4 animate-spin" />
-                                    생성 중...
-                                  </>
-                                ) : (
-                                  '재생성'
-                                )}
-                              </Button>
+                              <div className="flex justify-center">
+                                <Button 
+                                  onClick={() => handleGenerateResearchMethods(topic.id)} 
+                                  disabled={isRegeneratingMethods[topic.id]} 
+                                  className="flex items-center gap-2"
+                                >
+                                  {isRegeneratingMethods[topic.id] ? (
+                                    <>
+                                      <RefreshCw className="h-4 w-4 animate-spin" />
+                                      생성 중...
+                                    </>
+                                  ) : (
+                                    '재생성'
+                                  )}
+                                </Button>
+                              </div>
                             </div>}
                         </DialogContent>
                       </Dialog>
