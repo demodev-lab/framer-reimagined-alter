@@ -49,12 +49,17 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
 
   return (
     <Card className="h-full flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{title}</CardTitle>
+      <CardHeader className="relative flex flex-col items-center">
         {onBack && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onBack} aria-label="돌아가기">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={onBack} 
+                aria-label="돌아가기"
+                className="absolute left-0 top-6"
+              >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
@@ -63,6 +68,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
             </TooltipContent>
           </Tooltip>
         )}
+        <CardTitle className="text-center">{title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden min-h-0">
         {isLoading ? (
