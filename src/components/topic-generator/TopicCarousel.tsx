@@ -97,6 +97,8 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       onRegenerateMethods={() => onRegenerateMethods(row.id)}
                       topicType={row.topicType}
                       onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
+                      researchMethods={row.researchMethods || []}
+                      isLoadingMethods={row.isLoadingMethods || false}
                     />
                   )}
                 </div>
