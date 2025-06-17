@@ -201,7 +201,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                                   }} 
                                   showFollowUp={index > 0} 
                                   isFollowUp={followUpStates[row.id] || false} 
-                                  onFollowUpChange={checked => handleFollowUpChange(row.id, Boolean(checked))} 
+                                  onFollowUpChange={checked => handleFollowUpChange(row.id, typeof checked === 'string' ? checked === 'true' : Boolean(checked))} 
                                   rowId={row.id} 
                                   selectedCareerSentence={selectedCareerSentence} 
                                   onCareerSentenceSelect={setSelectedCareerSentence} 
