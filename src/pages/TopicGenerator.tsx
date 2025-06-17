@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -102,12 +103,12 @@ const TopicGenerator = () => {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-3">탐구 주제 생성</h2>
             <p className="max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
             
-            {/* YouTube 버튼들 - 중앙 정렬 및 검은색 배경으로 스타일 변경 */}
+            {/* YouTube 버튼들 - 중앙 정렬 및 동일한 너비 적용 */}
             <div className="flex justify-center items-center gap-4 mt-6">
-              <Button onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")} className="bg-black text-white hover:bg-gray-800 px-6 py-2">
+              <Button onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")} className="bg-black text-white hover:bg-gray-800 px-6 py-2 w-40">
                 어떻게 사용하나요?
               </Button>
-              <Button onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")} className="bg-black text-white hover:bg-gray-800 px-6 py-2">
+              <Button onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")} className="bg-black text-white hover:bg-gray-800 px-6 py-2 w-40">
                 학생부 준비 방법
               </Button>
             </div>
