@@ -1,22 +1,10 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
 import { RefreshCw, Lock, X, ChevronDown, Archive } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
-
 interface SelectedTopicCardProps {
   topic: string;
   subject: string;
@@ -32,7 +20,6 @@ interface SelectedTopicCardProps {
   researchMethods?: string[];
   onGoBack?: () => void;
 }
-
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topic,
   subject,
@@ -46,22 +33,21 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topicType,
   onTopicTypeChange,
   researchMethods = [],
-  onGoBack,
+  onGoBack
 }) => {
-  const { saveTopic } = useArchive();
-
+  const {
+    saveTopic
+  } = useArchive();
   const handleArchiveSave = () => {
     saveTopic({
       title: topic,
       subject,
       concept,
       topicType,
-      researchMethods,
+      researchMethods
     });
   };
-
-  return (
-    <div className="flex flex-col h-full space-y-4">
+  return <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>세특 주제 {topicNumber}</CardTitle>
@@ -110,19 +96,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                 </TooltipContent>
               </Tooltip>
               <DropdownMenuContent>
-                <DropdownMenuRadioGroup
-                  value={topicType}
-                  onValueChange={onTopicTypeChange}
-                >
-                  <DropdownMenuRadioItem value="보고서 주제">
-                    보고서 주제
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="실험 주제">
-                    실험 주제
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="제작 주제">
-                    제작 주제
-                  </DropdownMenuRadioItem>
+                <DropdownMenuRadioGroup value={topicType} onValueChange={onTopicTypeChange}>
+                  
+                  
+                  
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -133,18 +110,14 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             <p className="text-lg font-semibold">{topic}</p>
             <div className="border-t my-4" />
             <dl className="space-y-2">
-              {subject && (
-                <div className="flex">
+              {subject && <div className="flex">
                   <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 과목</dt>
                   <dd className="font-medium">{subject}</dd>
-                </div>
-              )}
-              {concept && (
-                <div className="flex">
+                </div>}
+              {concept && <div className="flex">
                   <dt className="w-20 font-semibold text-muted-foreground shrink-0">교과 개념</dt>
                   <dd className="font-medium">{concept}</dd>
-                </div>
-              )}
+                </div>}
               <div className="flex">
                 <dt className="w-20 font-semibold text-muted-foreground shrink-0">주제 유형</dt>
                 <dd className="font-medium">{topicType}</dd>
@@ -154,28 +127,16 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           
           {/* 탐구 방법 생성 버튼과 아카이브 저장 버튼 */}
           <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
-            <Button 
-              onClick={onRegenerateMethods}
-              className="bg-black text-white hover:bg-gray-800 px-6 py-2"
-              disabled={isLocked}
-            >
+            <Button onClick={onRegenerateMethods} className="bg-black text-white hover:bg-gray-800 px-6 py-2" disabled={isLocked}>
               탐구 방법 생성
             </Button>
-            <Button 
-              onClick={handleArchiveSave}
-              variant="outline"
-              className="flex items-center gap-1"
-              disabled={isLocked}
-              title="아카이브에 저장"
-            >
+            <Button onClick={handleArchiveSave} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="아카이브에 저장">
               아카이브 저장
               <Archive className="h-4 w-4" />
             </Button>
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default SelectedTopicCard;
