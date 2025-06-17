@@ -102,8 +102,9 @@ const Archive = () => {
                 <DropdownMenuRadioItem value="done">Done</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="backlog">Backlog</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="canceled">Canceled</DropdownMenuRadioItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {filteredTopics.length === 0 ? (
