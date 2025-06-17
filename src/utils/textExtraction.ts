@@ -24,11 +24,7 @@ const extractTextFromPDF = async (file: File): Promise<string> => {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument({ 
-      data: arrayBuffer,
-      // 워커 설정을 비활성화하고 메인 스레드에서 처리
-      disableWorker: true,
-      // 더 관대한 설정
-      verbosity: 0
+      data: arrayBuffer
     });
     
     const pdf = await loadingTask.promise;
