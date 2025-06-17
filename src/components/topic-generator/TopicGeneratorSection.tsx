@@ -1,3 +1,4 @@
+
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -56,16 +57,18 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                   {row.stage === "topic_selected" ? <TopicResultsCard title="탐구 방법" placeholder="탐구 방법을 생성 중입니다..." topics={row.researchMethods} onSelectTopic={method => console.log("Method selected:", method)} isLoading={row.isLoadingMethods} isSelectable={false} scrollable={true} /> : <TopicResultsCard title="탐구 주제 후보" placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다." topics={row.generatedTopics} onSelectTopic={topic => handleSelectTopic(row.id, topic)} isLoading={row.isLoadingTopics} />}
                 </div>
               </div>)}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" onClick={handleAddRow} className="w-full py-6 text-lg font-bold">
-                  후속 심화 탐구 만들기
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
-              </TooltipContent>
-            </Tooltip>
+            <div className="flex justify-center">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" onClick={handleAddRow} className="w-1/2 py-6 text-lg font-bold">
+                    후속 심화 탐구 만들기
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>
