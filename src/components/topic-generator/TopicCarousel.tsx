@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
-import TopicGeneratorCard from '@/components/TopicGeneratorCard';
-import TopicResultsCard from '@/components/TopicResultsCard';
-import SelectedTopicCard from '@/components/SelectedTopicCard';
+import TopicGeneratorCard from './TopicGeneratorCard';
+import TopicResultsCard from './TopicResultsCard';
+import SelectedTopicCard from './SelectedTopicCard';
 
 interface TopicCarouselProps {
   group: any;

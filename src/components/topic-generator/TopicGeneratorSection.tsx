@@ -100,9 +100,16 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 group={group}
                 followUpStates={followUpStates}
                 selectedCareerSentence={selectedCareerSentence}
-                onFollowUpChange={(rowId: string, checked: boolean) => {
-                  handleFollowUpChange(parseInt(rowId), checked);
-                }}
+                onGenerate={handleGenerate}
+                onSelectTopic={handleSelectTopic}
+                onRefreshTopic={handleRefreshTopic}
+                onLockTopic={handleLockTopic}
+                onDeleteTopic={handleDeleteTopic}
+                onRegenerateMethods={handleRegenerateMethods}
+                onTopicTypeChange={handleTopicTypeChange}
+                onFollowUpChange={handleFollowUpChange}
+                onCareerSentenceSelect={setSelectedCareerSentence}
+                onAddFollowUpRow={handleAddFollowUpRow}
               />
             ))}
           </div>
