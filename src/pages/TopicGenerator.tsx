@@ -7,7 +7,6 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
-
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -21,7 +20,6 @@ const TopicGenerator = () => {
     videoId: "",
     title: ""
   });
-
   useEffect(() => {
     const sections = ["preparation-method", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -44,7 +42,6 @@ const TopicGenerator = () => {
       });
     };
   }, []);
-
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -52,7 +49,6 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
-
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -64,7 +60,6 @@ const TopicGenerator = () => {
       });
     }
   };
-
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
       open: true,
@@ -72,7 +67,6 @@ const TopicGenerator = () => {
       title
     });
   };
-
   const handleCloseYouTubePopup = () => {
     setYoutubePopup({
       open: false,
@@ -80,9 +74,7 @@ const TopicGenerator = () => {
       title: ""
     });
   };
-
-  return (
-    <div className="min-h-screen bg-background font-sans">
+  return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
@@ -101,7 +93,7 @@ const TopicGenerator = () => {
         <PreparationMethodSection />
 
         <div className="max-w-3xl mx-auto my-6">
-          <Separator />
+          
         </div>
 
         <section id="topic-generator-section" className="scroll-mt-[150px] pb-96">
@@ -111,16 +103,10 @@ const TopicGenerator = () => {
             
             {/* YouTube 버튼들 - 중앙 정렬 및 검은색 배경으로 스타일 변경 */}
             <div className="flex justify-center items-center gap-4 mt-6">
-              <Button
-                onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")}
-                className="bg-black text-white hover:bg-gray-800 px-6 py-2"
-              >
+              <Button onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")} className="bg-black text-white hover:bg-gray-800 px-6 py-2">
                 어떻게 사용하나요?
               </Button>
-              <Button
-                onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")}
-                className="bg-black text-white hover:bg-gray-800 px-6 py-2"
-              >
+              <Button onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")} className="bg-black text-white hover:bg-gray-800 px-6 py-2">
                 학생부 준비 방법
               </Button>
             </div>
@@ -129,14 +115,7 @@ const TopicGenerator = () => {
         </section>
       </main>
 
-      <YouTubePopup
-        open={youtubePopup.open}
-        onOpenChange={(open) => !open && handleCloseYouTubePopup()}
-        videoId={youtubePopup.videoId}
-        title={youtubePopup.title}
-      />
-    </div>
-  );
+      <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
+    </div>;
 };
-
 export default TopicGenerator;
