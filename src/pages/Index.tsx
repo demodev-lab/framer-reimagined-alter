@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -112,20 +111,18 @@ const Index = () => {
                 </CardContent>
               </Card>
 
-              {/* Automated Workflows - Top Right - 40% smaller with fixed bottom-left corner */}
-              <div className="relative">
-                <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl from-white border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:bg-gradient-to-br transition-all duration-300 backdrop-blur-sm w-[60%] h-[60%] ml-0 mt-auto">
-                  <CardContent className="p-0">
-                    <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
-                      <Cog className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">최신 연구 기반 탐구 주제 생성</h3>
-                    <p className="text-gray-600 mb-8">
-                      Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              {/* Automated Workflows - Top Right */}
+              <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl from-white border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:bg-gradient-to-br transition-all duration-300 backdrop-blur-sm">
+                <CardContent className="p-0">
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
+                    <Cog className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">최신 연구 기반 탐구 주제 생성</h3>
+                  <p className="text-gray-600 mb-8">
+                    Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
+                  </p>
+                </CardContent>
+              </Card>
 
               {/* Insightful Analytics - Bottom Left */}
               <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:shadow-[0_30px_70px_rgba(0,0,0,0.25)] transition-all duration-300 backdrop-blur-sm">
