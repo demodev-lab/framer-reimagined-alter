@@ -125,7 +125,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
         </CarouselContent>
         
         <CarouselPrevious />
-        <CarouselNext />
+        <CarouselNext onClick={handleGoToArchive} />
       </Carousel>
     </div>
   );
