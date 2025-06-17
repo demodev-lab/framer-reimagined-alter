@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
 import SelectedTopicCard from '../SelectedTopicCard';
+import ResearchMethodsCard from '../ResearchMethodsCard';
 
 interface TopicCarouselProps {
   group: any;
@@ -50,8 +51,8 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
         <CarouselContent className="ml-0">
           {group.topicRows.map((row, index) => (
             <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
-              <div className="flex justify-center h-[400px] px-4">
-                <div className="w-full max-w-2xl h-full overflow-hidden">
+              <div className="flex justify-center min-h-[400px] px-4">
+                <div className="w-full max-w-2xl overflow-hidden flex flex-col space-y-4">
                   {/* 단계 1: 초기 상태 - 주제 생성기만 표시 */}
                   {row.stage === "initial" && (
                     <TopicGeneratorCard 
@@ -85,19 +86,29 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                   
                   {/* 단계 3: 주제 선택 완료 - 선택된 주제 카드 표시 */}
                   {row.stage === "topic_selected" && (
-                    <SelectedTopicCard 
-                      topic={row.selectedTopic!}
-                      subject={row.subject}
-                      concept={row.concept}
-                      topicNumber={index + 1}
-                      isLocked={row.isLocked}
-                      onRefresh={() => onRefreshTopic(row.id)}
-                      onLock={() => onLockTopic(row.id)}
-                      onDelete={() => onDeleteTopic(row.id)}
-                      onRegenerateMethods={() => onRegenerateMethods(row.id)}
-                      topicType={row.topicType}
-                      onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
-                    />
+                    <>
+                      <SelectedTopicCard 
+                        topic={row.selectedTopic!}
+                        subject={row.subject}
+                        concept={row.concept}
+                        topicNumber={index + 1}
+                        isLocked={row.isLocked}
+                        onRefresh={() => onRefreshTopic(row.id)}
+                        onLock={() => onLockTopic(row.id)}
+                        onDelete={() => onDeleteTopic(row.id)}
+                        onRegenerateMethods={() => onRegenerateMethods(row.id)}
+                        topicType={row.topicType}
+                        onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
+                      />
+                      
+                      {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}
+                      {(row.researchMethods && row.researchMethods.length > 0) || row.isLoadingMethods ? (
+                        <ResearchMethodsCard 
+                          researchMethods={row.researchMethods || []}
+                          isLoading={row.isLoadingMethods || false}
+                        />
+                      ) : null}
+                    </>
                   )}
                 </div>
               </div>
