@@ -84,6 +84,16 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     setSelectedCareerSentence(sentence);
   };
 
+  // Convert followUpStates to use string keys for compatibility
+  const stringKeyedFollowUpStates = Object.fromEntries(
+    Object.entries(followUpStates).map(([key, value]) => [key.toString(), value])
+  );
+
+  const handleFollowUpChangeWithStringId = (rowId: string, checked: boolean) => {
+    const numericId = parseInt(rowId, 10);
+    handleFollowUpChange(numericId, checked);
+  };
+
   return (
     <>
       <section className="flex flex-col items-center pb-8">
@@ -98,18 +108,9 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
               <TopicCarousel
                 key={group.id}
                 group={group}
-                followUpStates={followUpStates}
+                followUpStates={stringKeyedFollowUpStates}
                 selectedCareerSentence={selectedCareerSentence}
-                onGenerate={handleGenerate}
-                onSelectTopic={handleSelectTopic}
-                onRefreshTopic={handleRefreshTopic}
-                onLockTopic={handleLockTopic}
-                onDeleteTopic={handleDeleteTopic}
-                onRegenerateMethods={handleRegenerateMethods}
-                onTopicTypeChange={handleTopicTypeChange}
-                onFollowUpChange={handleFollowUpChange}
-                onCareerSentenceSelect={setSelectedCareerSentence}
-                onAddFollowUpRow={handleAddFollowUpRow}
+                onFollowUpChange={handleFollowUpChangeWithStringId}
               />
             ))}
           </div>
