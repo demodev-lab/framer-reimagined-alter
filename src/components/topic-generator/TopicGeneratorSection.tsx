@@ -94,6 +94,16 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     }, 100);
   };
 
+  const handleAddNewTopic = () => {
+    handleAddRow();
+    // 새로운 행이 추가된 후 마지막 슬라이드로 이동
+    setTimeout(() => {
+      if (carouselApi) {
+        carouselApi.scrollTo(topicRows.length); // 새로 추가된 행의 인덱스로 이동
+      }
+    }, 100);
+  };
+
   return (
     <>
       <section className="flex flex-col items-center pb-8">
@@ -207,20 +217,35 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
             </Carousel>
           </div>
           
-          {/* 후속 심화 탐구 만들기 버튼 */}
-          <div className="flex justify-center mt-8">
+          {/* 버튼들 */}
+          <div className="flex justify-center gap-4 mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
                   onClick={handleAddFollowUpRow}
-                  className="w-1/2 py-6 text-lg font-bold"
+                  className="w-2/5 py-6 text-lg font-bold"
                 >
                   후속 심화 탐구 만들기
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
+              </TooltipContent>
+            </Tooltip>
+            
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  onClick={handleAddNewTopic}
+                  className="w-2/5 py-6 text-lg font-bold"
+                >
+                  새로운 주제 추가
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>새로운 주제 생성기를 추가합니다</p>
               </TooltipContent>
             </Tooltip>
           </div>
