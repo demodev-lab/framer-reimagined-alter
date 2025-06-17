@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, Settings, ChevronDown } from "lucide-react";
+import { RefreshCw, Lock, X, ChevronDown } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -40,7 +40,6 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onRefresh,
   onLock,
   onDelete,
-  onRegenerateMethods,
   topicType,
   onTopicTypeChange,
 }) => {
@@ -109,16 +108,6 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onRegenerateMethods} aria-label="탐구 방법 다시 생성">
-                <Settings className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>탐구 방법 다시 생성</p>
-            </TooltipContent>
-          </Tooltip>
         </div>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden min-h-0">
