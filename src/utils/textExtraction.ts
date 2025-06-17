@@ -1,4 +1,3 @@
-
 import * as pdfjsLib from 'pdfjs-dist';
 import { createWorker } from 'tesseract.js';
 
@@ -22,9 +21,7 @@ const extractTextFromPDF = async (file: File): Promise<string> => {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument({ 
-      data: arrayBuffer,
-      // 워커를 비활성화하고 메인 스레드에서 처리
-      disableWorker: true
+      data: arrayBuffer
     });
     
     const pdf = await loadingTask.promise;
