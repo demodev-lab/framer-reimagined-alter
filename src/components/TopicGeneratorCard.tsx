@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -163,78 +164,48 @@ const TopicGeneratorCard = ({
               />
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center w-full gap-4">
-                <div className="w-[110px] flex-shrink-0">
-                  {showFollowUp ? (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Toggle
-                            pressed={isFollowUp}
-                            onPressedChange={(pressed) =>
-                              onFollowUpChange && onFollowUpChange(pressed)
-                            }
-                            variant="outline"
-                            size="sm"
-                            className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
-                            aria-label="후속 탐구"
-                          >
-                            후속 탐구
-                          </Toggle>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : onGoBack ? (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            variant="secondary" 
-                            size="sm" 
-                            className="w-full"
-                            onClick={handleGoBack}
-                          >
-                            🏠 돌아가기
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>돌아가기</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            variant="secondary" 
-                            size="sm" 
-                            className="w-full"
-                            onClick={handleGoBack}
-                          >
-                            🏠 돌아가기
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>돌아가기</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
-                <Select onValueChange={setTopicType} value={topicType}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="주제 유형 선택" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="보고서 주제">보고서 주제</SelectItem>
-                    <SelectItem value="실험 주제">실험 주제</SelectItem>
-                    <SelectItem value="제작 주제">제작 주제</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="w-[110px] flex-shrink-0">
+                {showFollowUp ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Toggle
+                          pressed={isFollowUp}
+                          onPressedChange={(pressed) =>
+                            onFollowUpChange && onFollowUpChange(pressed)
+                          }
+                          variant="outline"
+                          size="sm"
+                          className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
+                          aria-label="후속 탐구"
+                        >
+                          후속 탐구
+                        </Toggle>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="secondary" 
+                          size="sm" 
+                          className="w-full"
+                          onClick={handleGoBack}
+                        >
+                          🏠 돌아가기
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>돌아가기</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
             </div>
             
