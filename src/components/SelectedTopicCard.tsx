@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -122,17 +123,17 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </dl>
           </div>
           
-          {/* 탐구 방법 생성 버튼과 아카이브 저장 버튼 */}
+          {/* 탐구 방법 생성 버튼과 보관함 저장 버튼 */}
           <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
             <Button onClick={onRegenerateMethods} className="bg-black text-white hover:bg-gray-800 px-6 py-2" disabled={isLocked}>
               탐구 방법 생성
             </Button>
-            <Button onClick={handleArchiveSave} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="아카이브에 저장">
-              아카이브 저장
+            <Button onClick={handleArchiveSave} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="보관함에 저장">
+              보관함 저장
               <Archive className="h-4 w-4" />
             </Button>
-            <Button onClick={handleGoToArchive} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="아카이브로 이동">
-              아카이브 이동
+            <Button onClick={handleGoToArchive} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="보관함으로 이동">
+              보관함 이동
               <ExternalLink className="h-4 w-4" />
             </Button>
           </div>

@@ -120,7 +120,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
             ))}
           </div>
 
-          {/* 아카이브 이동 버튼 */}
+          {/* 보관함 이동 버튼 */}
           <div className="flex justify-center mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -129,7 +129,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                   className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
                 >
                   <Archive className="h-4 w-4" />
-                  아카이브로 이동
+                  보관함으로 이동
                 </Button>
               </TooltipTrigger>
               <TooltipContent>

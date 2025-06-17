@@ -48,7 +48,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   };
 
   const handleGoToArchive = () => {
-    // 아카이브 페이지로 이동
+    // 보관함 페이지로 이동
     navigate('/archive');
   };
 
