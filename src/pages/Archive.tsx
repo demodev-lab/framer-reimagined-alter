@@ -20,7 +20,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Trash2, ChevronDown, Filter, ArrowLeft } from 'lucide-react';
+import { Trash2, ChevronDown, Filter, ArrowLeft, Eye } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
 
 const Archive = () => {
@@ -39,23 +39,6 @@ const Archive = () => {
 
   const handleGoBack = () => {
     navigate('/topic-generator');
-  };
-
-  const getStatusBadgeVariant = (status: ArchivedTopic['status']) => {
-    switch (status) {
-      case 'Done':
-        return 'default';
-      case 'In Progress':
-        return 'secondary';
-      case 'Todo':
-        return 'outline';
-      case 'Backlog':
-        return 'secondary';
-      case 'Canceled':
-        return 'destructive';
-      default:
-        return 'outline';
-    }
   };
 
   const getPriorityBadgeVariant = (priority: ArchivedTopic['priority']) => {
@@ -134,7 +117,7 @@ const Archive = () => {
                 <TableRow>
                   <TableHead className="w-[100px]">No.</TableHead>
                   <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>탐구 방법</TableHead>
                   <TableHead>Priority</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -156,28 +139,27 @@ const Archive = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 p-2">
-                            <Badge variant={getStatusBadgeVariant(topic.status)}>
-                              {topic.status}
-                            </Badge>
-                            <ChevronDown className="ml-1 h-3 w-3" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuRadioGroup
-                            value={topic.status}
-                            onValueChange={(value) => updateTopicStatus(topic.id, value as ArchivedTopic['status'])}
-                          >
-                            <DropdownMenuRadioItem value="Todo">Todo</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="In Progress">In Progress</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Done">Done</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Backlog">Backlog</DropdownMenuRadioItem>
-                            <DropdownMenuRadioItem value="Canceled">Canceled</DropdownMenuRadioItem>
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="space-y-2">
+                        {topic.researchMethods && topic.researchMethods.length > 0 ? (
+                          <>
+                            <div className="flex items-center gap-2">
+                              <Eye className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm font-medium">
+                                {topic.researchMethods.length}개 방법
+                              </span>
+                            </div>
+                            <div className="max-h-20 overflow-y-auto space-y-1">
+                              {topic.researchMethods.map((method, methodIndex) => (
+                                <div key={methodIndex} className="text-xs text-muted-foreground p-2 bg-muted rounded">
+                                  {method}
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">탐구 방법 없음</span>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
