@@ -184,6 +184,7 @@ const TopicGeneratorCard = ({
             <span className="sr-only">Close</span>
           </DialogClose>
           
+          {/* Video Content */}
           <div className="p-6">
             <div className="aspect-video w-full mb-4">
               <iframe
@@ -198,6 +199,7 @@ const TopicGeneratorCard = ({
               ></iframe>
             </div>
             
+            {/* Video Title and Description */}
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-gray-900">
                 학생부 작성의 기초
