@@ -1,10 +1,13 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, ChevronDown, Archive, House } from "lucide-react";
+import { RefreshCw, Lock, X, ChevronDown, Archive, House, ExternalLink } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
+import { useNavigate } from "react-router-dom";
+
 interface SelectedTopicCardProps {
   topic: string;
   subject: string;
@@ -20,6 +23,7 @@ interface SelectedTopicCardProps {
   researchMethods?: string[];
   onGoBack?: () => void;
 }
+
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topic,
   subject,
@@ -35,9 +39,9 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   researchMethods = [],
   onGoBack
 }) => {
-  const {
-    saveTopic
-  } = useArchive();
+  const { saveTopic } = useArchive();
+  const navigate = useNavigate();
+
   const handleArchiveSave = () => {
     saveTopic({
       title: topic,
@@ -47,7 +51,13 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       researchMethods
     });
   };
-  return <div className="flex flex-col h-full space-y-4">
+
+  const handleGoToArchive = () => {
+    navigate('/archive');
+  };
+
+  return (
+    <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>세특 주제 {topicNumber}</CardTitle>
@@ -123,9 +133,15 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               아카이브 저장
               <Archive className="h-4 w-4" />
             </Button>
+            <Button onClick={handleGoToArchive} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="아카이브로 이동">
+              아카이브 이동
+              <ExternalLink className="h-4 w-4" />
+            </Button>
           </div>
         </CardContent>
       </Card>
-    </div>;
+    </div>
+  );
 };
+
 export default SelectedTopicCard;
