@@ -4,6 +4,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
 import SelectedTopicCard from '../SelectedTopicCard';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 
 interface TopicCarouselProps {
   group: any;
@@ -101,6 +104,46 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                   )}
                 </div>
               </div>
+              
+              {/* 탐구 방법 생성 박스 - 주제가 선택된 경우에만 표시 */}
+              {row.stage === "topic_selected" && (
+                <div className="mt-6 px-4">
+                  <div className="w-full max-w-2xl mx-auto">
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>탐구 방법</CardTitle>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => onRegenerateMethods(row.id)}
+                          disabled={row.isLoadingMethods}
+                        >
+                          <RefreshCw className={`h-4 w-4 ${row.isLoadingMethods ? 'animate-spin' : ''}`} />
+                          재생성
+                        </Button>
+                      </CardHeader>
+                      <CardContent>
+                        {row.isLoadingMethods ? (
+                          <div className="flex items-center justify-center py-8">
+                            <p>탐구 방법을 생성하고 있습니다...</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-3">
+                            {row.researchMethods?.map((method, methodIndex) => (
+                              <div
+                                key={methodIndex}
+                                className="p-3 bg-gray-50 rounded-lg border"
+                              >
+                                <p className="text-sm text-gray-800">{method}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              )}
             </CarouselItem>
           ))}
         </CarouselContent>
