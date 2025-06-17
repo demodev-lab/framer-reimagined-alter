@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -62,11 +61,11 @@ const Index = () => {
             {/* Main Feature Cards */}
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               {/* Real-Time Analytics */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner">
+                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
                     <BarChart3 className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center shadow-lg border border-gray-600">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
                   </div>
@@ -78,11 +77,11 @@ const Index = () => {
               </Card>
 
               {/* AI-Driven Growth */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner">
+                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
                     <Brain className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-8 text-xs text-gray-500 font-medium bg-white px-2 py-1 rounded-full shadow-sm rotate-12">
+                    <div className="absolute -top-2 -right-8 text-xs text-gray-500 font-medium bg-white px-2 py-1 rounded-full shadow-sm rotate-12 border border-gray-200">
                       AFTER
                     </div>
                   </div>
@@ -94,11 +93,11 @@ const Index = () => {
               </Card>
 
               {/* Sync in real time */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner">
+                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
                     <Users className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-2 w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-2 -right-2 w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-lg border border-gray-700">
                       <Zap className="w-6 h-6 text-white" />
                     </div>
                   </div>
@@ -112,19 +111,19 @@ const Index = () => {
 
             {/* Bottom Feature Pills */}
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
+              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
                 <FileText className="w-4 h-4 text-gray-600" />
                 <span className="text-sm text-gray-700 font-medium">데이터 기반 결정</span>
               </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
+              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
                 <Lightbulb className="w-4 h-4 text-gray-600" />
                 <span className="text-sm text-gray-700 font-medium">빠른 혁신</span>
               </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
+              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
                 <Award className="w-4 h-4 text-gray-600" />
                 <span className="text-sm text-gray-700 font-medium">가상 지원</span>
               </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border">
+              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
                 <Clock className="w-4 h-4 text-gray-600" />
                 <span className="text-sm text-gray-700 font-medium">확장 가능한 솔루션</span>
               </div>
@@ -151,16 +150,16 @@ const Index = () => {
             {/* 2x2 Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
               {/* Cutting-Edge AI - Top Left */}
-              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
                   <div className="mb-6">
                     <img 
                       src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=240&fit=crop" 
                       alt="AI Robot" 
-                      className="rounded-2xl w-full h-48 object-cover shadow-lg"
+                      className="rounded-2xl w-full h-48 object-cover shadow-lg border border-gray-200"
                     />
                   </div>
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg border border-gray-700">
                     <X className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">Cutting-Edge AI</h3>
@@ -171,9 +170,9 @@ const Index = () => {
               </Card>
 
               {/* Automated Workflows - Top Right */}
-              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg border border-gray-700">
                     <Cog className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">Automated Workflows</h3>
@@ -184,9 +183,9 @@ const Index = () => {
               </Card>
 
               {/* Insightful Analytics - Bottom Left */}
-              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
-                  <div className="absolute top-6 left-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="absolute top-6 left-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg border border-gray-700">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-16">Insightful Analytics</h3>
@@ -197,16 +196,16 @@ const Index = () => {
               </Card>
 
               {/* AI-Powered Support - Bottom Right */}
-              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-200/50 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+              <Card className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
                 <CardContent className="p-0">
                   <div className="mb-6">
                     <img 
                       src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=240&fit=crop" 
                       alt="AI Assistant" 
-                      className="rounded-2xl w-full h-48 object-cover shadow-lg"
+                      className="rounded-2xl w-full h-48 object-cover shadow-lg border border-gray-200"
                     />
                   </div>
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg border border-gray-700">
                     <MessageSquare className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">AI-Powered Support</h3>
