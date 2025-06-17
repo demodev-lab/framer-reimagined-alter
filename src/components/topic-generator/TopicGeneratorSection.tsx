@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -11,6 +12,60 @@ import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useCarousel } from "@/components/ui/carousel";
+
+// Custom carousel controls component
+const CustomCarouselControls = ({ groupId, canAddFollowUp, onAddFollowUp }: {
+  groupId: number;
+  canAddFollowUp: boolean;
+  onAddFollowUp: (groupId: number) => void;
+}) => {
+  const { scrollPrev, scrollNext, canScrollPrev, canScrollNext } = useCarousel();
+
+  return (
+    <>
+      <Button
+        variant="outline"
+        size="icon"
+        className="absolute -left-20 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+        disabled={!canScrollPrev}
+        onClick={scrollPrev}
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span className="sr-only">Previous slide</span>
+      </Button>
+      
+      {canScrollNext ? (
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute -right-20 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+          disabled={!canScrollNext}
+          onClick={scrollNext}
+        >
+          <ArrowRight className="h-4 w-4" />
+          <span className="sr-only">Next slide</span>
+        </Button>
+      ) : canAddFollowUp ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              className="absolute -right-20 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-xs font-medium"
+              onClick={() => onAddFollowUp(groupId)}
+            >
+              후속
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>후속 심화 탐구 만들기</p>
+          </TooltipContent>
+        </Tooltip>
+      ) : null}
+    </>
+  );
+};
+
 interface CarouselGroup {
   id: number;
   topicRows: TopicRow[];
@@ -55,10 +110,12 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
+  
   const handleRegenerateCareerSentence = () => {
     console.log("Career sentence regeneration requested");
     setShowRegenerateDialog(true);
   };
+  
   const handleCareerSentenceGenerate = (data: {
     careerField: string;
     activity: string;
@@ -75,10 +132,12 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
       setIsGeneratingCareerSentence(false);
     }, 2000);
   };
+  
   const handleSelectCareerSentence = (sentence: string) => {
     setShowRegenerateDialog(false);
     setSelectedCareerSentence(sentence);
   };
+
   return <>
       <section className="flex flex-col items-center pb-8">
         <div className="w-full max-w-6xl">
@@ -106,47 +165,89 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
 
           {/* 캐러셀 그룹들을 세로로 배치 */}
           <div className="space-y-8">
-            {carouselGroups.map((group, groupIndex) => <div key={group.id} className="w-full">
-                <Carousel className="w-full">
-                  <CarouselContent className="ml-0">
-                    {group.topicRows.map((row, index) => <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
-                          <div className="h-full overflow-hidden">
-                            {row.stage === "topic_selected" ? <SelectedTopicCard topic={row.selectedTopic!} subject={row.subject} concept={row.concept} topicNumber={index + 1} isLocked={row.isLocked} onRefresh={() => handleRefreshTopic(row.id)} onLock={() => handleLockTopic(row.id)} onDelete={() => handleDeleteTopic(row.id)} onRegenerateMethods={() => handleRegenerateMethods(row.id)} topicType={row.topicType} onTopicTypeChange={type => handleTopicTypeChange(row.id, type)} /> : <TopicGeneratorCard onGenerate={inputs => handleGenerate(row.id, inputs)} initialValues={{
-                        subject: row.subject,
-                        concept: row.concept,
-                        request: row.request,
-                        topicType: row.topicType
-                      }} showFollowUp={index > 0} isFollowUp={followUpStates[row.id] || false} onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)} rowId={row.id} selectedCareerSentence={selectedCareerSentence} onCareerSentenceSelect={setSelectedCareerSentence} />}
+            {carouselGroups.map((group, groupIndex) => {
+              // 후속 탐구를 추가할 수 있는지 확인 (마지막 주제가 선택되었는지)
+              const lastRow = group.topicRows[group.topicRows.length - 1];
+              const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
+              
+              return (
+                <div key={group.id} className="w-full">
+                  <Carousel className="w-full">
+                    <CarouselContent className="ml-0">
+                      {group.topicRows.map((row, index) => (
+                        <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
+                            <div className="h-full overflow-hidden">
+                              {row.stage === "topic_selected" ? (
+                                <SelectedTopicCard 
+                                  topic={row.selectedTopic!} 
+                                  subject={row.subject} 
+                                  concept={row.concept} 
+                                  topicNumber={index + 1} 
+                                  isLocked={row.isLocked} 
+                                  onRefresh={() => handleRefreshTopic(row.id)} 
+                                  onLock={() => handleLockTopic(row.id)} 
+                                  onDelete={() => handleDeleteTopic(row.id)} 
+                                  onRegenerateMethods={() => handleRegenerateMethods(row.id)} 
+                                  topicType={row.topicType} 
+                                  onTopicTypeChange={type => handleTopicTypeChange(row.id, type)} 
+                                />
+                              ) : (
+                                <TopicGeneratorCard 
+                                  onGenerate={inputs => handleGenerate(row.id, inputs)} 
+                                  initialValues={{
+                                    subject: row.subject,
+                                    concept: row.concept,
+                                    request: row.request,
+                                    topicType: row.topicType
+                                  }} 
+                                  showFollowUp={index > 0} 
+                                  isFollowUp={followUpStates[row.id] || false} 
+                                  onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)} 
+                                  rowId={row.id} 
+                                  selectedCareerSentence={selectedCareerSentence} 
+                                  onCareerSentenceSelect={setSelectedCareerSentence} 
+                                />
+                              )}
+                            </div>
+                            <div className="h-full overflow-hidden">
+                              {row.stage === "topic_selected" ? (
+                                <TopicResultsCard 
+                                  title="탐구 방법" 
+                                  placeholder="탐구 방법을 생성 중입니다..." 
+                                  topics={row.researchMethods} 
+                                  onSelectTopic={method => console.log("Method selected:", method)} 
+                                  isLoading={row.isLoadingMethods} 
+                                  isSelectable={false} 
+                                  scrollable={true} 
+                                />
+                              ) : (
+                                <TopicResultsCard 
+                                  title="탐구 주제 후보" 
+                                  placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다." 
+                                  topics={row.generatedTopics} 
+                                  onSelectTopic={topic => handleSelectTopic(row.id, topic)} 
+                                  isLoading={row.isLoadingTopics} 
+                                />
+                              )}
+                            </div>
                           </div>
-                          <div className="h-full overflow-hidden">
-                            {row.stage === "topic_selected" ? <TopicResultsCard title="탐구 방법" placeholder="탐구 방법을 생성 중입니다..." topics={row.researchMethods} onSelectTopic={method => console.log("Method selected:", method)} isLoading={row.isLoadingMethods} isSelectable={false} scrollable={true} /> : <TopicResultsCard title="탐구 주제 후보" placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다." topics={row.generatedTopics} onSelectTopic={topic => handleSelectTopic(row.id, topic)} isLoading={row.isLoadingTopics} />}
-                          </div>
-                        </div>
-                      </CarouselItem>)}
-                  </CarouselContent>
-                  
-                  {/* 캐러셀이 여러 항목을 가질 때만 네비게이션 버튼 표시 */}
-                  {group.topicRows.length > 1 && <>
-                      <CarouselPrevious className="left-4" />
-                      <CarouselNext className="right-4" />
-                    </>}
-                </Carousel>
-                
-                {/* 각 캐러셀 그룹별 후속 심화 탐구 버튼 */}
-                <div className="flex justify-center mt-4">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" onClick={() => handleAddFollowUpRow(group.id)} className="px-6 py-3 text-sm font-medium">
-                        후속 심화 탐구 만들기
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>이 주제 세트에 후속 탐구를 추가합니다</p>
-                    </TooltipContent>
-                  </Tooltip>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    
+                    {/* 캐러셀이 여러 항목을 가지거나 후속 탐구를 추가할 수 있을 때만 네비게이션 버튼 표시 */}
+                    {(group.topicRows.length > 1 || canAddFollowUp) && (
+                      <CustomCarouselControls 
+                        groupId={group.id}
+                        canAddFollowUp={canAddFollowUp}
+                        onAddFollowUp={handleAddFollowUpRow}
+                      />
+                    )}
+                  </Carousel>
                 </div>
-              </div>)}
+              );
+            })}
           </div>
           
           {/* 새로운 주제 추가 버튼 */}
