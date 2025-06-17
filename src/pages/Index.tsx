@@ -1,38 +1,65 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background font-sans">
+    <div className="min-h-screen bg-gray-50 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="text-center py-16 md:py-[53px]">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
-            학생부 제대로 준비하기
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-            여러분의 학생부는 절대 '중구난방'이 되어서는 안됩니다.
+        <section className="text-center py-20 md:py-32">
+          {/* Tag */}
+          <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border mb-8">
+            <span className="text-sm text-gray-600 font-medium">📚 학생부 관리 솔루션</span>
+          </div>
+
+          {/* Logo and Title Section */}
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center shadow-lg">
+              <svg 
+                fill="white" 
+                height="32" 
+                viewBox="0 0 24 24" 
+                width="32" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" 
+                      fill="white" 
+                      stroke="white" 
+                      strokeLinejoin="round" 
+                      strokeWidth="1.5" />
+              </svg>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
+              탐구 연구소
+            </h1>
+          </div>
+
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600 font-medium">
+            체계적인 학생부 관리를 위한 맞춤형 솔루션
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" asChild size="lg" className="w-40">
-              <a href="/topic-generator">탐구 주제</a>
+          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-black text-white hover:bg-gray-800 px-8 py-3 rounded-lg font-medium text-base">
+              <a href="/topic-generator">탐구 주제 생성</a>
             </Button>
-            <Button variant="outline" asChild size="lg" className="w-40">
+            <Button variant="outline" asChild className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 rounded-lg font-medium text-base">
               <a href="/feedback">빠른 피드백</a>
             </Button>
           </div>
         </section>
 
-        <section className="py-16 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            체계적인 학생부 관리
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            효과적인 탐구 주제 생성부터 전문적인 피드백까지, 학생부 작성의 모든
-            과정을 지원합니다.
-          </p>
+        <section className="py-20 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              학생부 제대로 준비하기
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
+              효과적인 탐구 주제 생성부터 전문적인 피드백까지, 학생부 작성의 모든 과정을 지원합니다. 
+              여러분의 학생부는 절대 '중구난방'이 되어서는 안됩니다.
+            </p>
+          </div>
         </section>
       </main>
     </div>
