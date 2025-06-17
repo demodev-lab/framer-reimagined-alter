@@ -1,10 +1,13 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
+
 const Index = () => {
-  return <div className="min-h-screen bg-gray-100 font-sans">
+  return (
+    <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
@@ -94,64 +97,69 @@ const Index = () => {
               Discover features that simplify workflows & grow your business.
             </p>
 
-            {/* 2x2 Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-              {/* Cutting-Edge AI - Top Left */}
-              <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:shadow-[0_30px_70px_rgba(0,0,0,0.25)] transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-0">
-                  <div className="mb-6">
-                    <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=240&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-48 object-cover shadow-[0_12px_30px_rgba(0,0,0,0.2)] border-2 border-gray-200" />
-                  </div>
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
-                    <X className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">학생부의 정석적인 준비</h3>
-                  <p className="text-gray-600">더 이상 '~카더라'하는 식의 소문이 아닌
-자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
-                </CardContent>
-              </Card>
+            {/* New Grid Layout - 2 rows, different card sizes */}
+            <div className="mb-16">
+              {/* First Row - 2 cards: large left, small right */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                {/* Large card - spans 2 columns */}
+                <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="mb-4">
+                      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=200&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-40 object-cover" />
+                    </div>
+                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                      <X className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">학생부의 정석적인 준비</h3>
+                    <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
+                  </CardContent>
+                </Card>
 
-              {/* Automated Workflows - Top Right */}
-              <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl from-white border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:bg-gradient-to-br transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-0">
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
-                    <Cog className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">최신 연구 기반 탐구 주제 생성</h3>
-                  <p className="text-gray-600 mb-8">
-                    Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
-                  </p>
-                </CardContent>
-              </Card>
+                {/* Small card - spans 1 column */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                      <Cog className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 mt-8">최신 연구 기반 탐구 주제 생성</h3>
+                    <p className="text-gray-600 text-sm">
+                      Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
 
-              {/* Insightful Analytics - Bottom Left */}
-              <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:shadow-[0_30px_70px_rgba(0,0,0,0.25)] transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-0">
-                  <div className="absolute top-6 left-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
-                    <TrendingUp className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-16">탐구 방법까지 한번에</h3>
-                  <p className="text-gray-600">
-                    Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
-                  </p>
-                </CardContent>
-              </Card>
+              {/* Second Row - 2 cards: small left, large right */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Small card - spans 1 column */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="absolute top-4 left-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4 mt-12">탐구 방법까지 한번에</h3>
+                    <p className="text-gray-600 text-sm">
+                      Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
+                    </p>
+                  </CardContent>
+                </Card>
 
-              {/* AI-Powered Support - Bottom Right */}
-              <Card className="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-2 border-gray-200 p-8 text-left relative transform hover:translate-y-[-8px] hover:shadow-[0_30px_70px_rgba(0,0,0,0.25)] transition-all duration-300 backdrop-blur-sm">
-                <CardContent className="p-0">
-                  <div className="mb-6">
-                    <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=240&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-48 object-cover shadow-[0_12px_30px_rgba(0,0,0,0.2)] border-2 border-gray-200" />
-                  </div>
-                  <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
-                    <MessageSquare className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Lock 기능으로 나만의 주제를</h3>
-                  <p className="text-gray-600">
-                    Enhance customer experience with AI-driven virtual assistants available for support and engagement.
-                  </p>
-                </CardContent>
-              </Card>
+                {/* Large card - spans 2 columns */}
+                <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="mb-4">
+                      <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-40 object-cover" />
+                    </div>
+                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                      <MessageSquare className="w-5 h-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Lock 기능으로 나만의 주제를</h3>
+                    <p className="text-gray-600 text-sm">
+                      Enhance customer experience with AI-driven virtual assistants available for support and engagement.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -166,6 +174,8 @@ const Index = () => {
           </div>
         </section>
       </main>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
