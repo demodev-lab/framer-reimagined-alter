@@ -53,7 +53,7 @@ const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => 
                     </h3>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {subjectData.topics.length > 0 ? (
                       subjectData.topics.map((topic, topicIndex) => (
                         <Badge 
