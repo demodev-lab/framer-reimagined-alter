@@ -1,4 +1,3 @@
-
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -42,6 +41,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
       <div className="w-full max-w-4xl px-[182px]">
         <div className="-mx-[182px]">
           <div className="py-0 flex flex-col gap-8">
+            {/* Existing mapping of topicRows to display content */}
             {topicRows.map((row, index) => (
               <div key={row.id} className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px]">
                 <div className="h-full overflow-hidden">
@@ -102,7 +102,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="outline" className="w-full py-6" onClick={handleAddRow}>
-                  <Plus className="h-5 w-5" />
+                  후속 심화 탐구 만들기
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
