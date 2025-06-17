@@ -104,14 +104,22 @@ const Index = () => {
                 {/* Large card - spans 2 columns */}
                 <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0">
-                    <div className="mb-4">
-                      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=200&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-40 object-cover" />
+                    <div className="flex gap-4">
+                      <div className="w-1/2 mb-4">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=100&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-20 object-cover" />
+                      </div>
+                      <div className="w-1/2 flex flex-col justify-between">
+                        <div className="flex justify-end mb-2">
+                          <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                            <X className="w-5 h-5 text-white" />
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">학생부의 정석적인 준비</h3>
+                          <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <X className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">학생부의 정석적인 준비</h3>
-                    <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
                   </CardContent>
                 </Card>
 
@@ -147,16 +155,24 @@ const Index = () => {
                 {/* Large card - spans 2 columns */}
                 <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0">
-                    <div className="mb-4">
-                      <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-40 object-cover" />
+                    <div className="flex gap-4">
+                      <div className="w-1/2 mb-4">
+                        <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=200&h=100&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-20 object-cover" />
+                      </div>
+                      <div className="w-1/2 flex flex-col justify-between">
+                        <div className="flex justify-end mb-2">
+                          <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                            <MessageSquare className="w-5 h-5 text-white" />
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">Lock 기능으로 나만의 주제를</h3>
+                          <p className="text-gray-600 text-sm">
+                            Enhance customer experience with AI-driven virtual assistants available for support and engagement.
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <MessageSquare className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Lock 기능으로 나만의 주제를</h3>
-                    <p className="text-gray-600 text-sm">
-                      Enhance customer experience with AI-driven virtual assistants available for support and engagement.
-                    </p>
                   </CardContent>
                 </Card>
               </div>
