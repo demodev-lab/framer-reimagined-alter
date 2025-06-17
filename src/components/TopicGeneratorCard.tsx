@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "./CareerSentenceGeneratorCard";
+import { useArchive } from "@/contexts/ArchiveContext";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -62,11 +64,17 @@ const TopicGeneratorCard = ({
   const [showVideoDialog, setShowVideoDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
+  const [selectedFollowUpTopic, setSelectedFollowUpTopic] = useState<string | null>(null);
+  const [showFollowUpSection, setShowFollowUpSection] = useState(false);
+
+  const { archivedTopics } = useArchive();
 
   const handleClear = () => {
     setSubject("");
     setConcept("");
     setTopicType("보고서 주제");
+    setSelectedFollowUpTopic(null);
+    setShowFollowUpSection(false);
     if (onFollowUpChange) {
       onFollowUpChange(false);
     }
@@ -111,6 +119,10 @@ const TopicGeneratorCard = ({
     if (onCareerSentenceSelect) {
       onCareerSentenceSelect(sentence);
     }
+  };
+
+  const handleTopicToggle = (topicId: string) => {
+    setSelectedFollowUpTopic(prev => prev === topicId ? null : topicId);
   };
 
   return (
@@ -189,6 +201,46 @@ const TopicGeneratorCard = ({
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+            
+            {/* 후속 탐구 섹션 */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="w-[110px] flex-shrink-0"
+                  onClick={() => setShowFollowUpSection(!showFollowUpSection)}
+                >
+                  후속 탐구
+                </Button>
+                <p className="text-sm text-muted-foreground">
+                  아카이브된 주제를 기반으로 후속 탐구를 생성합니다
+                </p>
+              </div>
+              
+              {showFollowUpSection && (
+                <div className="ml-[126px] space-y-2 max-h-40 overflow-y-auto border rounded-md p-2">
+                  {archivedTopics.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      아직 주제가 없습니다
+                    </p>
+                  ) : (
+                    archivedTopics.map((topic) => (
+                      <div key={topic.id} className="flex items-center space-x-2">
+                        <Toggle
+                          pressed={selectedFollowUpTopic === topic.id}
+                          onPressedChange={() => handleTopicToggle(topic.id)}
+                          size="sm"
+                          variant="outline"
+                          className="flex-shrink-0 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+                        />
+                        <span className="text-sm truncate">{topic.title}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex justify-end gap-2 pt-6">
