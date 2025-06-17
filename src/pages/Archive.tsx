@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
 import Header from '@/components/Header';
 import {
@@ -18,10 +19,11 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Trash2, ChevronDown, Filter } from 'lucide-react';
+import { Trash2, ChevronDown, Filter, ArrowLeft } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
 
 const Archive = () => {
+  const navigate = useNavigate();
   const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic } = useArchive();
   const [sortOrder, setSortOrder] = useState<string>('date');
 
@@ -33,6 +35,10 @@ const Archive = () => {
     }
     return 0;
   });
+
+  const handleGoBack = () => {
+    navigate('/topic-generator');
+  };
 
   const getStatusBadgeVariant = (status: ArchivedTopic['status']) => {
     switch (status) {
@@ -84,9 +90,19 @@ const Archive = () => {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold">아카이브</h1>
-            <p className="text-muted-foreground">저장된 탐구 주제들을 관리하세요</p>
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleGoBack}
+              className="h-10 w-10"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold">아카이브</h1>
+              <p className="text-muted-foreground">저장된 탐구 주제들을 관리하세요</p>
+            </div>
           </div>
           
           <DropdownMenu>

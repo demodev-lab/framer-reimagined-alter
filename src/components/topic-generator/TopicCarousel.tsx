@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
 import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
@@ -37,12 +38,18 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onCareerSentenceSelect,
   onAddFollowUpRow
 }) => {
+  const navigate = useNavigate();
   const lastRow = group.topicRows[group.topicRows.length - 1];
   const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
 
   const handleBackToGenerator = (rowId: number) => {
     // 주제 생성기로 돌아가기
     onDeleteTopic(rowId);
+  };
+
+  const handleGoToArchive = () => {
+    // 아카이브 페이지로 이동
+    navigate('/archive');
   };
 
   return (
@@ -99,7 +106,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         onRegenerateMethods={() => onRegenerateMethods(row.id)}
                         topicType={row.topicType}
                         onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
-                        onGoBack={() => handleBackToGenerator(row.id)}
+                        onGoBack={handleGoToArchive}
                       />
                       
                       {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}
