@@ -31,6 +31,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onRefreshTopic,
   onLockTopic,
   onDeleteTopic,
+  onRegenerateMethods,
   onTopicTypeChange,
   onCareerSentenceSelect,
   onAddFollowUpRow
@@ -93,7 +94,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       onRefresh={() => onRefreshTopic(row.id)}
                       onLock={() => onLockTopic(row.id)}
                       onDelete={() => onDeleteTopic(row.id)}
-                      onRegenerateMethods={() => {}}
+                      onRegenerateMethods={() => onRegenerateMethods(row.id)}
                       topicType={row.topicType}
                       onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
                     />

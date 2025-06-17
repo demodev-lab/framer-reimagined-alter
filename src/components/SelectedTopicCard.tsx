@@ -40,6 +40,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onRefresh,
   onLock,
   onDelete,
+  onRegenerateMethods,
   topicType,
   onTopicTypeChange,
 }) => {
@@ -110,8 +111,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           </DropdownMenu>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow overflow-hidden min-h-0">
-        <ScrollArea className="h-full pr-4">
+      <CardContent className="flex-grow overflow-hidden min-h-0 flex flex-col">
+        <ScrollArea className="flex-grow pr-4">
           <div>
             <p className="text-lg font-semibold">{topic}</p>
             <div className="border-t my-4" />
@@ -135,6 +136,17 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </dl>
           </div>
         </ScrollArea>
+        
+        {/* 탐구 방법 생성 버튼 */}
+        <div className="flex justify-center mt-4 pt-4 border-t">
+          <Button 
+            onClick={onRegenerateMethods}
+            className="bg-black text-white hover:bg-gray-800 px-6 py-2"
+            disabled={isLocked}
+          >
+            탐구 방법 생성
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
