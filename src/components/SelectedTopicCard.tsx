@@ -6,7 +6,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
 import { useNavigate } from "react-router-dom";
-
 interface SelectedTopicCardProps {
   topic: string;
   subject: string;
@@ -22,7 +21,6 @@ interface SelectedTopicCardProps {
   researchMethods?: string[];
   onGoBack?: () => void;
 }
-
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topic,
   subject,
@@ -96,12 +94,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={handleGoBackToInput} aria-label="주제 생성으로 돌아가기" disabled={isLocked}>
-                  <House className="h-4 w-4" />
-                </Button>
+                
               </TooltipTrigger>
               <TooltipContent>
-                <p>주제 생성으로 돌아가기</p>
+                <p>탐구 주제 입력으로 돌아가기</p>
               </TooltipContent>
             </Tooltip>
           </div>
@@ -144,5 +140,4 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       </Card>
     </div>;
 };
-
 export default SelectedTopicCard;
