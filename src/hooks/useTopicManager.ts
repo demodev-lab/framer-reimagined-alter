@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
@@ -351,7 +352,7 @@ export const useTopicManager = () => {
         ...group,
         topicRows: group.topicRows.map(r =>
           r.id === rowId ? { ...r, isLoadingMethods: true, researchMethods: [] } : r
-        })
+        )
       }))
     );
 
@@ -362,7 +363,7 @@ export const useTopicManager = () => {
           ...group,
           topicRows: group.topicRows.map(r =>
             r.id === rowId ? { ...r, isLoadingMethods: false, researchMethods: newMethods } : r
-          })
+          )
         }))
       );
       toast.success("탐구 방법이 새롭게 생성되었습니다.");
@@ -375,7 +376,7 @@ export const useTopicManager = () => {
         ...group,
         topicRows: group.topicRows.map(row =>
           row.id === rowId ? { ...row, topicType } : row
-        })
+        )
       }))
     );
     toast.info(`주제 유형이 '${topicType}'(으)로 변경되었습니다.`);
