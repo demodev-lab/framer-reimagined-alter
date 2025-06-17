@@ -120,9 +120,8 @@ const Index = () => {
                         <h3 className="text-xl font-bold text-gray-900">최신 연구 기반 탐구 주제 생성</h3>
                         
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
-                      </p>
+                      <p className="text-gray-600 text-sm">뜬금 없는 탐구 주제가 아닌, 
+연구 논문이나 칼럼 기반의 탐구 주제를 구성합니다.</p>
                     </div>
                   </CardContent>
                 </Card>
