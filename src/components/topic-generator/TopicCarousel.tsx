@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
-import TopicGeneratorCard from '../TopicGeneratorCard';
-import TopicResultsCard from '../TopicResultsCard';
-import SelectedTopicCard from '../SelectedTopicCard';
+import TopicGeneratorCard from './TopicGeneratorCard';
+import TopicResultsCard from './TopicResultsCard';
+import SelectedTopicCard from './SelectedTopicCard';
 
 interface TopicCarouselProps {
   group: any;
@@ -32,16 +31,16 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                   {row.stage === "topic_selected" ? (
                     <SelectedTopicCard 
                       topic={row.selectedTopic!} 
-                      onEdit={() => onFollowUpChange(row.id.toString(), true)} 
-                      onDelete={() => onFollowUpChange(row.id.toString(), false)} 
+                      onEdit={() => onFollowUpChange(row.id, true)} 
+                      onDelete={() => onFollowUpChange(row.id, false)} 
                     />
                   ) : (
                     <TopicGeneratorCard 
                       key={row.id} 
                       rowId={row.id} 
                       selectedCareerSentence={selectedCareerSentence} 
-                      onFollowUpChange={(checked) => onFollowUpChange(row.id.toString(), checked)} 
-                      isFollowUp={followUpStates[row.id.toString()] || false}
+                      onFollowUpChange={(checked) => onFollowUpChange(row.id, checked)} 
+                      isFollowUp={followUpStates[row.id] || false}
                     />
                   )}
                 </div>
@@ -54,9 +53,9 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         topicType: row.topicType
                       }} 
                       showFollowUp={index > 0} 
-                      isFollowUp={followUpStates[row.id.toString()] || false}
+                      isFollowUp={followUpStates[row.id] || false}
                       onFollowUpChange={(checked) => {
-                        onFollowUpChange(row.id.toString(), checked);
+                        onFollowUpChange(row.id, checked);
                       }} 
                       rowId={row.id} 
                       selectedCareerSentence={selectedCareerSentence} 
