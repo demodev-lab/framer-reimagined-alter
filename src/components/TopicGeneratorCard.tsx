@@ -22,7 +22,7 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/ui/dialog";
-import { X, RefreshCw } from "lucide-react";
+import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "./CareerSentenceGeneratorCard";
 
 interface TopicGeneratorCardProps {
@@ -61,7 +61,6 @@ const TopicGeneratorCard = ({
   const [showVideoDialog, setShowVideoDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
-  const [selectedCareerSentenceLocal, setSelectedCareerSentenceLocal] = useState<string | null>(selectedCareerSentence || null);
 
   const handleClear = () => {
     setSubject("");
@@ -73,7 +72,7 @@ const TopicGeneratorCard = ({
   };
 
   const handleGenerateClick = () => {
-    if (!selectedCareerSentenceLocal) {
+    if (!selectedCareerSentence) {
       setShowVideoDialog(true);
       return;
     }
@@ -82,10 +81,6 @@ const TopicGeneratorCard = ({
 
   const handleCloseDialog = () => {
     setShowVideoDialog(false);
-  };
-
-  const handleRegenerateCareerSentence = () => {
-    setShowVideoDialog(true);
   };
 
   const handleCareerSentenceGenerate = (data: {
@@ -110,7 +105,6 @@ const TopicGeneratorCard = ({
   };
 
   const handleSelectCareerSentence = (sentence: string) => {
-    setSelectedCareerSentenceLocal(sentence);
     setShowVideoDialog(false);
     // 상위 컴포넌트에 선택된 진로 문장 전달 (필요시 추가)
   };
@@ -123,33 +117,6 @@ const TopicGeneratorCard = ({
         </CardHeader>
         <CardContent className="flex flex-col flex-grow justify-between pt-0">
           <div className="space-y-4">
-            {/* 선택된 진로 문장 표시 섹션 */}
-            {selectedCareerSentenceLocal && (
-              <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-green-800 mb-1">선택된 진로 문장</p>
-                    <p className="text-sm text-green-700">{selectedCareerSentenceLocal}</p>
-                  </div>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRegenerateCareerSentence}
-                        className="flex-shrink-0 h-8 w-8 p-0 hover:bg-green-100"
-                      >
-                        <RefreshCw className="h-4 w-4 text-green-600" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>진로 문장 재생성</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              </div>
-            )}
-
             <div className="flex items-center gap-4">
               <Button
                 variant="secondary"
