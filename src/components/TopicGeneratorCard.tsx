@@ -1,5 +1,4 @@
 
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -209,14 +208,16 @@ const TopicGeneratorCard = ({
               </Button>
               <Select onValueChange={setSelectedFollowUpTopic} value={selectedFollowUpTopic}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="아카이브된 주제를 선택하세요" />
+                  <SelectValue 
+                    placeholder={
+                      archivedTopics.length === 0 
+                        ? "아직 주제가 없습니다" 
+                        : "아카이브된 주제를 선택하세요"
+                    } 
+                  />
                 </SelectTrigger>
                 <SelectContent>
-                  {archivedTopics.length === 0 ? (
-                    <SelectItem value="" disabled>
-                      아직 주제가 없습니다
-                    </SelectItem>
-                  ) : (
+                  {archivedTopics.length > 0 && (
                     archivedTopics.map((topic) => (
                       <SelectItem key={topic.id} value={topic.id}>
                         {topic.title}
@@ -304,4 +305,3 @@ const TopicGeneratorCard = ({
 };
 
 export default TopicGeneratorCard;
-
