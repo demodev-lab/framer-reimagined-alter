@@ -3,8 +3,10 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
+
 const Index = () => {
-  return <div className="min-h-screen bg-gray-100 font-sans">
+  return (
+    <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
@@ -17,7 +19,7 @@ const Index = () => {
               </svg>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
-              탐구 연구소
+              학생부 분석
             </h1>
           </div>
 
@@ -163,6 +165,8 @@ const Index = () => {
           </div>
         </section>
       </main>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;

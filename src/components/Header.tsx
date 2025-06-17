@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,15 +18,15 @@ const Header = () => {
 
   const navLinks = [
     {
-      name: "탐구 주제",
+      name: "분석 도구",
       href: "/topic-generator"
     },
     {
-      name: "아카이브",
+      name: "보관함",
       href: "/archive"
     },
     {
-      name: "학생부 심폐 소생",
+      name: "학생부 개선",
       href: "/feedback"
     }
   ];
@@ -40,8 +41,8 @@ const Header = () => {
       <div className="container relative flex h-14 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
-            <img src="/lovable-uploads/744b8516-6dde-4b43-bd78-491dc3d18343.png" alt="탐구 연구소 로고" className="w-6 h-6" />
-            <span className="font-bold">탐구 연구소</span>
+            <img src="/lovable-uploads/744b8516-6dde-4b43-bd78-491dc3d18343.png" alt="학생부 분석 로고" className="w-6 h-6" />
+            <span className="font-bold">학생부 분석</span>
           </a>
         </div>
         <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 md:flex">
