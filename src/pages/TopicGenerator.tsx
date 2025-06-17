@@ -7,6 +7,7 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -20,6 +21,7 @@ const TopicGenerator = () => {
     videoId: "",
     title: ""
   });
+
   useEffect(() => {
     const sections = ["preparation-method", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -42,6 +44,7 @@ const TopicGenerator = () => {
       });
     };
   }, []);
+
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -49,6 +52,7 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
+
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -60,6 +64,7 @@ const TopicGenerator = () => {
       });
     }
   };
+
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
       open: true,
@@ -67,6 +72,7 @@ const TopicGenerator = () => {
       title
     });
   };
+
   const handleCloseYouTubePopup = () => {
     setYoutubePopup({
       open: false,
@@ -74,6 +80,7 @@ const TopicGenerator = () => {
       title: ""
     });
   };
+
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-0">
@@ -112,4 +119,5 @@ const TopicGenerator = () => {
       <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
     </div>;
 };
+
 export default TopicGenerator;
