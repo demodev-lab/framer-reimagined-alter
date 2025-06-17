@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,11 +40,7 @@ const Header = () => {
       <div className="container relative flex h-14 max-w-screen-2xl items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2 text-xl font-bold text-foreground">
-            <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-              <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="currentColor" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.5" />
-              <path d="m1.25 7.5 10.75 6.25 10.75-6.25" stroke="var(--background)" strokeLinejoin="round" strokeWidth="1.5" />
-              <path d="m12 26.25v-12.5" stroke="var(--background)" strokeLinejoin="round" strokeWidth="1.5" />
-            </svg>
+            <img src="/lovable-uploads/744b8516-6dde-4b43-bd78-491dc3d18343.png" alt="탐구 연구소 로고" className="w-6 h-6" />
             <span className="font-bold">탐구 연구소</span>
           </a>
         </div>
