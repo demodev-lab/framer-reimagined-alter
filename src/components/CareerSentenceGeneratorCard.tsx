@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
   const [aspiration, setAspiration] = useState("");
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
   const navigate = useNavigate();
+  
   const handleClear = () => {
     setCareerField("");
     setRequest("");
@@ -34,6 +36,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
     setAspiration("");
     setFileInputKey(Date.now());
   };
+  
   const handleGenerateClick = () => {
     onGenerate({
       careerField,
@@ -42,6 +45,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
       aspiration
     });
   };
+  
   const handleRequestChange = (value: string) => {
     setRequest(value);
     setFile(null);
@@ -50,10 +54,12 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
       setFileInputKey(Date.now());
     }
   };
+  
   const handleNavigateToFeedback = () => {
     setIsVideoPopupOpen(false);
     navigate('/feedback');
   };
+
   return <Card className="h-full flex flex-col relative">
       <CardHeader>
         <CardTitle>진로 문장 생성기</CardTitle>
@@ -116,7 +122,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
               </DialogHeader>
               <div className="space-y-4">
                 <div className="aspect-video">
-                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4HfvrPA_kI" title="학생부 작성 가이드" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="rounded-lg" />
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/z4HfvrPA_kI" title="학생부 작성 가가이드" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="rounded-lg" />
                 </div>
                 <div className="flex justify-center">
                   <Button onClick={handleNavigateToFeedback} className="bg-primary hover:bg-primary/90">
