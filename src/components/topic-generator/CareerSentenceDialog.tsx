@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,11 +34,11 @@ const CareerSentenceDialog: React.FC<CareerSentenceDialogProps> = ({
         </DialogClose>
         
         <DialogTitle className="sr-only">아래에서 새로운 진로 문장을 생성해주세요.
-한 번만 제대로 정하면 중구난방인 학생부를 방지합니다. </DialogTitle>
+한 번만 제대로 정하면 중구난방인 학생부를 방지합니다. </DialogTitle>
         <DialogDescription className="sr-only">새로운 진로 문장을 생성합니다</DialogDescription>
         
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-base font-semibold text-gray-900 mb-4">
             새로운 진로 문장 생성
           </h3>
           <p className="text-sm text-gray-600 mb-6">아래에서 새로운 진로 문장을 생성해주세요.
