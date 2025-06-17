@@ -25,8 +25,29 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
 
   return (
     <Card className="w-full">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>탐구 방법</CardTitle>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleRegenerate}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+            disabled={isLoading}
+          >
+            <RefreshCw className="h-4 w-4" />
+            재생성
+          </Button>
+          <Button 
+            onClick={handleMoreDetails}
+            size="sm"
+            className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
+            disabled={isLoading}
+          >
+            <ChevronRight className="h-4 w-4" />
+            더 자세히
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="pr-4">
@@ -46,27 +67,6 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
               ))}
             </div>
           )}
-          
-          {/* 버튼 영역 */}
-          <div className="flex justify-center gap-3 mt-6 pt-4 border-t">
-            <Button 
-              onClick={handleRegenerate}
-              variant="outline"
-              className="flex items-center gap-2"
-              disabled={isLoading}
-            >
-              <RefreshCw className="h-4 w-4" />
-              재생성
-            </Button>
-            <Button 
-              onClick={handleMoreDetails}
-              className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
-              disabled={isLoading}
-            >
-              <ChevronRight className="h-4 w-4" />
-              더 자세히
-            </Button>
-          </div>
         </div>
       </CardContent>
     </Card>
