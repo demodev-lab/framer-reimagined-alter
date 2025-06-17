@@ -72,7 +72,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       }}
                       showFollowUp={index > 0}
                       isFollowUp={followUpStates[row.id] || false}
-                      onFollowUpChange={(checked) => onFollowUpChange(row.id, checked)}
+                      onFollowUpChange={(checked) => onFollowUpChange(row.id, checked as boolean)}
                       rowId={row.id}
                       selectedCareerSentence={selectedCareerSentence}
                       onCareerSentenceSelect={onCareerSentenceSelect}
