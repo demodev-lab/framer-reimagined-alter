@@ -17,7 +17,7 @@ const Header = () => {
 
   const navLinks = [
     {
-      name: "분석 도구",
+      name: "탐구 주제",
       href: "/topic-generator"
     },
     {
