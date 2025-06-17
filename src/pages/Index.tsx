@@ -81,7 +81,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* All Features in 1 Tool Section - Updated Layout */}
+        {/* All Features in 1 Tool Section - Updated to match second image layout */}
         <section className="py-20 bg-white rounded-3xl">
           <div className="max-w-6xl mx-auto text-center px-8">
             {/* Features Tag */}
@@ -97,66 +97,88 @@ const Index = () => {
               Discover features that simplify workflows & grow your business.
             </p>
 
-            {/* New Grid Layout - 2 rows, different card sizes */}
+            {/* New Grid Layout - Matching second image */}
             <div className="mb-16">
-              {/* First Row - 2 cards: large left, small right */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                {/* Large card - spans 2 columns */}
-                <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
-                  <CardContent className="p-0">
-                    <div className="mb-4">
-                      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=200&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-40 object-cover" />
+              {/* First Row - 2 cards with images on left, text on right */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                {/* Card 1 */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0 flex items-center gap-6">
+                    <div className="w-32 h-32 flex-shrink-0">
+                      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=128&h=128&fit=crop" alt="AI Robot" className="rounded-2xl w-full h-full object-cover" />
                     </div>
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <X className="w-5 h-5 text-white" />
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="text-xl font-bold text-gray-900">학생부의 정석적인 준비</h3>
+                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
+                          <X className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">학생부의 정석적인 준비</h3>
-                    <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
                   </CardContent>
                 </Card>
 
-                {/* Small card - spans 1 column */}
-                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
-                  <CardContent className="p-0">
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <Cog className="w-5 h-5 text-white" />
+                {/* Card 2 */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0 flex items-center gap-6">
+                    <div className="w-32 h-32 flex-shrink-0">
+                      <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=128&h=128&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-full object-cover" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-4 mt-8">최신 연구 기반 탐구 주제 생성</h3>
-                    <p className="text-gray-600 text-sm">
-                      Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
-                    </p>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="text-xl font-bold text-gray-900">최신 연구 기반 탐구 주제 생성</h3>
+                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
+                          <Cog className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Second Row - 2 cards: small left, large right */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Small card - spans 1 column */}
-                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
-                  <CardContent className="p-0">
-                    <div className="absolute top-4 left-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-white" />
+              {/* Second Row - 2 cards with images on left, text on right */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Card 3 */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0 flex items-center gap-6">
+                    <div className="w-32 h-32 flex-shrink-0">
+                      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=128&h=128&fit=crop" alt="Analytics" className="rounded-2xl w-full h-full object-cover" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-4 mt-12">탐구 방법까지 한번에</h3>
-                    <p className="text-gray-600 text-sm">
-                      Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
-                    </p>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="text-xl font-bold text-gray-900">탐구 방법까지 한번에</h3>
+                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
+                          <TrendingUp className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
 
-                {/* Large card - spans 2 columns */}
-                <Card className="md:col-span-2 bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left relative transform hover:translate-y-[-4px] transition-all duration-300">
-                  <CardContent className="p-0">
-                    <div className="mb-4">
-                      <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=200&fit=crop" alt="AI Assistant" className="rounded-2xl w-full h-40 object-cover" />
+                {/* Card 4 */}
+                <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
+                  <CardContent className="p-0 flex items-center gap-6">
+                    <div className="w-32 h-32 flex-shrink-0">
+                      <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=128&h=128&fit=crop" alt="AI Support" className="rounded-2xl w-full h-full object-cover" />
                     </div>
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                      <MessageSquare className="w-5 h-5 text-white" />
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="text-xl font-bold text-gray-900">Lock 기능으로 나만의 주제를</h3>
+                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
+                          <MessageSquare className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-gray-600 text-sm">
+                        Enhance customer experience with AI-driven virtual assistants available for support and engagement.
+                      </p>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">Lock 기능으로 나만의 주제를</h3>
-                    <p className="text-gray-600 text-sm">
-                      Enhance customer experience with AI-driven virtual assistants available for support and engagement.
-                    </p>
                   </CardContent>
                 </Card>
               </div>
