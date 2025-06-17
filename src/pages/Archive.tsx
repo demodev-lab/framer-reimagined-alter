@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useArchive } from '@/contexts/ArchiveContext';
 import Header from '@/components/Header';
@@ -24,11 +23,15 @@ import { ArchivedTopic } from '@/types/archive';
 
 const Archive = () => {
   const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic } = useArchive();
-  const [filter, setFilter] = useState<string>('all');
+  const [sortOrder, setSortOrder] = useState<string>('date');
 
-  const filteredTopics = archivedTopics.filter(topic => {
-    if (filter === 'all') return true;
-    return topic.status.toLowerCase().replace(' ', '') === filter;
+  const sortedTopics = [...archivedTopics].sort((a, b) => {
+    if (sortOrder === 'date') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (sortOrder === 'alphabetical') {
+      return a.title.localeCompare(b.title, 'ko');
+    }
+    return 0;
   });
 
   const getStatusBadgeVariant = (status: ArchivedTopic['status']) => {
@@ -90,24 +93,20 @@ const Archive = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2">
                 <Filter className="h-4 w-4" />
-                필터
+                정렬
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuRadioGroup value={filter} onValueChange={setFilter}>
-                <DropdownMenuRadioItem value="all">전체</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="todo">Todo</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="inprogress">In Progress</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="done">Done</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="backlog">Backlog</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="canceled">Canceled</DropdownMenuRadioItem>
+              <DropdownMenuRadioGroup value={sortOrder} onValueChange={setSortOrder}>
+                <DropdownMenuRadioItem value="date">날짜순</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="alphabetical">가나다순</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        {filteredTopics.length === 0 ? (
+        {sortedTopics.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">저장된 주제가 없습니다.</p>
           </div>
@@ -124,7 +123,7 @@ const Archive = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredTopics.map((topic) => (
+                {sortedTopics.map((topic) => (
                   <TableRow key={topic.id}>
                     <TableCell className="font-medium">{topic.id}</TableCell>
                     <TableCell>
