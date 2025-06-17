@@ -224,7 +224,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 <Button
                   variant="outline"
                   onClick={handleAddFollowUpRow}
-                  className="w-2/5 py-6 text-lg font-bold"
+                  className="w-1/5 py-6 text-lg font-bold"
                 >
                   후속 심화 탐구 만들기
                 </Button>
@@ -239,7 +239,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 <Button
                   variant="outline"
                   onClick={handleAddNewTopic}
-                  className="w-2/5 py-6 text-lg font-bold"
+                  className="w-1/5 py-6 text-lg font-bold"
                 >
                   새로운 주제 추가
                 </Button>
