@@ -23,6 +23,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import CareerSentenceGeneratorCard from "./CareerSentenceGeneratorCard";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -78,13 +79,17 @@ const TopicGeneratorCard = ({
 
   const handleCloseDialog = () => {
     setShowVideoDialog(false);
-    const careerSentenceSection = document.getElementById("career-sentence-generator");
-    if (careerSentenceSection) {
-      careerSentenceSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+  };
+
+  const handleCareerSentenceGenerate = (data: {
+    careerField: string;
+    activity: string;
+    file: File | null;
+    aspiration: string;
+  }) => {
+    console.log("Career sentence generated:", data);
+    // 진로 문장 생성 로직은 상위 컴포넌트에서 처리
+    setShowVideoDialog(false);
   };
 
   return (
@@ -184,30 +189,15 @@ const TopicGeneratorCard = ({
             <span className="sr-only">Close</span>
           </DialogClose>
           
-          {/* Video Content */}
           <div className="p-6">
-            <div className="aspect-video w-full mb-4">
-              <iframe
-                width="100%"
-                height="100%"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="rounded-lg"
-              ></iframe>
-            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              진로 문장을 먼저 생성해주세요
+            </h3>
+            <p className="text-sm text-gray-600 mb-6">
+              주제를 생성하기 위해서는 진로 문장이 필요합니다. 아래에서 진로 문장을 생성해주세요.
+            </p>
             
-            {/* Video Title and Description */}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-900">
-                학생부 작성의 기초
-              </h3>
-              <p className="text-sm text-gray-600">
-                학생부 작성 시 알아야 할 기본 원칙들
-              </p>
-            </div>
+            <CareerSentenceGeneratorCard onGenerate={handleCareerSentenceGenerate} />
           </div>
         </DialogContent>
       </Dialog>
