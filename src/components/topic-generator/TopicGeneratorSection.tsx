@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -202,7 +201,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                                   }} 
                                   showFollowUp={index > 0} 
                                   isFollowUp={followUpStates[row.id] || false} 
-                                  onFollowUpChange={checked => handleFollowUpChange(row.id, Boolean(checked))} 
+                                  onFollowUpChange={checked => handleFollowUpChange(row.id, checked === 'indeterminate' ? false : Boolean(checked))} 
                                   rowId={row.id} 
                                   selectedCareerSentence={selectedCareerSentence} 
                                   onCareerSentenceSelect={setSelectedCareerSentence} 
