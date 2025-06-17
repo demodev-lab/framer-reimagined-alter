@@ -50,9 +50,6 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="relative flex flex-col items-center">
-        <CardTitle className="text-center">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow overflow-hidden min-h-0 relative">
         {onBack && (
           <Tooltip>
             <TooltipTrigger asChild>
@@ -61,7 +58,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
                 size="icon" 
                 onClick={onBack} 
                 aria-label="돌아가기"
-                className="absolute left-0 top-0 z-10"
+                className="absolute left-0 top-6"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
@@ -71,21 +68,22 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
             </TooltipContent>
           </Tooltip>
         )}
-        <div className="pt-12">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-full">
-              <p>생성 중...</p>
-            </div>
-          ) : topics.length === 0 ? (
-            <div className="flex items-center justify-center h-full">
-              <p className="text-muted-foreground text-center">{placeholder}</p>
-            </div>
-          ) : scrollable ? (
-            <ScrollArea className="h-full pr-4">{topicsList}</ScrollArea>
-          ) : (
-            topicsList
-          )}
-        </div>
+        <CardTitle className="text-center">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="flex-grow overflow-hidden min-h-0">
+        {isLoading ? (
+          <div className="flex items-center justify-center h-full">
+            <p>생성 중...</p>
+          </div>
+        ) : topics.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-muted-foreground text-center">{placeholder}</p>
+          </div>
+        ) : scrollable ? (
+          <ScrollArea className="h-full pr-4">{topicsList}</ScrollArea>
+        ) : (
+          topicsList
+        )}
       </CardContent>
     </Card>
   );
