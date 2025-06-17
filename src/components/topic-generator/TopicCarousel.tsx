@@ -99,6 +99,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         onRegenerateMethods={() => onRegenerateMethods(row.id)}
                         topicType={row.topicType}
                         onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
+                        onGoBack={() => handleBackToGenerator(row.id)}
                       />
                       
                       {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}

@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -44,6 +43,7 @@ interface TopicGeneratorCardProps {
   rowId: number;
   selectedCareerSentence?: string | null;
   onCareerSentenceSelect?: (sentence: string) => void;
+  onGoBack?: () => void;
 }
 
 const TopicGeneratorCard = ({
@@ -55,6 +55,7 @@ const TopicGeneratorCard = ({
   rowId,
   selectedCareerSentence,
   onCareerSentenceSelect,
+  onGoBack,
 }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState(initialValues?.subject || "");
   const [concept, setConcept] = useState(initialValues?.concept || "");
@@ -75,6 +76,12 @@ const TopicGeneratorCard = ({
     setSelectedFollowUpTopic("");
     if (onFollowUpChange) {
       onFollowUpChange(false);
+    }
+  };
+
+  const handleGoBack = () => {
+    if (onGoBack) {
+      onGoBack();
     }
   };
 
@@ -178,6 +185,15 @@ const TopicGeneratorCard = ({
                         <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
                       </TooltipContent>
                     </Tooltip>
+                  ) : onGoBack ? (
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={handleGoBack}
+                    >
+                      돌아가기
+                    </Button>
                   ) : (
                     <Button variant="secondary" size="sm" className="w-full">
                       주제 유형
