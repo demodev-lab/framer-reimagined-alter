@@ -58,7 +58,6 @@ const TopicGeneratorCard = ({
     initialValues?.topicType || "보고서 주제"
   );
   const [showVideoDialog, setShowVideoDialog] = useState(false);
-  const [activeTab, setActiveTab] = useState("학생부 작성의 기초");
 
   const handleClear = () => {
     setSubject("");
@@ -77,11 +76,16 @@ const TopicGeneratorCard = ({
     onGenerate({ subject, concept, topicType });
   };
 
-  const tabs = [
-    "학생부 작성의 기초",
-    "탐구 주제 선정 방법",
-    "학생부 세특 작성법"
-  ];
+  const handleCloseDialog = () => {
+    setShowVideoDialog(false);
+    const careerSentenceSection = document.getElementById("career-sentence-generator");
+    if (careerSentenceSection) {
+      careerSentenceSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   return (
     <>
@@ -172,28 +176,14 @@ const TopicGeneratorCard = ({
 
       <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
         <DialogContent className="max-w-4xl w-full p-0 bg-white">
-          <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+          <DialogClose 
+            className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+            onClick={handleCloseDialog}
+          >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
           
-          {/* Tab Navigation */}
-          <div className="flex border-b bg-gray-50">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-3 text-sm font-medium transition-colors ${
-                  activeTab === tab
-                    ? "bg-blue-600 text-white border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-
           {/* Video Content */}
           <div className="p-6">
             <div className="aspect-video w-full mb-4">
