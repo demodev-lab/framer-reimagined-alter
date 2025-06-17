@@ -26,7 +26,17 @@ const Feedback = () => {
             </svg>
             <span className="font-medium">탐구 연구소</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">학생부 심폐 소생</h1>
+
+          {/* Logo and Title Section */}
+          <div className="flex flex-col items-center justify-center gap-6 mb-6">
+            <div className="w-11 h-11 bg-black rounded-full flex items-center justify-center shadow-lg">
+              <svg fill="white" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+                <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="white" stroke="white" strokeLinejoin="round" strokeWidth="1.5" />
+              </svg>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">학생부 심폐 소생</h1>
+          </div>
+
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">늦었다고 생각했을 때가, 바로 마지막 기회입니다.</p>
         </section>
 

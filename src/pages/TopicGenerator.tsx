@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -70,6 +71,29 @@ const TopicGenerator = () => {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
+
+        <section className="text-center py-20 md:py-[70px]">
+          {/* Tag */}
+          <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border mb-8">
+            <span className="text-sm text-gray-600 font-medium">📚 학생부 관리 솔루션</span>
+          </div>
+
+          {/* Logo and Title Section */}
+          <div className="flex flex-col items-center justify-center gap-6 mb-6">
+            <div className="w-11 h-11 bg-black rounded-full flex items-center justify-center shadow-lg">
+              <svg fill="white" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+                <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="white" stroke="white" strokeLinejoin="round" strokeWidth="1.5" />
+              </svg>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
+              심화 세특 주제 만들기
+            </h1>
+          </div>
+
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-600 font-medium">
+            최신 논문 연구와 진로 연계를 통한 맞춤형 탐구 주제 생성
+          </p>
+        </section>
 
         <PreparationMethodSection />
 
