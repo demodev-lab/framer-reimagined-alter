@@ -58,6 +58,7 @@ const TopicGeneratorCard = ({
     initialValues?.topicType || "보고서 주제"
   );
   const [showVideoDialog, setShowVideoDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState("학생부 작성의 기초");
 
   const handleClear = () => {
     setSubject("");
@@ -75,6 +76,12 @@ const TopicGeneratorCard = ({
     }
     onGenerate({ subject, concept, topicType });
   };
+
+  const tabs = [
+    "학생부 작성의 기초",
+    "탐구 주제 선정 방법",
+    "학생부 세특 작성법"
+  ];
 
   return (
     <>
@@ -164,22 +171,53 @@ const TopicGeneratorCard = ({
       </Card>
 
       <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
-        <DialogContent className="max-w-4xl w-full h-[80vh] p-0">
-          <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <DialogContent className="max-w-4xl w-full p-0 bg-white">
+          <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
-          <div className="w-full h-full">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="rounded-lg"
-            ></iframe>
+          
+          {/* Tab Navigation */}
+          <div className="flex border-b bg-gray-50">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-3 text-sm font-medium transition-colors ${
+                  activeTab === tab
+                    ? "bg-blue-600 text-white border-b-2 border-blue-600"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Video Content */}
+          <div className="p-6">
+            <div className="aspect-video w-full mb-4">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="rounded-lg"
+              ></iframe>
+            </div>
+            
+            {/* Video Title and Description */}
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-gray-900">
+                학생부 작성의 기초
+              </h3>
+              <p className="text-sm text-gray-600">
+                학생부 작성 시 알아야 할 기본 원칙들
+              </p>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
