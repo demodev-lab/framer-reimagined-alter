@@ -41,7 +41,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             title="난이도 낮추기"
           >
             <ChevronDown className="h-4 w-4" />
-            난이도 ↓
+            난이도
           </Button>
           <Button 
             onClick={handleIncreaseDifficulty}
@@ -52,7 +52,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             title="난이도 높이기"
           >
             <ChevronUp className="h-4 w-4" />
-            난이도 ↑
+            난이도
           </Button>
           <Button 
             onClick={handleMoreDetails}
