@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+
 interface CareerSentenceGeneratorCardProps {
   onGenerate: (data: {
     careerField: string;
@@ -15,6 +16,7 @@ interface CareerSentenceGeneratorCardProps {
     aspiration: string;
   }) => void;
 }
+
 const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = ({
   onGenerate
 }) => {
@@ -94,7 +96,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
               <TooltipTrigger asChild>
                 <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
                   <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" className="px-2 py-1 h-8 text-sm font-bold">2,3학년 클릭 🖱️</Button>
+                    <Button variant="outline" size="default" className="font-bold">2,3학년 클릭 🖱️</Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-4xl w-full">
                     <DialogHeader>
@@ -128,4 +130,5 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
       </CardContent>
     </Card>;
 };
+
 export default CareerSentenceGeneratorCard;
