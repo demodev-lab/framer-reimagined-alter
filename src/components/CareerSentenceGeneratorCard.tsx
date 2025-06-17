@@ -112,7 +112,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
           <Dialog open={isVideoPopupOpen} onOpenChange={setIsVideoPopupOpen}>
             <DialogContent className="max-w-4xl w-full">
               <DialogHeader>
-                <DialogTitle>학생부 준비 가이드</DialogTitle>
+                <DialogTitle>이미 학생부에 기록이 있다면 영상을 꼭 봐주세요!</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
                 <div className="aspect-video">
