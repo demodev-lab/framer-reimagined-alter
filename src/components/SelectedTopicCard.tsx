@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -14,8 +15,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { ScrollArea } from "./ui/scroll-area";
-import { Skeleton } from "./ui/skeleton";
+import { useArchive } from "@/contexts/ArchiveContext";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -29,6 +29,7 @@ interface SelectedTopicCardProps {
   onRegenerateMethods: () => void;
   topicType: string;
   onTopicTypeChange: (type: string) => void;
+  researchMethods?: string[];
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -43,9 +44,18 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onRegenerateMethods,
   topicType,
   onTopicTypeChange,
+  researchMethods = [],
 }) => {
+  const { saveTopic } = useArchive();
+
   const handleArchiveSave = () => {
-    console.log("아카이브 저장 버튼 클릭");
+    saveTopic({
+      title: topic,
+      subject,
+      concept,
+      topicType,
+      researchMethods,
+    });
   };
 
   return (
