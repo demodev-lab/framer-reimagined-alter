@@ -56,6 +56,12 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
     navigate('/archive');
   };
 
+  const handleGoBackToInput = () => {
+    if (onGoBack) {
+      onGoBack();
+    }
+  };
+
   return (
     <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
@@ -94,12 +100,12 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={onGoBack} aria-label="돌아가기">
+                <Button variant="ghost" size="icon" onClick={handleGoBackToInput} aria-label="탐구 주제 입력으로 돌아가기">
                   <House className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>돌아가기</p>
+                <p>탐구 주제 입력으로 돌아가기</p>
               </TooltipContent>
             </Tooltip>
           </div>
