@@ -95,13 +95,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                   <p>주제 유형 변경</p>
                 </TooltipContent>
               </Tooltip>
-              <DropdownMenuContent>
-                <DropdownMenuRadioGroup value={topicType} onValueChange={onTopicTypeChange}>
-                  
-                  
-                  
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
+              
             </DropdownMenu>
           </div>
         </CardHeader>
