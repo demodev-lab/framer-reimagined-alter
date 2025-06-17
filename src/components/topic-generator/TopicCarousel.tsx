@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
 import SelectedTopicCard from '../SelectedTopicCard';
@@ -123,9 +123,6 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        
-        <CarouselPrevious />
-        <CarouselNext onClick={handleGoToArchive} />
       </Carousel>
     </div>
   );

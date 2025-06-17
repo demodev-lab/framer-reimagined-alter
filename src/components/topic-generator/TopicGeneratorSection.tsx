@@ -1,6 +1,9 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Archive } from 'lucide-react';
 import { TopicRow } from '@/types';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CareerSentenceSection from './CareerSentenceSection';
 import CareerSentenceDialog from './CareerSentenceDialog';
@@ -49,6 +52,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   selectedCareerSentence,
   setSelectedCareerSentence
 }) => {
+  const navigate = useNavigate();
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
@@ -82,6 +86,10 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     setSelectedCareerSentence(sentence);
   };
 
+  const handleGoToArchive = () => {
+    navigate('/archive');
+  };
+
   return (
     <>
       <section className="flex flex-col items-center pb-8">
@@ -110,6 +118,24 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 onAddFollowUpRow={handleAddFollowUpRow} 
               />
             ))}
+          </div>
+
+          {/* 아카이브 이동 버튼 */}
+          <div className="flex justify-center mt-8">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  onClick={handleGoToArchive}
+                  className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
+                >
+                  <Archive className="h-4 w-4" />
+                  아카이브로 이동
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>저장된 주제들을 관리하세요</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </section>
