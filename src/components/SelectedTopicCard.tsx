@@ -86,9 +86,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label="주제 유형 선택" disabled={isLocked}>
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
+                    
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
                 <TooltipContent>
