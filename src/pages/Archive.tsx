@@ -190,7 +190,6 @@ const Archive = () => {
                 <TableRow>
                   <TableHead className="w-[100px]">No.</TableHead>
                   <TableHead>Title</TableHead>
-                  <TableHead className="w-[120px]">과목</TableHead>
                   <TableHead>탐구 방법</TableHead>
                   <TableHead>Priority</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -204,20 +203,12 @@ const Archive = () => {
                         <div className="font-medium">{topic.title}</div>
                         <div className="flex gap-2 text-sm text-muted-foreground">
                           {topic.concept && <span>{topic.concept}</span>}
+                          {topic.subject && <span>• {topic.subject}</span>}
                         </div>
                         <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
                           {topic.topicType}
                         </Badge>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      {topic.subject ? (
-                        <Badge variant="outline" className="text-xs">
-                          {topic.subject}
-                        </Badge>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">-</span>
-                      )}
                     </TableCell>
                     <TableCell>
                       <Dialog>
