@@ -1,10 +1,11 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Book, GraduationCap, Sparkles } from 'lucide-react';
+import { Book, GraduationCap, Sparkles, Check } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SubjectTopic {
   subject: string;
@@ -21,6 +22,7 @@ interface ResearchTopicsResultProps {
 }
 
 const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => {
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [careerSentence, setCareerSentence] = useState("");
   const [relatedTopics, setRelatedTopics] = useState<string[]>([]);
@@ -85,6 +87,32 @@ const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => 
       return `${mainSubjects.slice(0, 2).join('과 ')} 분야의 ${mainActivities[0]}을 통해 ${keywords.slice(0, 3).join(', ')} 등의 주제에 깊은 관심을 보이며, 이를 바탕으로 관련 분야의 전문가가 되어 사회에 기여하고자 합니다.`;
     } else {
       return `다양한 탐구 활동을 통해 ${keywords.slice(0, 3).join(', ')} 등의 분야에 관심을 키워왔으며, 이러한 경험을 바탕으로 창의적이고 혁신적인 전문가로 성장하여 사회 발전에 기여하고자 합니다.`;
+    }
+  };
+
+  const handleRegisterCareerSentence = () => {
+    if (!careerSentence) {
+      toast.error("진로 문장이 생성되지 않았습니다.");
+      return;
+    }
+
+    // Save the career sentence to localStorage for the topic generator
+    try {
+      const savedState = localStorage.getItem('topic_manager_state');
+      let state = savedState ? JSON.parse(savedState) : {};
+      
+      state.selectedCareerSentence = careerSentence;
+      
+      localStorage.setItem('topic_manager_state', JSON.stringify(state));
+      
+      toast.success("진로 문장이 등록되었습니다. 탐구 주제 생성 페이지로 이동합니다.");
+      
+      // Close dialog and navigate to topic generator
+      setIsDialogOpen(false);
+      navigate('/topic-generator');
+    } catch (error) {
+      console.error('Failed to save career sentence:', error);
+      toast.error("진로 문장 등록에 실패했습니다.");
     }
   };
 
@@ -172,6 +200,17 @@ const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => 
                 <p className="text-gray-800 leading-relaxed text-base">
                   {careerSentence}
                 </p>
+                
+                {/* 진로 문장 결정 버튼 추가 */}
+                <div className="mt-4 flex justify-center">
+                  <Button 
+                    onClick={handleRegisterCareerSentence}
+                    className="bg-green-600 text-white hover:bg-green-700 px-6 py-2"
+                  >
+                    <Check className="w-4 h-4 mr-2" />
+                    진로 문장 결정
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
