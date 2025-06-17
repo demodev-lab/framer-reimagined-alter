@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -88,13 +89,41 @@ const Archive = () => {
     ];
   };
 
-  const handleRegenerateResearchMethods = async (topicId: string) => {
+  const handleDifficultyUp = async (topicId: string) => {
     setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: true }));
     
     const topic = archivedTopics.find(t => t.id === topicId);
     if (!topic) return;
 
-    // Simulate API call delay
+    // Simulate API call delay for difficulty up
+    setTimeout(() => {
+      const newMethods = generateResearchMethods(topic);
+      setTopicResearchMethods(prev => ({ ...prev, [topicId]: newMethods }));
+      setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: false }));
+    }, 1500);
+  };
+
+  const handleDifficultyDown = async (topicId: string) => {
+    setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: true }));
+    
+    const topic = archivedTopics.find(t => t.id === topicId);
+    if (!topic) return;
+
+    // Simulate API call delay for difficulty down
+    setTimeout(() => {
+      const newMethods = generateResearchMethods(topic);
+      setTopicResearchMethods(prev => ({ ...prev, [topicId]: newMethods }));
+      setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: false }));
+    }, 1500);
+  };
+
+  const handleMoreDetailed = async (topicId: string) => {
+    setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: true }));
+    
+    const topic = archivedTopics.find(t => t.id === topicId);
+    if (!topic) return;
+
+    // Simulate API call delay for more detailed
     setTimeout(() => {
       const newMethods = generateResearchMethods(topic);
       setTopicResearchMethods(prev => ({ ...prev, [topicId]: newMethods }));
@@ -199,16 +228,35 @@ const Archive = () => {
                                 <span className="text-sm font-medium">
                                   {getTopicResearchMethods(topic.id).length}개의 탐구 방법
                                 </span>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleRegenerateResearchMethods(topic.id)}
-                                  disabled={isRegeneratingMethods[topic.id]}
-                                  className="flex items-center gap-2"
-                                >
-                                  <RefreshCw className={`h-4 w-4 ${isRegeneratingMethods[topic.id] ? 'animate-spin' : ''}`} />
-                                  다시 생성
-                                </Button>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleDifficultyUp(topic.id)}
+                                    disabled={isRegeneratingMethods[topic.id]}
+                                    className="flex items-center gap-1"
+                                  >
+                                    ⬆️ 난이도 up
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleDifficultyDown(topic.id)}
+                                    disabled={isRegeneratingMethods[topic.id]}
+                                    className="flex items-center gap-1"
+                                  >
+                                    ⬇️ 난이도 down
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => handleMoreDetailed(topic.id)}
+                                    disabled={isRegeneratingMethods[topic.id]}
+                                    className="flex items-center gap-2"
+                                  >
+                                    더 자세히
+                                  </Button>
+                                </div>
                               </div>
                               <div className="space-y-3">
                                 {getTopicResearchMethods(topic.id).map((method, methodIndex) => (
@@ -224,14 +272,29 @@ const Archive = () => {
                               <div className="text-muted-foreground">
                                 아직 탐구 방법이 생성되지 않았습니다.
                               </div>
-                              <Button
-                                onClick={() => handleRegenerateResearchMethods(topic.id)}
-                                disabled={isRegeneratingMethods[topic.id]}
-                                className="flex items-center gap-2"
-                              >
-                                <RefreshCw className={`h-4 w-4 ${isRegeneratingMethods[topic.id] ? 'animate-spin' : ''}`} />
-                                {isRegeneratingMethods[topic.id] ? '생성 중...' : '탐구 방법 생성'}
-                              </Button>
+                              <div className="flex items-center justify-center gap-2">
+                                <Button
+                                  onClick={() => handleDifficultyUp(topic.id)}
+                                  disabled={isRegeneratingMethods[topic.id]}
+                                  className="flex items-center gap-1"
+                                >
+                                  ⬆️ 난이도 up
+                                </Button>
+                                <Button
+                                  onClick={() => handleDifficultyDown(topic.id)}
+                                  disabled={isRegeneratingMethods[topic.id]}
+                                  className="flex items-center gap-1"
+                                >
+                                  ⬇️ 난이도 down
+                                </Button>
+                                <Button
+                                  onClick={() => handleMoreDetailed(topic.id)}
+                                  disabled={isRegeneratingMethods[topic.id]}
+                                  className="flex items-center gap-2"
+                                >
+                                  더 자세히
+                                </Button>
+                              </div>
                             </div>
                           )}
                         </DialogContent>
@@ -282,3 +345,4 @@ const Archive = () => {
 };
 
 export default Archive;
+
