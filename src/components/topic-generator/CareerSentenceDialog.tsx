@@ -32,7 +32,8 @@ const CareerSentenceDialog: React.FC<CareerSentenceDialogProps> = ({
           <span className="sr-only">Close</span>
         </DialogClose>
         
-        <DialogTitle className="sr-only">진로 문장 재생성</DialogTitle>
+        <DialogTitle className="sr-only">아래에서 새로운 진로 문장을 생성해주세요.
+한 번만 제대로 정하면 중구난방인 학생부를 방지합니다. </DialogTitle>
         <DialogDescription className="sr-only">새로운 진로 문장을 생성합니다</DialogDescription>
         
         <div className="p-6">
