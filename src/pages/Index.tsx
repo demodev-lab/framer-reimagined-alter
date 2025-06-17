@@ -1,8 +1,9 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, Cog, TrendingUp, MessageSquare } from "lucide-react";
+import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare } from "lucide-react";
 
 const Index = () => {
   return (
@@ -131,11 +132,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* New Features Section - Matching the uploaded image */}
-        <section className="py-20 bg-gray-100">
+        {/* All Features in 1 Tool Section - Updated Layout */}
+        <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto text-center">
             {/* Features Tag */}
-            <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm mb-8">
+            <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 mb-8">
               <span className="text-sm text-gray-600 font-medium">⚙️ FEATURES</span>
             </div>
             
@@ -147,87 +148,71 @@ const Index = () => {
               Discover features that simplify workflows & grow your business.
             </p>
 
-            {/* Feature Cards Grid */}
-            <div className="grid gap-6 mb-16">
-              {/* Cutting-Edge AI - Large Card */}
-              <Card className="bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+            {/* 2x2 Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+              {/* Cutting-Edge AI - Top Left */}
+              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
                 <CardContent className="p-0">
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="bg-gray-200 rounded-2xl aspect-video flex items-center justify-center">
-                      <img 
-                        src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=240&fit=crop" 
-                        alt="AI Robot" 
-                        className="rounded-2xl w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center">
-                        <Cog className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">Cutting-Edge AI</h3>
-                      <p className="text-gray-600 text-lg">
-                        Deploy AI solutions that adapt quickly, learn fast, and scale with your business needs.
-                      </p>
-                    </div>
+                  <div className="mb-6">
+                    <img 
+                      src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=240&fit=crop" 
+                      alt="AI Robot" 
+                      className="rounded-2xl w-full h-48 object-cover"
+                    />
                   </div>
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                    <X className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Cutting-Edge AI</h3>
+                  <p className="text-gray-600">
+                    Deploy AI solutions that adapt quickly, learn fast, and scale with your business needs.
+                  </p>
                 </CardContent>
               </Card>
 
-              {/* Automated Workflows */}
-              <Card className="bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              {/* Automated Workflows - Top Right */}
+              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
                 <CardContent className="p-0">
-                  <div className="flex items-start gap-6">
-                    <div className="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Cog className="w-8 h-8 text-white" />
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-gray-900">Automated Workflows</h3>
-                      <p className="text-gray-600 text-lg">
-                        Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
-                      </p>
-                    </div>
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                    <Cog className="w-6 h-6 text-white" />
                   </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">Automated Workflows</h3>
+                  <p className="text-gray-600 mb-8">
+                    Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
+                  </p>
                 </CardContent>
               </Card>
 
-              {/* Insightful Analytics */}
-              <Card className="bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              {/* Insightful Analytics - Bottom Left */}
+              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
                 <CardContent className="p-0">
-                  <div className="flex items-start gap-6">
-                    <div className="w-16 h-16 bg-gray-800 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <TrendingUp className="w-8 h-8 text-white" />
-                    </div>
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-bold text-gray-900">Insightful Analytics</h3>
-                      <p className="text-gray-600 text-lg">
-                        Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
-                      </p>
-                    </div>
+                  <div className="absolute top-6 left-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-white" />
                   </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-16">Insightful Analytics</h3>
+                  <p className="text-gray-600">
+                    Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
+                  </p>
                 </CardContent>
               </Card>
 
-              {/* AI-Powered Support - Large Card */}
-              <Card className="bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              {/* AI-Powered Support - Bottom Right */}
+              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
                 <CardContent className="p-0">
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="bg-gray-200 rounded-2xl aspect-video flex items-center justify-center">
-                      <img 
-                        src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=240&fit=crop" 
-                        alt="AI Assistant" 
-                        className="rounded-2xl w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="space-y-4">
-                      <div className="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center">
-                        <MessageSquare className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">AI-Powered Support</h3>
-                      <p className="text-gray-600 text-lg">
-                        Enhance customer experience with AI-driven virtual assistants available for support and engagement.
-                      </p>
-                    </div>
+                  <div className="mb-6">
+                    <img 
+                      src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=240&fit=crop" 
+                      alt="AI Assistant" 
+                      className="rounded-2xl w-full h-48 object-cover"
+                    />
                   </div>
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
+                    <MessageSquare className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">AI-Powered Support</h3>
+                  <p className="text-gray-600">
+                    Enhance customer experience with AI-driven virtual assistants available for support and engagement.
+                  </p>
                 </CardContent>
               </Card>
             </div>
