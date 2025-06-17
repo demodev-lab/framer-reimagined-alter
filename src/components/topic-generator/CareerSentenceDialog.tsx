@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
+
 interface CareerSentenceDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -32,16 +33,16 @@ const CareerSentenceDialog: React.FC<CareerSentenceDialogProps> = ({
           <span className="sr-only">Close</span>
         </DialogClose>
         
-        
+        <DialogTitle className="sr-only">아래에서 새로운 진로 문장을 생성해주세요.
+한 번만 제대로 정하면 중구난방인 학생부를 방지합니다. </DialogTitle>
         <DialogDescription className="sr-only">새로운 진로 문장을 생성합니다</DialogDescription>
         
         <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-base font-semibold text-gray-900 mb-4">
             새로운 진로 문장 생성
           </h3>
-          <p className="text-sm text-gray-600 mb-6">
-            아래에서 새로운 진로 문장을 생성해주세요.
-          </p>
+          <p className="text-2xl text-gray-600 mb-6">아래에서 새로운 진로 문장을 생성해주세요.
+한 번만 제대로 정하면 중구난방인 학생부를 방지합니다. </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[500px]">
             <div className="h-full">
