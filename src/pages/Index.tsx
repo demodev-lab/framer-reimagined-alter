@@ -2,7 +2,8 @@ import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare } from "lucide-react";
+import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
+
 const Index = () => {
   return <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
@@ -56,52 +57,30 @@ const Index = () => {
               AI 기반 학생부 관리 솔루션으로 스마트한 교육을 제공합니다.
             </p>
 
-            {/* Main Feature Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
-              {/* Real-Time Analytics */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
+            {/* Video Card Section */}
+            <div className="mb-16">
+              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)] max-w-4xl mx-auto">
                 <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
-                    <BarChart3 className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center shadow-lg border border-gray-600">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                  <div className="mb-6">
+                    <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                      <iframe
+                        width="100%"
+                        height="400"
+                        src="https://www.youtube.com/embed/z4HfvrPA_kI"
+                        title="AI가 브라우저 자동화를 해준다고?"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full"
+                      />
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">실시간 분석</h3>
-                  <p className="text-gray-600">
-                    정확하고 실시간으로 학생부 성과를 추적하고 분석하여 앞서 나가세요.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* AI-Driven Growth */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
-                <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
-                    <Brain className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-8 text-xs text-gray-500 font-medium bg-white px-2 py-1 rounded-full shadow-sm rotate-12 border border-gray-200">
-                      AFTER
-                    </div>
+                  <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center shadow-lg border border-gray-700">
+                    <Play className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">AI 기반 성장</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">학생부 작성의 기초</h3>
                   <p className="text-gray-600">
-                    정확하고 실시간 교육 인사이트로 더 스마트한 결정을 내리세요.
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Sync in real time */}
-              <Card className="relative bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-gray-200 p-8 text-left transform hover:translate-y-[-4px] transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.15)]">
-                <CardContent className="p-0">
-                  <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6 relative shadow-inner border border-gray-100">
-                    <Users className="w-8 h-8 text-gray-600" />
-                    <div className="absolute -top-2 -right-2 w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-lg border border-gray-700">
-                      <Zap className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">실시간 동기화</h3>
-                  <p className="text-gray-600">
-                    팀과 즉시 연결하여 진행 상황을 추적하고 업데이트하세요.
+                    AI가 브라우저 자동화를 통해 학생부 작성을 도와주는 혁신적인 솔루션을 경험해보세요.
                   </p>
                 </CardContent>
               </Card>
@@ -220,4 +199,5 @@ const Index = () => {
       </main>
     </div>;
 };
+
 export default Index;
