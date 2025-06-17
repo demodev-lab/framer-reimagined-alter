@@ -58,7 +58,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
                 size="icon" 
                 onClick={onBack} 
                 aria-label="돌아가기"
-                className="absolute left-2.5 top-6"
+                className="absolute left-5 top-6"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
