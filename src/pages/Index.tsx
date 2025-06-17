@@ -38,7 +38,7 @@ const Index = () => {
               <a href="/topic-generator">최신 연구를 바탕으로 생성된 탐구 주제</a>
             </Button>
             <Button variant="outline" asChild className="bg-gradient-to-b from-white to-gray-50 border-2 border-gray-300 text-gray-700 hover:from-gray-50 hover:to-gray-100 hover:border-gray-400 hover:text-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] transform hover:translate-y-[-2px] transition-all duration-200 min-w-[140px]">
-              <a href="/feedback">빠른 피드백</a>
+              <a href="/feedback">학생부 심폐 소생</a>
             </Button>
           </div>
         </section>
