@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -7,7 +6,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
 import { useNavigate } from "react-router-dom";
-
 interface SelectedTopicCardProps {
   topic: string;
   subject: string;
@@ -23,7 +21,6 @@ interface SelectedTopicCardProps {
   researchMethods?: string[];
   onGoBack?: () => void;
 }
-
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topic,
   subject,
@@ -39,9 +36,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   researchMethods = [],
   onGoBack
 }) => {
-  const { saveTopic } = useArchive();
+  const {
+    saveTopic
+  } = useArchive();
   const navigate = useNavigate();
-
   const handleArchiveSave = () => {
     saveTopic({
       title: topic,
@@ -51,19 +49,15 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       researchMethods
     });
   };
-
   const handleGoToArchive = () => {
     navigate('/archive');
   };
-
   const handleGoBackToInput = () => {
     if (onGoBack) {
       onGoBack();
     }
   };
-
-  return (
-    <div className="flex flex-col h-full space-y-4">
+  return <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>세특 주제 {topicNumber}</CardTitle>
@@ -100,9 +94,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={handleGoBackToInput} aria-label="탐구 주제 입력으로 돌아가기">
-                  <House className="h-4 w-4" />
-                </Button>
+                
               </TooltipTrigger>
               <TooltipContent>
                 <p>탐구 주제 입력으로 돌아가기</p>
@@ -146,8 +138,6 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default SelectedTopicCard;
