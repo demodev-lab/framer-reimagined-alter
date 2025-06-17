@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -26,7 +25,7 @@ const Header = () => {
       href: "/archive"
     },
     {
-      name: "학생부 개선",
+      name: "학생부 분석",
       href: "/feedback"
     }
   ];
