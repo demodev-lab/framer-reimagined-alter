@@ -77,8 +77,8 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       }} 
                       showFollowUp={index > 0} 
                       isFollowUp={Boolean(followUpStates[row.id])}
-                      onFollowUpChange={(checked: boolean | 'indeterminate') => {
-                        onFollowUpChange(row.id, checked === true);
+                      onFollowUpChange={(checked) => {
+                        onFollowUpChange(row.id, Boolean(checked));
                       }} 
                       rowId={row.id} 
                       selectedCareerSentence={selectedCareerSentence} 
