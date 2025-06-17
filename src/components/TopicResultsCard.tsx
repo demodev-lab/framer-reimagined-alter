@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -57,14 +57,14 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
                 variant="ghost" 
                 size="icon" 
                 onClick={onBack} 
-                aria-label="돌아가기"
+                aria-label="주제 재생성"
                 className="absolute left-5 top-6"
               >
-                <ArrowLeft className="h-4 w-4" />
+                <RotateCcw className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>돌아가기</p>
+              <p>주제 재생성</p>
             </TooltipContent>
           </Tooltip>
         )}
