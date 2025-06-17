@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
+import YouTubePopup from "@/components/topic-generator/YouTubePopup";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -13,6 +16,12 @@ const TopicGenerator = () => {
     ...topicManager
   } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
+  const [youtubePopup, setYoutubePopup] = useState({
+    open: false,
+    videoId: "",
+    title: ""
+  });
+
   useEffect(() => {
     const sections = ["preparation-method", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -35,6 +44,7 @@ const TopicGenerator = () => {
       });
     };
   }, []);
+
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -42,6 +52,7 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
+
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -53,7 +64,25 @@ const TopicGenerator = () => {
       });
     }
   };
-  return <div className="min-h-screen bg-background font-sans">
+
+  const handleOpenYouTubePopup = (videoId: string, title: string) => {
+    setYoutubePopup({
+      open: true,
+      videoId,
+      title
+    });
+  };
+
+  const handleCloseYouTubePopup = () => {
+    setYoutubePopup({
+      open: false,
+      videoId: "",
+      title: ""
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
@@ -79,10 +108,37 @@ const TopicGenerator = () => {
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">탐구 주제 생성</h2>
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
+            
+            {/* YouTube 버튼들 추가 */}
+            <div className="flex justify-center gap-4 mt-6">
+              <Button
+                variant="outline"
+                onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")}
+                className="px-6 py-2"
+              >
+                어떻게 사용하나요?
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")}
+                className="px-6 py-2"
+              >
+                학생부 준비 방법
+              </Button>
+            </div>
           </div>
           <TopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
         </section>
       </main>
-    </div>;
+
+      <YouTubePopup
+        open={youtubePopup.open}
+        onOpenChange={(open) => !open && handleCloseYouTubePopup()}
+        videoId={youtubePopup.videoId}
+        title={youtubePopup.title}
+      />
+    </div>
+  );
 };
+
 export default TopicGenerator;
