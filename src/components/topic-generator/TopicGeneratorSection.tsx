@@ -20,6 +20,7 @@ interface TopicGeneratorSectionProps {
   handleRegenerateMethods: (id: number) => void;
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
+  selectedCareerSentence?: string | null;
 }
 
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
@@ -34,6 +35,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleTopicTypeChange,
   followUpStates,
   handleFollowUpChange,
+  selectedCareerSentence,
 }) => {
   return (
     <section className="flex flex-col items-center pb-8">
@@ -70,6 +72,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                       isFollowUp={followUpStates[row.id] || false}
                       onFollowUpChange={(checked) => handleFollowUpChange(row.id, checked as boolean)}
                       rowId={row.id}
+                      selectedCareerSentence={selectedCareerSentence}
                     />
                   )}
                 </div>

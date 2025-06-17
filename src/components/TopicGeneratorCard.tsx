@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { X } from "lucide-react";
 
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
@@ -33,6 +40,7 @@ interface TopicGeneratorCardProps {
   isFollowUp?: boolean;
   onFollowUpChange?: (checked: boolean | 'indeterminate') => void;
   rowId: number;
+  selectedCareerSentence?: string | null;
 }
 
 const TopicGeneratorCard = ({
@@ -42,12 +50,14 @@ const TopicGeneratorCard = ({
   isFollowUp,
   onFollowUpChange,
   rowId,
+  selectedCareerSentence,
 }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState(initialValues?.subject || "");
   const [concept, setConcept] = useState(initialValues?.concept || "");
   const [topicType, setTopicType] = useState(
     initialValues?.topicType || "보고서 주제"
   );
+  const [showVideoDialog, setShowVideoDialog] = useState(false);
 
   const handleClear = () => {
     setSubject("");
@@ -59,94 +69,122 @@ const TopicGeneratorCard = ({
   };
 
   const handleGenerateClick = () => {
+    if (!selectedCareerSentence) {
+      setShowVideoDialog(true);
+      return;
+    }
     onGenerate({ subject, concept, topicType });
   };
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader>
-        <CardTitle>주제 생성기</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col flex-grow justify-between pt-0">
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-[110px] flex-shrink-0"
-            >
-              교과 과목
-            </Button>
-            <Input
-              placeholder="예) 화학, 생명과학"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-[110px] flex-shrink-0"
-            >
-              교과 개념
-            </Button>
-            <Input
-              placeholder="예) 산화와 환원"
-              value={concept}
-              onChange={(e) => setConcept(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center w-full gap-4">
-              <div className="w-[110px] flex-shrink-0">
-                {showFollowUp ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Toggle
-                        pressed={isFollowUp}
-                        onPressedChange={(pressed) =>
-                          onFollowUpChange && onFollowUpChange(pressed)
-                        }
-                        variant="outline"
-                        size="sm"
-                        className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
-                        aria-label="후속 탐구"
-                      >
-                        후속 탐구
-                      </Toggle>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  <Button variant="secondary" size="sm" className="w-full">
-                    주제 유형
-                  </Button>
-                )}
+    <>
+      <Card className="h-full flex flex-col">
+        <CardHeader>
+          <CardTitle>주제 생성기</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col flex-grow justify-between pt-0">
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="w-[110px] flex-shrink-0"
+              >
+                교과 과목
+              </Button>
+              <Input
+                placeholder="예) 화학, 생명과학"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="w-[110px] flex-shrink-0"
+              >
+                교과 개념
+              </Button>
+              <Input
+                placeholder="예) 산화와 환원"
+                value={concept}
+                onChange={(e) => setConcept(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center w-full gap-4">
+                <div className="w-[110px] flex-shrink-0">
+                  {showFollowUp ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Toggle
+                          pressed={isFollowUp}
+                          onPressedChange={(pressed) =>
+                            onFollowUpChange && onFollowUpChange(pressed)
+                          }
+                          variant="outline"
+                          size="sm"
+                          className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
+                          aria-label="후속 탐구"
+                        >
+                          후속 탐구
+                        </Toggle>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <Button variant="secondary" size="sm" className="w-full">
+                      주제 유형
+                    </Button>
+                  )}
+                </div>
+                <Select onValueChange={setTopicType} value={topicType}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="주제 유형 선택" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="보고서 주제">보고서 주제</SelectItem>
+                    <SelectItem value="실험 주제">실험 주제</SelectItem>
+                    <SelectItem value="제작 주제">제작 주제</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <Select onValueChange={setTopicType} value={topicType}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="주제 유형 선택" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="보고서 주제">보고서 주제</SelectItem>
-                  <SelectItem value="실험 주제">실험 주제</SelectItem>
-                  <SelectItem value="제작 주제">제작 주제</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
-        </div>
-        <div className="flex justify-end gap-2 pt-6">
-          <Button variant="ghost" onClick={handleClear}>
-            지우기
-          </Button>
-          <Button onClick={handleGenerateClick}>주제 생성</Button>
-        </div>
-      </CardContent>
-    </Card>
+          <div className="flex justify-end gap-2 pt-6">
+            <Button variant="ghost" onClick={handleClear}>
+              지우기
+            </Button>
+            <Button onClick={handleGenerateClick}>주제 생성</Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
+        <DialogContent className="max-w-4xl w-full h-[80vh] p-0">
+          <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+          <div className="w-full h-full">
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="rounded-lg"
+            ></iframe>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
+
 export default TopicGeneratorCard;

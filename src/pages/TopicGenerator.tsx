@@ -6,6 +6,7 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -13,6 +14,7 @@ const TopicGenerator = () => {
     ...topicManager
   } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
+
   useEffect(() => {
     const sections = ["preparation-method", "career-sentence-generator", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -35,6 +37,7 @@ const TopicGenerator = () => {
       });
     };
   }, []);
+
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -45,6 +48,7 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
+
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -56,6 +60,7 @@ const TopicGenerator = () => {
       });
     }
   };
+
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,9 +107,10 @@ const TopicGenerator = () => {
               <p className="text-center text-foreground">{selectedCareerSentence}</p>
             </div>
           </div>}
-          <TopicGeneratorSection {...topicManager} />
+          <TopicGeneratorSection {...topicManager} selectedCareerSentence={selectedCareerSentence} />
         </section>
       </main>
     </div>;
 };
+
 export default TopicGenerator;
