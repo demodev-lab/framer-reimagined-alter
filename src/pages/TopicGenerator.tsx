@@ -11,6 +11,7 @@ const TopicGenerator = () => {
   const {
     selectedCareerSentence,
     setSelectedCareerSentence,
+    carouselGroups,
     ...topicManager
   } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
@@ -87,6 +88,7 @@ const TopicGenerator = () => {
           </div>
           <TopicGeneratorSection 
             {...topicManager} 
+            carouselGroups={carouselGroups}
             selectedCareerSentence={selectedCareerSentence}
             setSelectedCareerSentence={setSelectedCareerSentence}
           />
