@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import TopicGenerator from "./pages/TopicGenerator";
 import Feedback from "./pages/Feedback";
-import RecordAnalysis from "./pages/RecordAnalysis";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import FaqChat from "./components/FaqChat";
@@ -24,7 +23,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/topic-generator" element={<TopicGenerator />} />
           <Route path="/feedback" element={<Feedback />} />
-          <Route path="/record-analysis" element={<RecordAnalysis />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
