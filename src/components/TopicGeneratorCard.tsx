@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -192,7 +193,7 @@ const TopicGeneratorCard = ({
                       className="w-full"
                       onClick={handleGoBack}
                     >
-                      돌아가기
+                      🏠 돌아가기
                     </Button>
                   ) : (
                     <Button variant="secondary" size="sm" className="w-full">
