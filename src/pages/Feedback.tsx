@@ -14,19 +14,26 @@ const Feedback = () => {
   const [fileName, setFileName] = useState<string>("");
 
   const handleFileUpload = async (file: File) => {
+    console.log("파일 업로드 시작:", file.name, file.type, file.size);
+    
     setIsProcessing(true);
     setAnalysisComplete(false);
     setFileName(file.name);
 
     try {
       // 텍스트 추출
+      console.log("1단계: 텍스트 추출 중...");
       const extractedText = await extractTextFromFile(file);
+      console.log("텍스트 추출 완료:", extractedText);
       
-      // 탐구 주제 분석
-      const topics = extractResearchTopics(extractedText);
+      // 탐구 주제 분석 - 파일 정보도 함께 전달
+      console.log("2단계: 탐구 주제 분석 중...");
+      const topics = extractResearchTopics(extractedText, file.name, file.size);
+      console.log("탐구 주제 분석 완료:", topics);
       
       setResearchData(topics);
       setAnalysisComplete(true);
+      console.log("전체 처리 완료");
     } catch (error) {
       console.error('파일 처리 중 오류 발생:', error);
       alert('파일 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
