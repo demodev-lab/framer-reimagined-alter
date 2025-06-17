@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -11,19 +10,11 @@ import { Dialog, DialogContent, DialogClose, DialogTitle, DialogDescription } fr
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 interface CarouselGroup {
   id: number;
   topicRows: TopicRow[];
 }
-
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
   carouselGroups: CarouselGroup[];
@@ -45,7 +36,6 @@ interface TopicGeneratorSectionProps {
   selectedCareerSentence?: string | null;
   setSelectedCareerSentence: (sentence: string) => void;
 }
-
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   carouselGroups,
   handleAddRow,
@@ -65,12 +55,10 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
-
   const handleRegenerateCareerSentence = () => {
     console.log("Career sentence regeneration requested");
     setShowRegenerateDialog(true);
   };
-
   const handleCareerSentenceGenerate = (data: {
     careerField: string;
     activity: string;
@@ -79,31 +67,23 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   }) => {
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
-    
+
     // 시뮬레이션: 3개의 진로 문장 생성
     setTimeout(() => {
-      const sentences = [
-        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
-        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
-        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
-      ];
+      const sentences = [`${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`, `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`, `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`];
       setGeneratedCareerSentences(sentences);
       setIsGeneratingCareerSentence(false);
     }, 2000);
   };
-
   const handleSelectCareerSentence = (sentence: string) => {
     setShowRegenerateDialog(false);
     setSelectedCareerSentence(sentence);
   };
-
-  return (
-    <>
+  return <>
       <section className="flex flex-col items-center pb-8">
         <div className="w-full max-w-6xl">
           {/* 선택된 진로 문장 표시 섹션 */}
-          {selectedCareerSentence && (
-            <div className="w-full max-w-4xl mx-auto mb-6">
+          {selectedCareerSentence && <div className="w-full max-w-4xl mx-auto mb-6">
               <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
@@ -112,12 +92,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRegenerateCareerSentence}
-                        className="flex-shrink-0 h-8 w-8 p-0 hover:bg-green-100"
-                      >
+                      <Button variant="ghost" size="sm" onClick={handleRegenerateCareerSentence} className="flex-shrink-0 h-8 w-8 p-0 hover:bg-green-100">
                         <RefreshCw className="h-4 w-4 text-green-600" />
                       </Button>
                     </TooltipTrigger>
@@ -127,95 +102,42 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                   </Tooltip>
                 </div>
               </div>
-            </div>
-          )}
+            </div>}
 
           {/* 캐러셀 그룹들을 세로로 배치 */}
           <div className="space-y-8">
-            {carouselGroups.map((group, groupIndex) => (
-              <div key={group.id} className="w-full">
+            {carouselGroups.map((group, groupIndex) => <div key={group.id} className="w-full">
                 <Carousel className="w-full">
                   <CarouselContent className="ml-0">
-                    {group.topicRows.map((row, index) => (
-                      <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
+                    {group.topicRows.map((row, index) => <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
                           <div className="h-full overflow-hidden">
-                            {row.stage === "topic_selected" ? (
-                              <SelectedTopicCard
-                                topic={row.selectedTopic!}
-                                subject={row.subject}
-                                concept={row.concept}
-                                topicNumber={index + 1}
-                                isLocked={row.isLocked}
-                                onRefresh={() => handleRefreshTopic(row.id)}
-                                onLock={() => handleLockTopic(row.id)}
-                                onDelete={() => handleDeleteTopic(row.id)}
-                                onRegenerateMethods={() => handleRegenerateMethods(row.id)}
-                                topicType={row.topicType}
-                                onTopicTypeChange={type => handleTopicTypeChange(row.id, type)}
-                              />
-                            ) : (
-                              <TopicGeneratorCard
-                                onGenerate={inputs => handleGenerate(row.id, inputs)}
-                                initialValues={{
-                                  subject: row.subject,
-                                  concept: row.concept,
-                                  request: row.request,
-                                  topicType: row.topicType
-                                }}
-                                showFollowUp={index > 0}
-                                isFollowUp={followUpStates[row.id] || false}
-                                onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)}
-                                rowId={row.id}
-                                selectedCareerSentence={selectedCareerSentence}
-                                onCareerSentenceSelect={setSelectedCareerSentence}
-                              />
-                            )}
+                            {row.stage === "topic_selected" ? <SelectedTopicCard topic={row.selectedTopic!} subject={row.subject} concept={row.concept} topicNumber={index + 1} isLocked={row.isLocked} onRefresh={() => handleRefreshTopic(row.id)} onLock={() => handleLockTopic(row.id)} onDelete={() => handleDeleteTopic(row.id)} onRegenerateMethods={() => handleRegenerateMethods(row.id)} topicType={row.topicType} onTopicTypeChange={type => handleTopicTypeChange(row.id, type)} /> : <TopicGeneratorCard onGenerate={inputs => handleGenerate(row.id, inputs)} initialValues={{
+                        subject: row.subject,
+                        concept: row.concept,
+                        request: row.request,
+                        topicType: row.topicType
+                      }} showFollowUp={index > 0} isFollowUp={followUpStates[row.id] || false} onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)} rowId={row.id} selectedCareerSentence={selectedCareerSentence} onCareerSentenceSelect={setSelectedCareerSentence} />}
                           </div>
                           <div className="h-full overflow-hidden">
-                            {row.stage === "topic_selected" ? (
-                              <TopicResultsCard
-                                title="탐구 방법"
-                                placeholder="탐구 방법을 생성 중입니다..."
-                                topics={row.researchMethods}
-                                onSelectTopic={method => console.log("Method selected:", method)}
-                                isLoading={row.isLoadingMethods}
-                                isSelectable={false}
-                                scrollable={true}
-                              />
-                            ) : (
-                              <TopicResultsCard
-                                title="탐구 주제 후보"
-                                placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다."
-                                topics={row.generatedTopics}
-                                onSelectTopic={topic => handleSelectTopic(row.id, topic)}
-                                isLoading={row.isLoadingTopics}
-                              />
-                            )}
+                            {row.stage === "topic_selected" ? <TopicResultsCard title="탐구 방법" placeholder="탐구 방법을 생성 중입니다..." topics={row.researchMethods} onSelectTopic={method => console.log("Method selected:", method)} isLoading={row.isLoadingMethods} isSelectable={false} scrollable={true} /> : <TopicResultsCard title="탐구 주제 후보" placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다." topics={row.generatedTopics} onSelectTopic={topic => handleSelectTopic(row.id, topic)} isLoading={row.isLoadingTopics} />}
                           </div>
                         </div>
-                      </CarouselItem>
-                    ))}
+                      </CarouselItem>)}
                   </CarouselContent>
                   
                   {/* 캐러셀이 여러 항목을 가질 때만 네비게이션 버튼 표시 */}
-                  {group.topicRows.length > 1 && (
-                    <>
+                  {group.topicRows.length > 1 && <>
                       <CarouselPrevious className="left-4" />
                       <CarouselNext className="right-4" />
-                    </>
-                  )}
+                    </>}
                 </Carousel>
                 
                 {/* 각 캐러셀 그룹별 후속 심화 탐구 버튼 */}
                 <div className="flex justify-center mt-4">
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        onClick={() => handleAddFollowUpRow(group.id)}
-                        className="px-6 py-3 text-sm font-medium"
-                      >
+                      <Button variant="outline" onClick={() => handleAddFollowUpRow(group.id)} className="px-6 py-3 text-sm font-medium">
                         후속 심화 탐구 만들기
                       </Button>
                     </TooltipTrigger>
@@ -224,19 +146,14 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                     </TooltipContent>
                   </Tooltip>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
           
           {/* 새로운 주제 추가 버튼 */}
           <div className="flex justify-center mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  onClick={handleAddRow}
-                  className="px-8 py-4 text-lg font-bold"
-                >
+                <Button variant="outline" onClick={handleAddRow} className="px-8 py-4 text-lg font-bold text-slate-50 bg-slate-900 hover:bg-slate-800">
                   새로운 주제 추가
                 </Button>
               </TooltipTrigger>
@@ -251,10 +168,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
       {/* 진로 문장 재생성 다이얼로그 */}
       <Dialog open={showRegenerateDialog} onOpenChange={setShowRegenerateDialog}>
         <DialogContent className="max-w-6xl w-full p-0 bg-white">
-          <DialogClose 
-            className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
-            onClick={() => setShowRegenerateDialog(false)}
-          >
+          <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none" onClick={() => setShowRegenerateDialog(false)}>
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
@@ -284,30 +198,17 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                     <CardTitle>생성된 진로 문장</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow overflow-hidden min-h-0">
-                    {isGeneratingCareerSentence ? (
-                      <div className="flex items-center justify-center h-full">
+                    {isGeneratingCareerSentence ? <div className="flex items-center justify-center h-full">
                         <p>진로 문장을 생성 중입니다...</p>
-                      </div>
-                    ) : generatedCareerSentences.length === 0 ? (
-                      <div className="flex items-center justify-center h-full">
+                      </div> : generatedCareerSentences.length === 0 ? <div className="flex items-center justify-center h-full">
                         <p className="text-muted-foreground text-center">
                           '문장 생성' 버튼을 누르면 진로 문장 후보 3개가 생성됩니다.
                         </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2 h-full overflow-y-auto">
-                        {generatedCareerSentences.map((sentence, index) => (
-                          <Button
-                            key={index}
-                            variant="outline"
-                            className="justify-start text-left h-auto whitespace-normal py-3 px-4 hover:bg-green-50 hover:border-green-300"
-                            onClick={() => handleSelectCareerSentence(sentence)}
-                          >
+                      </div> : <div className="flex flex-col gap-2 h-full overflow-y-auto">
+                        {generatedCareerSentences.map((sentence, index) => <Button key={index} variant="outline" className="justify-start text-left h-auto whitespace-normal py-3 px-4 hover:bg-green-50 hover:border-green-300" onClick={() => handleSelectCareerSentence(sentence)}>
                             {sentence}
-                          </Button>
-                        ))}
-                      </div>
-                    )}
+                          </Button>)}
+                      </div>}
                   </CardContent>
                 </Card>
               </div>
@@ -315,8 +216,6 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
           </div>
         </DialogContent>
       </Dialog>
-    </>
-  );
+    </>;
 };
-
 export default TopicGeneratorSection;
