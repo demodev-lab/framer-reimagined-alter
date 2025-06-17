@@ -44,12 +44,8 @@ const Index = () => {
             </div>
             
             {/* Main Title */}
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Why Choose Us
-            </h2>
-            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
-              AI 기반 학생부 관리 솔루션으로 스마트한 교육을 제공합니다.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">어떤 주제를 학생부에 써야할까요?</h2>
+            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">학교에서는 명확한 가이드를 얻기 매우 어렵습니다.</p>
 
             {/* Video Card Section */}
             <div className="mb-16">
