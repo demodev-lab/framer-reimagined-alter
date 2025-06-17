@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,7 +16,7 @@ const Header = () => {
     name: "탐구 주제",
     href: "/topic-generator"
   }, {
-    name: "빠른 피드백",
+    name: "학생부 심폐 소생",
     href: "/feedback"
   }];
   return <header className={cn("sticky top-0 z-50 w-full border-b transition-all duration-300", scrolled ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm" : "border-transparent")}>
@@ -49,4 +48,3 @@ const Header = () => {
     </header>;
 };
 export default Header;
-
