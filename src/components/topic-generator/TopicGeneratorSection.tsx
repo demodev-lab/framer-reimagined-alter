@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { TopicRow } from '@/types';
@@ -6,12 +5,10 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import CareerSentenceSection from './CareerSentenceSection';
 import CareerSentenceDialog from './CareerSentenceDialog';
 import TopicCarousel from './TopicCarousel';
-
 interface CarouselGroup {
   id: number;
   topicRows: TopicRow[];
 }
-
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
   carouselGroups: CarouselGroup[];
@@ -33,7 +30,6 @@ interface TopicGeneratorSectionProps {
   selectedCareerSentence?: string | null;
   setSelectedCareerSentence: (sentence: string) => void;
 }
-
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   carouselGroups,
   handleAddRow,
@@ -53,12 +49,10 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
-  
   const handleRegenerateCareerSentence = () => {
     console.log("Career sentence regeneration requested");
     setShowRegenerateDialog(true);
   };
-  
   const handleCareerSentenceGenerate = (data: {
     careerField: string;
     activity: string;
@@ -67,63 +61,29 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   }) => {
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
-
     setTimeout(() => {
-      const sentences = [
-        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
-        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
-        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
-      ];
+      const sentences = [`${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`, `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`, `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`];
       setGeneratedCareerSentences(sentences);
       setIsGeneratingCareerSentence(false);
     }, 2000);
   };
-  
   const handleSelectCareerSentence = (sentence: string) => {
     setShowRegenerateDialog(false);
     setSelectedCareerSentence(sentence);
   };
-
-  return (
-    <>
+  return <>
       <section className="flex flex-col items-center pb-8">
         <div className="w-full max-w-7xl mx-auto px-4">
-          <CareerSentenceSection 
-            selectedCareerSentence={selectedCareerSentence}
-            onRegenerateCareerSentence={handleRegenerateCareerSentence}
-          />
+          <CareerSentenceSection selectedCareerSentence={selectedCareerSentence} onRegenerateCareerSentence={handleRegenerateCareerSentence} />
 
           <div className="space-y-8">
-            {carouselGroups.map((group) => (
-              <TopicCarousel
-                key={group.id}
-                group={group}
-                followUpStates={followUpStates}
-                selectedCareerSentence={selectedCareerSentence}
-                onGenerate={handleGenerate}
-                onSelectTopic={handleSelectTopic}
-                onRefreshTopic={handleRefreshTopic}
-                onLockTopic={handleLockTopic}
-                onDeleteTopic={handleDeleteTopic}
-                onRegenerateMethods={handleRegenerateMethods}
-                onTopicTypeChange={handleTopicTypeChange}
-                onFollowUpChange={handleFollowUpChange}
-                onCareerSentenceSelect={setSelectedCareerSentence}
-                onAddFollowUpRow={handleAddFollowUpRow}
-              />
-            ))}
+            {carouselGroups.map(group => <TopicCarousel key={group.id} group={group} followUpStates={followUpStates} selectedCareerSentence={selectedCareerSentence} onGenerate={handleGenerate} onSelectTopic={handleSelectTopic} onRefreshTopic={handleRefreshTopic} onLockTopic={handleLockTopic} onDeleteTopic={handleDeleteTopic} onRegenerateMethods={handleRegenerateMethods} onTopicTypeChange={handleTopicTypeChange} onFollowUpChange={handleFollowUpChange} onCareerSentenceSelect={setSelectedCareerSentence} onAddFollowUpRow={handleAddFollowUpRow} />)}
           </div>
           
           <div className="flex justify-center mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  onClick={handleAddRow} 
-                  className="px-8 py-4 text-lg font-bold text-slate-50 bg-slate-900 hover:bg-slate-800"
-                >
-                  새로운 주제 추가
-                </Button>
+                
               </TooltipTrigger>
               <TooltipContent>
                 <p>아래에 새로운 주제 세트를 추가합니다</p>
@@ -133,16 +93,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
         </div>
       </section>
 
-      <CareerSentenceDialog
-        open={showRegenerateDialog}
-        onOpenChange={setShowRegenerateDialog}
-        generatedCareerSentences={generatedCareerSentences}
-        isGeneratingCareerSentence={isGeneratingCareerSentence}
-        onGenerate={handleCareerSentenceGenerate}
-        onSelectCareerSentence={handleSelectCareerSentence}
-      />
-    </>
-  );
+      <CareerSentenceDialog open={showRegenerateDialog} onOpenChange={setShowRegenerateDialog} generatedCareerSentences={generatedCareerSentences} isGeneratingCareerSentence={isGeneratingCareerSentence} onGenerate={handleCareerSentenceGenerate} onSelectCareerSentence={handleSelectCareerSentence} />
+    </>;
 };
-
 export default TopicGeneratorSection;
