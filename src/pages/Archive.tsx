@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -229,7 +228,6 @@ const Archive = () => {
                             <Badge variant="default">
                               View
                             </Badge>
-                            <ChevronDown className="ml-1 h-3 w-3" />
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
