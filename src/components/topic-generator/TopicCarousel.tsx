@@ -45,12 +45,12 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-7xl mx-auto">
       <Carousel className="w-full">
         <CarouselContent className="ml-0">
           {group.topicRows.map((row, index) => (
             <CarouselItem key={row.id} className="pl-0 pr-8 basis-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4 mx-auto max-w-6xl">
                 <div className="h-full overflow-hidden">
                   {row.stage === "topic_selected" ? (
                     <SelectedTopicCard 
@@ -76,9 +76,9 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         topicType: row.topicType
                       }} 
                       showFollowUp={index > 0} 
-                      isFollowUp={Boolean(followUpStates[row.id])}
+                      isFollowUp={followUpStates[row.id] || false}
                       onFollowUpChange={(checked) => {
-                        onFollowUpChange(row.id, Boolean(checked));
+                        onFollowUpChange(row.id, checked);
                       }} 
                       rowId={row.id} 
                       selectedCareerSentence={selectedCareerSentence} 

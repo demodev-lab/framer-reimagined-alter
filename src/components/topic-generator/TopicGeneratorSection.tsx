@@ -87,7 +87,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   return (
     <>
       <section className="flex flex-col items-center pb-8">
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-7xl mx-auto px-4">
           <CareerSentenceSection 
             selectedCareerSentence={selectedCareerSentence}
             onRegenerateCareerSentence={handleRegenerateCareerSentence}
