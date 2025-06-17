@@ -59,6 +59,9 @@ const TopicGeneratorCard = ({
     initialValues?.topicType || "보고서 주제"
   );
   const [showVideoDialog, setShowVideoDialog] = useState(false);
+  const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
+  const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
+  const [selectedCareerSentenceLocal, setSelectedCareerSentenceLocal] = useState<string | null>(selectedCareerSentence || null);
 
   const handleClear = () => {
     setSubject("");
@@ -70,7 +73,7 @@ const TopicGeneratorCard = ({
   };
 
   const handleGenerateClick = () => {
-    if (!selectedCareerSentence) {
+    if (!selectedCareerSentenceLocal) {
       setShowVideoDialog(true);
       return;
     }
@@ -88,8 +91,24 @@ const TopicGeneratorCard = ({
     aspiration: string;
   }) => {
     console.log("Career sentence generated:", data);
-    // 진로 문장 생성 로직은 상위 컴포넌트에서 처리
+    setIsGeneratingCareerSentence(true);
+    
+    // 시뮬레이션: 3개의 진로 문장 생성
+    setTimeout(() => {
+      const sentences = [
+        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
+        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
+        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
+      ];
+      setGeneratedCareerSentences(sentences);
+      setIsGeneratingCareerSentence(false);
+    }, 2000);
+  };
+
+  const handleSelectCareerSentence = (sentence: string) => {
+    setSelectedCareerSentenceLocal(sentence);
     setShowVideoDialog(false);
+    // 상위 컴포넌트에 선택된 진로 문장 전달 (필요시 추가)
   };
 
   return (
@@ -169,6 +188,15 @@ const TopicGeneratorCard = ({
                 </Select>
               </div>
             </div>
+            
+            {/* 선택된 진로 문장 표시 */}
+            {selectedCareerSentenceLocal && (
+              <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                <p className="text-sm text-green-800">
+                  <strong>선택된 진로 문장:</strong> {selectedCareerSentenceLocal}
+                </p>
+              </div>
+            )}
           </div>
           <div className="flex justify-end gap-2 pt-6">
             <Button variant="ghost" onClick={handleClear}>
@@ -180,7 +208,7 @@ const TopicGeneratorCard = ({
       </Card>
 
       <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
-        <DialogContent className="max-w-4xl w-full p-0 bg-white">
+        <DialogContent className="max-w-6xl w-full p-0 bg-white">
           <DialogClose 
             className="absolute right-4 top-4 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
             onClick={handleCloseDialog}
@@ -197,7 +225,48 @@ const TopicGeneratorCard = ({
               주제를 생성하기 위해서는 진로 문장이 필요합니다. 아래에서 진로 문장을 생성해주세요.
             </p>
             
-            <CareerSentenceGeneratorCard onGenerate={handleCareerSentenceGenerate} />
+            {/* 좌우 분할 레이아웃 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[500px]">
+              {/* 왼쪽: 진로 문장 생성기 */}
+              <div className="h-full">
+                <CareerSentenceGeneratorCard onGenerate={handleCareerSentenceGenerate} />
+              </div>
+              
+              {/* 오른쪽: 생성된 진로 문장 결과 */}
+              <div className="h-full">
+                <Card className="h-full flex flex-col">
+                  <CardHeader>
+                    <CardTitle>생성된 진로 문장</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-grow overflow-hidden min-h-0">
+                    {isGeneratingCareerSentence ? (
+                      <div className="flex items-center justify-center h-full">
+                        <p>진로 문장을 생성 중입니다...</p>
+                      </div>
+                    ) : generatedCareerSentences.length === 0 ? (
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-muted-foreground text-center">
+                          '문장 생성' 버튼을 누르면 진로 문장 후보 3개가 생성됩니다.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-2 h-full overflow-y-auto">
+                        {generatedCareerSentences.map((sentence, index) => (
+                          <Button
+                            key={index}
+                            variant="outline"
+                            className="justify-start text-left h-auto whitespace-normal py-3 px-4 hover:bg-green-50 hover:border-green-300"
+                            onClick={() => handleSelectCareerSentence(sentence)}
+                          >
+                            {sentence}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
