@@ -82,12 +82,8 @@ const Index = () => {
             </div>
             
             {/* Main Title */}
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              All features in 1 tool
-            </h2>
-            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">
-              Discover features that simplify workflows & grow your business.
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">제대로 준비하는 학생부</h2>
+            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">탐구 연구소는 높은 수준의 학생부를 만드는 데 집중합니다 </p>
 
             {/* New Grid Layout - Matching second image */}
             <div className="mb-16">
