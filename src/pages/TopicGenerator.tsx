@@ -7,7 +7,6 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
-
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -21,7 +20,6 @@ const TopicGenerator = () => {
     videoId: "",
     title: ""
   });
-
   useEffect(() => {
     const sections = ["preparation-method", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -44,7 +42,6 @@ const TopicGenerator = () => {
       });
     };
   }, []);
-
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -52,7 +49,6 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
-
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -64,7 +60,6 @@ const TopicGenerator = () => {
       });
     }
   };
-
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
       open: true,
@@ -72,7 +67,6 @@ const TopicGenerator = () => {
       title
     });
   };
-
   const handleCloseYouTubePopup = () => {
     setYoutubePopup({
       open: false,
@@ -80,22 +74,14 @@ const TopicGenerator = () => {
       title: ""
     });
   };
-
-  return (
-    <div className="min-h-screen bg-background font-sans">
+  return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-0">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
 
         <section className="text-center py-10 md:py-0">
           {/* Logo and Title Section */}
-          <div className="flex flex-col items-center justify-center gap-6 mb-6">
-            <div className="w-11 h-11 bg-black rounded-full flex items-center justify-center shadow-lg">
-              <svg fill="white" height="22" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
-                <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="white" stroke="white" strokeLinejoin="round" strokeWidth="1.5" />
-              </svg>
-            </div>
-          </div>
+          
         </section>
 
         <PreparationMethodSection />
@@ -124,8 +110,6 @@ const TopicGenerator = () => {
       </main>
 
       <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
-    </div>
-  );
+    </div>;
 };
-
 export default TopicGenerator;
