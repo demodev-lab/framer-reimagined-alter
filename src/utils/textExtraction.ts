@@ -1,11 +1,9 @@
+
 import * as pdfjsLib from 'pdfjs-dist';
 import { createWorker } from 'tesseract.js';
 
-// PDF.js 워커 설정 - 로컬 워커 사용
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url
-).toString();
+// PDF.js 워커 설정 - CDN 사용
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
 export interface SubjectTopic {
   subject: string;
@@ -24,7 +22,9 @@ const extractTextFromPDF = async (file: File): Promise<string> => {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const loadingTask = pdfjsLib.getDocument({ 
-      data: arrayBuffer
+      data: arrayBuffer,
+      // 워커를 비활성화하고 메인 스레드에서 처리
+      disableWorker: true
     });
     
     const pdf = await loadingTask.promise;
@@ -54,12 +54,12 @@ const extractTextFromPDF = async (file: File): Promise<string> => {
     
     // 더 구체적인 오류 메시지 제공
     if (error instanceof Error) {
-      if (error.message.includes('worker')) {
-        throw new Error('PDF 처리 중 워커 오류가 발생했습니다. 다른 PDF 파일을 시도해보세요.');
+      if (error.message.includes('worker') || error.message.includes('Worker')) {
+        throw new Error('PDF 처리 중 오류가 발생했습니다. 브라우저 호환성 문제일 수 있습니다.');
       } else if (error.message.includes('Invalid PDF')) {
         throw new Error('유효하지 않은 PDF 파일입니다. 다른 파일을 선택해주세요.');
       } else if (error.message.includes('fetch')) {
-        throw new Error('PDF 처리를 위한 리소스 로딩에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
+        throw new Error('PDF 처리를 위한 리소스 로딩에 실패했습니다. 인터넷 연결을 확인해주세요.');
       }
     }
     
