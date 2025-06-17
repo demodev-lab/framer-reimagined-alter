@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ArchivedTopic } from '@/types/archive';
 import { toast } from 'sonner';
 
@@ -25,8 +25,37 @@ interface ArchiveProviderProps {
   children: ReactNode;
 }
 
+const STORAGE_KEY = 'archived_topics';
+
 export const ArchiveProvider: React.FC<ArchiveProviderProps> = ({ children }) => {
   const [archivedTopics, setArchivedTopics] = useState<ArchivedTopic[]>([]);
+
+  // localStorage에서 데이터 로드
+  useEffect(() => {
+    try {
+      const savedTopics = localStorage.getItem(STORAGE_KEY);
+      if (savedTopics) {
+        const parsed = JSON.parse(savedTopics);
+        // createdAt을 Date 객체로 변환
+        const topicsWithDates = parsed.map((topic: any) => ({
+          ...topic,
+          createdAt: new Date(topic.createdAt)
+        }));
+        setArchivedTopics(topicsWithDates);
+      }
+    } catch (error) {
+      console.error('Failed to load archived topics from localStorage:', error);
+    }
+  }, []);
+
+  // archivedTopics가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(archivedTopics));
+    } catch (error) {
+      console.error('Failed to save archived topics to localStorage:', error);
+    }
+  }, [archivedTopics]);
 
   const saveTopic = (topic: Omit<ArchivedTopic, 'id' | 'createdAt' | 'status' | 'priority'>) => {
     const newTopic: ArchivedTopic = {
