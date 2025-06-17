@@ -1,10 +1,8 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
-
 const Index = () => {
   return <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
@@ -64,16 +62,7 @@ const Index = () => {
                 <CardContent className="p-0">
                   <div className="mb-6">
                     <div className="relative rounded-2xl overflow-hidden shadow-[0_12px_30px_rgba(0,0,0,0.2)] border-2 border-gray-200">
-                      <iframe
-                        width="100%"
-                        height="400"
-                        src="https://www.youtube.com/embed/z4HfvrPA_kI"
-                        title="AI가 브라우저 자동화를 해준다고?"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        className="w-full"
-                      />
+                      <iframe width="100%" height="400" src="https://www.youtube.com/embed/z4HfvrPA_kI" title="AI가 브라우저 자동화를 해준다고?" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full" />
                     </div>
                   </div>
                   <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
@@ -116,10 +105,9 @@ const Index = () => {
                   <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
                     <X className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Cutting-Edge AI</h3>
-                  <p className="text-gray-600">
-                    Deploy AI solutions that adapt quickly, learn fast, and scale with your business needs.
-                  </p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">학생부의 정석적인 준비</h3>
+                  <p className="text-gray-600">더 이상 '~카더라'하는 식의 소문이 아닌
+자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
                 </CardContent>
               </Card>
 
@@ -180,5 +168,4 @@ const Index = () => {
       </main>
     </div>;
 };
-
 export default Index;
