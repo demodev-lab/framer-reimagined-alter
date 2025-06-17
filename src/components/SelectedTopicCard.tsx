@@ -51,12 +51,12 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
         <div className="flex gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 새로고침" disabled={isLocked}>
+              <Button variant="ghost" size="icon" onClick={onRefresh} aria-label="주제 재생성" disabled={isLocked}>
                 <RefreshCw className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>주제 목록으로 돌아가기</p>
+              <p>새로운 주제 생성</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>

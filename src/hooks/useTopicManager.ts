@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
@@ -217,24 +216,74 @@ export const useTopicManager = () => {
   };
 
   const handleRefreshTopic = (rowId: number) => {
-    console.log("Refreshing topic for row:", rowId);
+    console.log("Regenerating topics for row:", rowId);
+    
+    const allRows = carouselGroups.flatMap(group => group.topicRows);
+    const row = allRows.find(r => r.id === rowId);
+    
+    if (!row) return;
+
+    // 기존 입력 정보를 바탕으로 새로운 주제 생성
+    const inputs = {
+      subject: row.subject,
+      concept: row.concept,
+      topicType: row.topicType
+    };
+
+    // 먼저 로딩 상태로 변경
     setCarouselGroups(prevGroups =>
       prevGroups.map(group => ({
         ...group,
-        topicRows: group.topicRows.map(row =>
-          row.id === rowId
+        topicRows: group.topicRows.map(r =>
+          r.id === rowId
             ? {
-                ...row,
+                ...r,
                 stage: 'topics_generated',
                 selectedTopic: null,
                 researchMethods: [],
                 isLoadingMethods: false,
+                isLoadingTopics: true,
+                generatedTopics: []
               }
-            : row
+            : r
         )
       }))
     );
-    toast.info("주제 목록으로 돌아갑니다. 다른 주제를 선택해주세요.");
+
+    // 새로운 주제 생성
+    setTimeout(() => {
+      const rowIndex = allRows.findIndex(r => r.id === rowId);
+      const isFollowUp = followUpStates[rowId];
+      
+      let newTopics;
+      if (isFollowUp && rowIndex > 0) {
+        const previousTopic = allRows[rowIndex - 1].selectedTopic!;
+        newTopics = [
+          `'${previousTopic}'의 다른 측면에서 접근하는 심화 탐구`,
+          `'${previousTopic}'과 관련된 새로운 문제 발견 및 해결 방안 모색`,
+          `'${previousTopic}'의 결과를 실제 현장에 적용하는 방안 연구`,
+        ];
+      } else {
+        newTopics = [
+          `'${selectedCareerSentence}'와 연계한 '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}' 심화 연구`,
+          `'${inputs.concept || '주요 개념'}'의 실제 적용 사례를 '${selectedCareerSentence}' 관점에서 분석`,
+          `'${selectedCareerSentence}' 실현을 위한 '${inputs.subject || '선택 과목'}' 기반 창의적 해결책 탐구`,
+        ];
+      }
+
+      setCarouselGroups(prevGroups => 
+        prevGroups.map(group => ({
+          ...group,
+          topicRows: group.topicRows.map(r =>
+            r.id === rowId
+              ? { ...r, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
+              : r
+          )
+        }))
+      );
+      
+      toast.success("기존 입력을 바탕으로 새로운 주제가 생성되었습니다.");
+    }, 1500);
   };
 
   const handleLockTopic = (rowId: number) => {
@@ -302,7 +351,7 @@ export const useTopicManager = () => {
         ...group,
         topicRows: group.topicRows.map(r =>
           r.id === rowId ? { ...r, isLoadingMethods: true, researchMethods: [] } : r
-        )
+        })
       }))
     );
 
@@ -313,7 +362,7 @@ export const useTopicManager = () => {
           ...group,
           topicRows: group.topicRows.map(r =>
             r.id === rowId ? { ...r, isLoadingMethods: false, researchMethods: newMethods } : r
-          )
+          })
         }))
       );
       toast.success("탐구 방법이 새롭게 생성되었습니다.");
@@ -326,7 +375,7 @@ export const useTopicManager = () => {
         ...group,
         topicRows: group.topicRows.map(row =>
           row.id === rowId ? { ...row, topicType } : row
-        )
+        })
       }))
     );
     toast.info(`주제 유형이 '${topicType}'(으)로 변경되었습니다.`);
