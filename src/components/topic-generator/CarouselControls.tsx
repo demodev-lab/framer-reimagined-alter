@@ -47,10 +47,11 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
           <TooltipTrigger asChild>
             <Button
               variant="outline"
-              className="absolute -right-20 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full text-xs font-medium"
+              className="absolute -right-20 top-1/2 -translate-y-1/2 h-12 w-12 rounded-md flex flex-col items-center justify-center text-xs font-medium p-1"
               onClick={() => onAddFollowUp(groupId)}
             >
-              후속
+              <span>후속</span>
+              <span>탐구</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
