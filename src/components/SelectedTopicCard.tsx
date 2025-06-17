@@ -29,8 +29,6 @@ interface SelectedTopicCardProps {
   onRegenerateMethods: () => void;
   topicType: string;
   onTopicTypeChange: (type: string) => void;
-  researchMethods?: string[];
-  isLoadingMethods?: boolean;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -45,8 +43,6 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onRegenerateMethods,
   topicType,
   onTopicTypeChange,
-  researchMethods = [],
-  isLoadingMethods = false,
 }) => {
   return (
     <Card className="h-full flex flex-col">
@@ -146,30 +142,11 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
           <Button 
             onClick={onRegenerateMethods}
             className="bg-black text-white hover:bg-gray-800 px-6 py-2"
-            disabled={isLocked || isLoadingMethods}
+            disabled={isLocked}
           >
-            {isLoadingMethods ? "생성 중..." : "탐구 방법 생성"}
+            탐구 방법 생성
           </Button>
         </div>
-
-        {/* 탐구 방법 표시 박스 */}
-        {(researchMethods.length > 0 || isLoadingMethods) && (
-          <div className="mt-4 p-4 border rounded-lg bg-gray-50">
-            <h4 className="font-semibold mb-3 text-center">탐구 방법</h4>
-            {isLoadingMethods ? (
-              <div className="text-center text-muted-foreground">탐구 방법을 생성하고 있습니다...</div>
-            ) : (
-              <div className="space-y-3">
-                {researchMethods.map((method, index) => (
-                  <div key={index} className="p-3 bg-white rounded border text-sm">
-                    <span className="font-medium text-primary">{index + 1}. </span>
-                    {method}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </CardContent>
     </Card>
   );
