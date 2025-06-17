@@ -40,8 +40,8 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             disabled={isLoading}
             title="난이도 낮추기"
           >
-            <ChevronDown className="h-4 w-4" />
             난이도
+            <ChevronDown className="h-4 w-4" />
           </Button>
           <Button 
             onClick={handleIncreaseDifficulty}
@@ -51,8 +51,8 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             disabled={isLoading}
             title="난이도 높이기"
           >
-            <ChevronUp className="h-4 w-4" />
             난이도
+            <ChevronUp className="h-4 w-4" />
           </Button>
           <Button 
             onClick={handleMoreDetails}
@@ -61,8 +61,8 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             disabled={isLoading}
             title="초등학생도 할 수 있는 상세한 단계별 설명"
           >
-            <ChevronRight className="h-4 w-4" />
             더 자세히
+            <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
