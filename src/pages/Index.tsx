@@ -140,9 +140,7 @@ const Index = () => {
                         <h3 className="text-xl font-bold text-gray-900">탐구 방법까지 한번에</h3>
                         
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
-                      </p>
+                      <p className="text-gray-600 text-sm">주제가 어려워보인다고, 포기하는 것은 더 이상 용납되지 않습니다. </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -158,9 +156,7 @@ const Index = () => {
                         <h3 className="text-xl font-bold text-gray-900">Lock 기능으로 나만의 주제를</h3>
                         
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        Enhance customer experience with AI-driven virtual assistants available for support and engagement.
-                      </p>
+                      <p className="text-gray-600 text-sm">Lock 기능으로 주제를 잠그면, 더 이상 같은 주제가 나오지 않습니다. 학생부 중복률을 낮추기 위해 적극적으로 활용해보세요!</p>
                     </div>
                   </CardContent>
                 </Card>
