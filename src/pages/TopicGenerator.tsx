@@ -1,10 +1,7 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
@@ -16,55 +13,11 @@ const TopicGenerator = () => {
     carouselGroups,
     ...topicManager
   } = useTopicManager();
-  const [activeTab, setActiveTab] = useState("preparation-method");
   const [youtubePopup, setYoutubePopup] = useState({
     open: false,
     videoId: "",
     title: ""
   });
-
-  useEffect(() => {
-    const sections = ["preparation-method", "topic-generator-section"];
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setActiveTab(entry.target.id);
-        }
-      });
-    }, {
-      rootMargin: "-150px 0px -50% 0px"
-    });
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => {
-      sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) observer.unobserve(el);
-      });
-    };
-  }, []);
-
-  const navItems = [{
-    id: "preparation-method",
-    label: "학생부 준비 방법"
-  }, {
-    id: "topic-generator-section",
-    label: "주제 생성기"
-  }];
-
-  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    setActiveTab(id);
-    const target = document.getElementById(id);
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
 
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
@@ -85,8 +38,6 @@ const TopicGenerator = () => {
   return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-0">
-        <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
-
         <section className="text-center py-10 md:py-0">
           {/* Logo and Title Section */}
           
