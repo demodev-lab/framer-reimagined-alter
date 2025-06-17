@@ -30,7 +30,7 @@ const Index = () => {
               <a href="/topic-generator">심화 세특 주제 만들기</a>
             </Button>
             <Button variant="outline" asChild className="bg-gradient-to-b from-white to-gray-50 border-2 border-gray-300 text-gray-700 hover:from-gray-50 hover:to-gray-100 hover:border-gray-400 hover:text-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] transform hover:translate-y-[-2px] transition-all duration-200 min-w-[140px]">
-              <a href="/feedback">학생부 심폐 소생</a>
+              <a href="/feedback">학생부 심폐 소생하기</a>
             </Button>
           </div>
         </section>
@@ -79,7 +79,7 @@ const Index = () => {
             
             {/* Main Title */}
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">제대로 준비하는 학생부</h2>
-            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">탐구 연구소는 높은 수준의 학생부를 만드는 데 집중합니다 </p>
+            <p className="text-lg text-gray-600 mb-16 max-w-2xl mx-auto">탐구 연구소는 높은 수준의 학생부를 만드는 데 집중합니다 </p>
 
             {/* New Grid Layout - Matching second image */}
             <div className="mb-16">
