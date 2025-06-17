@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Book, GraduationCap } from 'lucide-react';
 
 interface SubjectTopic {
@@ -22,6 +24,10 @@ const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => 
     return null;
   }
 
+  const handleGenerateCareerSentence = () => {
+    console.log("진로 문장 생성 버튼 클릭됨");
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
       <div className="text-center mb-8">
@@ -31,6 +37,11 @@ const ResearchTopicsResult: React.FC<ResearchTopicsResultProps> = ({ data }) => 
         <p className="text-gray-600">
           생활기록부에서 추출된 과목별 탐구 주제입니다
         </p>
+        <div className="mt-4">
+          <Button onClick={handleGenerateCareerSentence} className="bg-black text-white hover:bg-gray-800">
+            진로 문장 생성
+          </Button>
+        </div>
       </div>
 
       {data.map((gradeData) => (
