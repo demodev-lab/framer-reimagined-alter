@@ -1,9 +1,8 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronRight, Archive } from "lucide-react";
 import React from "react";
 
 interface ResearchMethodsCardProps {
@@ -25,6 +24,10 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
 
   const handleMoreDetails = () => {
     console.log("초등학생 수준 상세 설명 생성 버튼 클릭");
+  };
+
+  const handleArchiveSave = () => {
+    console.log("아카이브 저장 버튼 클릭");
   };
 
   return (
@@ -63,6 +66,17 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
           >
             더 자세히
             <ChevronRight className="h-4 w-4" />
+          </Button>
+          <Button 
+            onClick={handleArchiveSave}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-1"
+            disabled={isLoading}
+            title="아카이브에 저장"
+          >
+            아카이브 저장
+            <Archive className="h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
