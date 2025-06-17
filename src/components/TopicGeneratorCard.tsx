@@ -42,6 +42,7 @@ interface TopicGeneratorCardProps {
   onFollowUpChange?: (checked: boolean | 'indeterminate') => void;
   rowId: number;
   selectedCareerSentence?: string | null;
+  onCareerSentenceSelect?: (sentence: string) => void;
 }
 
 const TopicGeneratorCard = ({
@@ -52,6 +53,7 @@ const TopicGeneratorCard = ({
   onFollowUpChange,
   rowId,
   selectedCareerSentence,
+  onCareerSentenceSelect,
 }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState(initialValues?.subject || "");
   const [concept, setConcept] = useState(initialValues?.concept || "");
@@ -106,7 +108,10 @@ const TopicGeneratorCard = ({
 
   const handleSelectCareerSentence = (sentence: string) => {
     setShowVideoDialog(false);
-    // 상위 컴포넌트에 선택된 진로 문장 전달 (필요시 추가)
+    // 상위 컴포넌트에 선택된 진로 문장 전달
+    if (onCareerSentenceSelect) {
+      onCareerSentenceSelect(sentence);
+    }
   };
 
   return (

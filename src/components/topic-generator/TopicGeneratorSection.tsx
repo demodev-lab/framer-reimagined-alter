@@ -1,3 +1,4 @@
+
 import React from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -24,6 +25,7 @@ interface TopicGeneratorSectionProps {
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
   selectedCareerSentence?: string | null;
+  setSelectedCareerSentence: (sentence: string) => void;
 }
 
 const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
@@ -38,7 +40,8 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleTopicTypeChange,
   followUpStates,
   handleFollowUpChange,
-  selectedCareerSentence
+  selectedCareerSentence,
+  setSelectedCareerSentence
 }) => {
   const handleRegenerateCareerSentence = () => {
     // 진로 문장 재생성 로직 - 부모 컴포넌트에서 처리하도록 이벤트 전달
@@ -111,6 +114,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                       onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)}
                       rowId={row.id}
                       selectedCareerSentence={selectedCareerSentence}
+                      onCareerSentenceSelect={setSelectedCareerSentence}
                     />
                   )}
                 </div>

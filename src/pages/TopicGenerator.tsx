@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -96,13 +95,11 @@ const TopicGenerator = () => {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">주제 생성기</h2>
             <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
           </div>
-          {selectedCareerSentence && <div className="w-full max-w-4xl mx-auto mb-6">
-            <div className="p-4 border rounded-lg bg-muted">
-              <p className="font-semibold text-center text-muted-foreground mb-2">진로 문장</p>
-              <p className="text-center text-foreground">{selectedCareerSentence}</p>
-            </div>
-          </div>}
-          <TopicGeneratorSection {...topicManager} selectedCareerSentence={selectedCareerSentence} />
+          <TopicGeneratorSection 
+            {...topicManager} 
+            selectedCareerSentence={selectedCareerSentence}
+            setSelectedCareerSentence={setSelectedCareerSentence}
+          />
         </section>
       </main>
     </div>;
