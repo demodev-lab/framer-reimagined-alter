@@ -19,7 +19,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
         <CardTitle>탐구 방법</CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[200px] pr-4">
+        <div className="pr-4">
           {isLoading ? (
             <div className="space-y-3">
               <Skeleton className="h-4 w-full" />
@@ -36,7 +36,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
               ))}
             </div>
           )}
-        </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   );
