@@ -1,13 +1,10 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+  return <div className="min-h-screen bg-gray-50 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <section className="text-center py-20 md:py-32">
@@ -67,9 +64,7 @@ const Index = () => {
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <div className="absolute top-2 right-8 text-xs text-gray-500 font-medium bg-white px-2 py-1 rounded-full shadow-sm">
-                      90% 정확도
-                    </div>
+                    
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">실시간 분석</h3>
                   <p className="text-gray-600">
@@ -102,15 +97,9 @@ const Index = () => {
                     <div className="absolute -top-2 -right-2 w-12 h-12 bg-black rounded-full flex items-center justify-center">
                       <Zap className="w-6 h-6 text-white" />
                     </div>
-                    <div className="absolute top-2 right-8 text-xs text-gray-500 font-medium bg-white px-2 py-1 rounded-full shadow-sm">
-                      10% 비용
-                    </div>
-                    <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                      <Users className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <div className="absolute -bottom-8 -right-8 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center">
-                      <Users className="w-3 h-3 text-gray-400" />
-                    </div>
+                    
+                    
+                    
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">실시간 동기화</h3>
                   <p className="text-gray-600">
@@ -142,8 +131,6 @@ const Index = () => {
           </div>
         </section>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
