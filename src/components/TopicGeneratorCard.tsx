@@ -164,6 +164,26 @@ const TopicGeneratorCard = ({
               />
             </div>
             <div className="flex items-center gap-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="w-[110px] flex-shrink-0"
+              >
+                주제 유형
+              </Button>
+              <Select value={topicType} onValueChange={setTopicType}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="보고서 주제">보고서 주제</SelectItem>
+                  <SelectItem value="실험 주제">실험 주제</SelectItem>
+                  <SelectItem value="탐구 주제">탐구 주제</SelectItem>
+                  <SelectItem value="프로젝트 주제">프로젝트 주제</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-4">
               <div className="w-[110px] flex-shrink-0">
                 {showFollowUp ? (
                   <TooltipProvider>
