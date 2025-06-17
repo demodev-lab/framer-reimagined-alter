@@ -17,7 +17,7 @@ const Index = () => {
           </div>
 
           {/* Logo and Title Section */}
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col items-center justify-center gap-6 mb-6">
             <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center shadow-lg">
               <svg fill="white" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg">
                 <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="white" stroke="white" strokeLinejoin="round" strokeWidth="1.5" />
