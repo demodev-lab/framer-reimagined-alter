@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -118,7 +117,7 @@ const TopicGeneratorCard = ({
     <>
       <Card className="h-full flex flex-col">
         <CardHeader>
-          <CardTitle>주제 생성기</CardTitle>
+          <CardTitle className="text-center">주제 생성기</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col flex-grow justify-between pt-0">
           <div className="space-y-4">
