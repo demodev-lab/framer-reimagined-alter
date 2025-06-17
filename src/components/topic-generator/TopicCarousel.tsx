@@ -80,15 +80,13 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                   )}
                 </div>
                 <div className="h-full overflow-hidden">
-                  {row.stage === "topics_generated" && (
-                    <TopicResultsCard 
-                      title="생성된 주제"
-                      placeholder="주제를 생성하려면 왼쪽 폼을 작성하고 '주제 생성' 버튼을 눌러주세요."
-                      topics={row.generatedTopics}
-                      onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
-                      isLoading={row.isLoadingTopics}
-                    />
-                  )}
+                  <TopicResultsCard 
+                    title="생성된 주제"
+                    placeholder="주제를 생성하려면 왼쪽 폼을 작성하고 '주제 생성' 버튼을 눌러주세요."
+                    topics={row.generatedTopics || []}
+                    onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
+                    isLoading={row.isLoadingTopics || false}
+                  />
                 </div>
               </div>
             </CarouselItem>
