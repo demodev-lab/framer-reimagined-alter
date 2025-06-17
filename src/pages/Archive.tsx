@@ -162,21 +162,28 @@ const Archive = () => {
             </div>
           </div>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Filter className="h-4 w-4" />
-                정렬
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuRadioGroup value={sortOrder} onValueChange={setSortOrder}>
-                <DropdownMenuRadioItem value="date">날짜순</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="alphabetical">가나다순</DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" className="gap-2">
+              <RefreshCw className="h-4 w-4" />
+              다시 생성
+            </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  <Filter className="h-4 w-4" />
+                  정렬
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuRadioGroup value={sortOrder} onValueChange={setSortOrder}>
+                  <DropdownMenuRadioItem value="date">날짜순</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="alphabetical">가나다순</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         {sortedTopics.length === 0 ? <div className="text-center py-12">
