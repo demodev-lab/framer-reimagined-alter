@@ -7,7 +7,7 @@ import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
@@ -133,8 +133,8 @@ const Index = () => {
         </section>
 
         {/* All Features in 1 Tool Section - Updated Layout */}
-        <section className="py-20 bg-white">
-          <div className="max-w-6xl mx-auto text-center">
+        <section className="py-20 bg-white rounded-3xl">
+          <div className="max-w-6xl mx-auto text-center px-8">
             {/* Features Tag */}
             <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 mb-8">
               <span className="text-sm text-gray-600 font-medium">⚙️ FEATURES</span>
