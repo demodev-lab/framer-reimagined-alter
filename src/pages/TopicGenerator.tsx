@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useTopicManager } from "@/hooks/useTopicManager";
 import Header from "@/components/Header";
@@ -7,7 +6,6 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import CareerSentenceGeneratorSection from "@/components/topic-generator/CareerSentenceGeneratorSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
-
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -15,7 +13,6 @@ const TopicGenerator = () => {
     ...topicManager
   } = useTopicManager();
   const [activeTab, setActiveTab] = useState("preparation-method");
-
   useEffect(() => {
     const sections = ["preparation-method", "career-sentence-generator", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -38,22 +35,16 @@ const TopicGenerator = () => {
       });
     };
   }, []);
-
-  const navItems = [
-    {
-      id: "preparation-method",
-      label: "학생부 준비 방법"
-    },
-    {
-      id: "career-sentence-generator",
-      label: "진로 문장 생성기"
-    },
-    {
-      id: "topic-generator-section",
-      label: "주제 생성기"
-    }
-  ];
-
+  const navItems = [{
+    id: "preparation-method",
+    label: "학생부 준비 방법"
+  }, {
+    id: "career-sentence-generator",
+    label: "진로 문장 생성기"
+  }, {
+    id: "topic-generator-section",
+    label: "주제 생성기"
+  }];
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -61,18 +52,16 @@ const TopicGenerator = () => {
     if (target) {
       target.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'start'
       });
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background font-sans">
+  return <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
 
-        <section className="text-center py-20 md:py-[70px]">
+        <section className="text-center py-20 md:py-[40px]">
           {/* Tag */}
           <div className="inline-flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border mb-8">
             <span className="text-sm text-gray-600 font-medium">📚 학생부 관리 솔루션</span>
@@ -122,7 +111,6 @@ const TopicGenerator = () => {
           <TopicGeneratorSection {...topicManager} />
         </section>
       </main>
-    </div>
-  );
+    </div>;
 };
 export default TopicGenerator;
