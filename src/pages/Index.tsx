@@ -3,10 +3,8 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gray-100 font-sans">
+  return <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
@@ -104,9 +102,7 @@ const Index = () => {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-xl font-bold text-gray-900">학생부의 정석적인 준비</h3>
-                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
-                          <X className="w-5 h-5 text-white" />
-                        </div>
+                        
                       </div>
                       <p className="text-gray-600 text-sm">더 이상 '~카더라'하는 식의 소문이 아닌 자신을 제대로 어필할 수 있는 활동이 담긴 학생부를 준비하세요</p>
                     </div>
@@ -122,9 +118,7 @@ const Index = () => {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-xl font-bold text-gray-900">최신 연구 기반 탐구 주제 생성</h3>
-                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
-                          <Cog className="w-5 h-5 text-white" />
-                        </div>
+                        
                       </div>
                       <p className="text-gray-600 text-sm">
                         Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
@@ -145,9 +139,7 @@ const Index = () => {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-xl font-bold text-gray-900">탐구 방법까지 한번에</h3>
-                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
-                          <TrendingUp className="w-5 h-5 text-white" />
-                        </div>
+                        
                       </div>
                       <p className="text-gray-600 text-sm">
                         Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
@@ -165,9 +157,7 @@ const Index = () => {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="text-xl font-bold text-gray-900">Lock 기능으로 나만의 주제를</h3>
-                        <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center ml-4">
-                          <MessageSquare className="w-5 h-5 text-white" />
-                        </div>
+                        
                       </div>
                       <p className="text-gray-600 text-sm">
                         Enhance customer experience with AI-driven virtual assistants available for support and engagement.
@@ -190,8 +180,6 @@ const Index = () => {
           </div>
         </section>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
