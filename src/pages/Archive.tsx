@@ -210,9 +210,7 @@ const Archive = () => {
                                 </span>
                                 <div className="flex items-center gap-2">
                                   <Button variant="outline" size="sm" onClick={() => handleDifficultyUp(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1"> 난이도 ⬆️ </Button>
-                                  <Button variant="outline" size="sm" onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">
-                                    ⬇️ 난이도 down
-                                  </Button>
+                                  <Button variant="outline" size="sm" onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">난이도 ⬇️ </Button>
                                   <Button variant="outline" size="sm" onClick={() => handleMoreDetailed(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
                                     더 자세히
                                   </Button>
