@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -84,26 +85,6 @@ const Index = () => {
                   </p>
                 </CardContent>
               </Card>
-            </div>
-
-            {/* Bottom Feature Pills */}
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
-                <FileText className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-700 font-medium">데이터 기반 결정</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
-                <Lightbulb className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-700 font-medium">빠른 혁신</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
-                <Award className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-700 font-medium">가상 지원</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm border-2 border-gray-200">
-                <Clock className="w-4 h-4 text-gray-600" />
-                <span className="text-sm text-gray-700 font-medium">확장 가능한 솔루션</span>
-              </div>
             </div>
           </div>
         </section>
