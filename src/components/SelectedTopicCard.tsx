@@ -30,6 +30,7 @@ interface SelectedTopicCardProps {
   topicType: string;
   onTopicTypeChange: (type: string) => void;
   researchMethods?: string[];
+  onGoBack?: () => void;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -45,6 +46,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topicType,
   onTopicTypeChange,
   researchMethods = [],
+  onGoBack,
 }) => {
   const { saveTopic } = useArchive();
 
