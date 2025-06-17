@@ -7,6 +7,7 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -79,7 +80,7 @@ const TopicGenerator = () => {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
 
-        <section className="text-center py-20 md:py-0">
+        <section className="text-center py-10 md:py-0">
           {/* Logo and Title Section */}
           <div className="flex flex-col items-center justify-center gap-6 mb-6">
             <div className="w-11 h-11 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -118,4 +119,5 @@ const TopicGenerator = () => {
       <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
     </div>;
 };
+
 export default TopicGenerator;
