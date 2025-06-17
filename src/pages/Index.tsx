@@ -70,7 +70,7 @@ const Index = () => {
         </section>
 
         {/* All features in 1 tool section */}
-        <section className="bg-white rounded-3xl py-[40px]">
+        <section className="bg-white rounded-3xl py-[60px]">
           <div className="max-w-6xl mx-auto text-center px-8">
             {/* Features Tag */}
             <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 mb-8">
