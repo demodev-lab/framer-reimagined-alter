@@ -9,7 +9,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
-
 const Archive = () => {
   const navigate = useNavigate();
   const {
@@ -157,7 +156,7 @@ const Archive = () => {
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold">아카이브</h1>
+              <h1 className="text-3xl font-bold">보관함</h1>
               <p className="text-muted-foreground">저장된 탐구 주제들을 관리하세요</p>
             </div>
           </div>
@@ -283,5 +282,4 @@ const Archive = () => {
       </main>
     </div>;
 };
-
 export default Archive;
