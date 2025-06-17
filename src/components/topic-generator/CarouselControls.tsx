@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCarousel } from "@/components/ui/carousel";
 
 interface CarouselControlsProps {
@@ -43,20 +42,13 @@ const CarouselControls: React.FC<CarouselControlsProps> = ({
           <span className="sr-only">Next slide</span>
         </Button>
       ) : canAddFollowUp ? (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              className="absolute -right-20 top-1/2 -translate-y-1/2 h-12 w-12 rounded-md flex flex-col items-center justify-center text-xs font-medium p-1 bg-black text-white hover:bg-gray-800 border-black"
-              onClick={() => onAddFollowUp(groupId)}
-            >
-              <span className="leading-none">후속</span>
-              <span className="leading-none">심화</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>후속 심화 탐구 만들기</p>
-          </TooltipContent>
-        </Tooltip>
+        <Button
+          className="absolute -right-20 top-1/2 -translate-y-1/2 h-12 w-12 rounded-md flex flex-col items-center justify-center text-xs font-medium p-1 bg-black text-white hover:bg-gray-800 border-black"
+          onClick={() => onAddFollowUp(groupId)}
+        >
+          <span className="leading-none">후속</span>
+          <span className="leading-none">심화</span>
+        </Button>
       ) : null}
     </>
   );
