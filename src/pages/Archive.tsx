@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
+
 const Archive = () => {
   const navigate = useNavigate();
   const {
@@ -184,37 +185,37 @@ const Archive = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">No.</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead className="w-[120px]">과목</TableHead>
-                  <TableHead className="w-[120px]">주제 유형</TableHead>
-                  <TableHead>탐구 방법</TableHead>
-                  <TableHead className="text-right">
+                  <TableHead className="w-[100px] text-center">No.</TableHead>
+                  <TableHead className="text-center">Title</TableHead>
+                  <TableHead className="w-[120px] text-center">과목</TableHead>
+                  <TableHead className="w-[120px] text-center">주제 유형</TableHead>
+                  <TableHead className="text-center">탐구 방법</TableHead>
+                  <TableHead className="text-center">
               </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sortedTopics.map((topic, index) => <TableRow key={topic.id}>
-                    <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-medium text-center">{index + 1}</TableCell>
+                    <TableCell className="text-center">
                       <div className="space-y-1">
                         <div className="font-medium">{topic.title}</div>
-                        <div className="flex gap-2 text-sm text-muted-foreground">
+                        <div className="flex justify-center text-sm text-muted-foreground">
                           <span>교과 개념 : {topic.concept || '-'}</span>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       {topic.subject ? <Badge variant="outline" className="text-xs">
                           {topic.subject}
                         </Badge> : <span className="text-xs text-muted-foreground">-</span>}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
                         {topic.topicType}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="ghost" className="h-8 p-2">
@@ -270,7 +271,7 @@ const Archive = () => {
                         </DialogContent>
                       </Dialog>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-center">
                       <Button variant="ghost" size="icon" onClick={() => deleteTopic(topic.id)} className="h-8 w-8 text-destructive hover:text-destructive">
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -282,4 +283,5 @@ const Archive = () => {
       </main>
     </div>;
 };
+
 export default Archive;
