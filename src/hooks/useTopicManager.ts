@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
 
@@ -7,6 +6,8 @@ interface CarouselGroup {
   id: number;
   topicRows: TopicRow[];
 }
+
+const TOPIC_MANAGER_STORAGE_KEY = 'topic_manager_state';
 
 const generateMethods = (topic: string) => {
   return [
@@ -40,6 +41,37 @@ export const useTopicManager = () => {
   ]);
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
   const [followUpStates, setFollowUpStates] = useState<Record<number, boolean>>({ 1: false });
+
+  // localStorage에서 상태 로드
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
+      if (savedState) {
+        const parsed = JSON.parse(savedState);
+        setSelectedCareerSentence(parsed.selectedCareerSentence);
+        setCarouselGroups(parsed.carouselGroups);
+        setLockedTopics(parsed.lockedTopics);
+        setFollowUpStates(parsed.followUpStates);
+      }
+    } catch (error) {
+      console.error('Failed to load topic manager state from localStorage:', error);
+    }
+  }, []);
+
+  // 상태가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    try {
+      const stateToSave = {
+        selectedCareerSentence,
+        carouselGroups,
+        lockedTopics,
+        followUpStates
+      };
+      localStorage.setItem(TOPIC_MANAGER_STORAGE_KEY, JSON.stringify(stateToSave));
+    } catch (error) {
+      console.error('Failed to save topic manager state to localStorage:', error);
+    }
+  }, [selectedCareerSentence, carouselGroups, lockedTopics, followUpStates]);
 
   // Get all topic rows flattened for compatibility
   const topicRows = carouselGroups.flatMap(group => group.topicRows);
