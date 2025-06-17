@@ -9,7 +9,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
-
 const Archive = () => {
   const navigate = useNavigate();
   const {
@@ -21,7 +20,6 @@ const Archive = () => {
   const [sortOrder, setSortOrder] = useState<string>('date');
   const [isRegeneratingMethods, setIsRegeneratingMethods] = useState<Record<string, boolean>>({});
   const [topicResearchMethods, setTopicResearchMethods] = useState<Record<string, string[]>>({});
-
   const sortedTopics = [...archivedTopics].sort((a, b) => {
     if (sortOrder === 'date') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -30,11 +28,9 @@ const Archive = () => {
     }
     return 0;
   });
-
   const handleGoBack = () => {
     navigate('/topic-generator');
   };
-
   const getPriorityBadgeVariant = (priority: ArchivedTopic['priority']) => {
     switch (priority) {
       case 'High':
@@ -49,7 +45,6 @@ const Archive = () => {
         return 'outline';
     }
   };
-
   const getTopicTypeColor = (topicType: string) => {
     switch (topicType) {
       case '보고서 주제':
@@ -62,26 +57,18 @@ const Archive = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
-
   const generateResearchMethods = (topic: ArchivedTopic) => {
-    return [
-      `'${topic.title}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`,
-      `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic.title}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`,
-      `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`,
-      `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`
-    ];
+    return [`'${topic.title}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`, `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic.title}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`, `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`, `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`];
   };
-
-  const handleRegenerate = async (topicId: string) => {
+  const handleDifficultyUp = async (topicId: string) => {
     setIsRegeneratingMethods(prev => ({
       ...prev,
       [topicId]: true
     }));
-    
     const topic = archivedTopics.find(t => t.id === topicId);
     if (!topic) return;
 
-    // Simulate API call delay for regeneration
+    // Simulate API call delay for difficulty up
     setTimeout(() => {
       const newMethods = generateResearchMethods(topic);
       setTopicResearchMethods(prev => ({
@@ -94,13 +81,52 @@ const Archive = () => {
       }));
     }, 1500);
   };
+  const handleDifficultyDown = async (topicId: string) => {
+    setIsRegeneratingMethods(prev => ({
+      ...prev,
+      [topicId]: true
+    }));
+    const topic = archivedTopics.find(t => t.id === topicId);
+    if (!topic) return;
 
+    // Simulate API call delay for difficulty down
+    setTimeout(() => {
+      const newMethods = generateResearchMethods(topic);
+      setTopicResearchMethods(prev => ({
+        ...prev,
+        [topicId]: newMethods
+      }));
+      setIsRegeneratingMethods(prev => ({
+        ...prev,
+        [topicId]: false
+      }));
+    }, 1500);
+  };
+  const handleMoreDetailed = async (topicId: string) => {
+    setIsRegeneratingMethods(prev => ({
+      ...prev,
+      [topicId]: true
+    }));
+    const topic = archivedTopics.find(t => t.id === topicId);
+    if (!topic) return;
+
+    // Simulate API call delay for more detailed
+    setTimeout(() => {
+      const newMethods = generateResearchMethods(topic);
+      setTopicResearchMethods(prev => ({
+        ...prev,
+        [topicId]: newMethods
+      }));
+      setIsRegeneratingMethods(prev => ({
+        ...prev,
+        [topicId]: false
+      }));
+    }, 1500);
+  };
   const getTopicResearchMethods = (topicId: string) => {
     return topicResearchMethods[topicId] || [];
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-6">
@@ -131,12 +157,9 @@ const Archive = () => {
           </DropdownMenu>
         </div>
 
-        {sortedTopics.length === 0 ? (
-          <div className="text-center py-12">
+        {sortedTopics.length === 0 ? <div className="text-center py-12">
             <p className="text-muted-foreground">저장된 주제가 없습니다.</p>
-          </div>
-        ) : (
-          <div className="bg-card rounded-lg border">
+          </div> : <div className="bg-card rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -148,8 +171,7 @@ const Archive = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedTopics.map((topic, index) => (
-                  <TableRow key={topic.id}>
+                {sortedTopics.map((topic, index) => <TableRow key={topic.id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
                       <div className="space-y-1">
@@ -164,56 +186,60 @@ const Archive = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" className="h-8 p-2">
-                              <Badge variant="default">
-                                View
-                              </Badge>
-                              <ChevronDown className="ml-1 h-3 w-3" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[70vh] overflow-y-auto">
-                            <DialogHeader>
-                              <DialogTitle>탐구 방법</DialogTitle>
-                              <DialogDescription>
-                                {topic.title}에 대한 탐구 방법입니다.
-                              </DialogDescription>
-                            </DialogHeader>
-                            
-                            {getTopicResearchMethods(topic.id).length > 0 ? (
-                              <div className="space-y-4">
-                                <div className="space-y-3">
-                                  {getTopicResearchMethods(topic.id).map((method, methodIndex) => (
-                                    <div key={methodIndex} className="p-3 bg-muted rounded-lg">
-                                      <div className="text-sm font-medium mb-1">방법 {methodIndex + 1}</div>
-                                      <div className="text-sm text-muted-foreground">{method}</div>
-                                    </div>
-                                  ))}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" className="h-8 p-2">
+                            <Badge variant="default">
+                              View
+                            </Badge>
+                            <ChevronDown className="ml-1 h-3 w-3" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl max-h-[70vh] overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>탐구 방법</DialogTitle>
+                            <DialogDescription>
+                              {topic.title}에 대한 탐구 방법입니다.
+                            </DialogDescription>
+                          </DialogHeader>
+                          
+                          {getTopicResearchMethods(topic.id).length > 0 ? <div className="space-y-4">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium">
+                                  {getTopicResearchMethods(topic.id).length}개의 탐구 방법
+                                </span>
+                                <div className="flex items-center gap-2">
+                                  <Button variant="outline" size="sm" onClick={() => handleDifficultyUp(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1"> 난이도 ⬆️ </Button>
+                                  <Button variant="outline" size="sm" onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">난이도 ⬇️ </Button>
+                                  <Button variant="outline" size="sm" onClick={() => handleMoreDetailed(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
+                                    더 자세히
+                                  </Button>
                                 </div>
                               </div>
-                            ) : (
-                              <div className="text-center py-8">
-                                <div className="text-muted-foreground">
-                                  아직 탐구 방법이 생성되지 않았습니다.
-                                </div>
+                              <div className="space-y-3">
+                                {getTopicResearchMethods(topic.id).map((method, methodIndex) => <div key={methodIndex} className="p-3 bg-muted rounded-lg">
+                                    <div className="text-sm font-medium mb-1">방법 {methodIndex + 1}</div>
+                                    <div className="text-sm text-muted-foreground">{method}</div>
+                                  </div>)}
                               </div>
-                            )}
-                          </DialogContent>
-                        </Dialog>
-                        
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleRegenerate(topic.id)} 
-                          disabled={isRegeneratingMethods[topic.id]}
-                          className="flex items-center gap-1"
-                        >
-                          <RefreshCw className={`h-3 w-3 ${isRegeneratingMethods[topic.id] ? 'animate-spin' : ''}`} />
-                          재생성
-                        </Button>
-                      </div>
+                            </div> : <div className="text-center py-8 space-y-4">
+                              <div className="text-muted-foreground">
+                                아직 탐구 방법이 생성되지 않았습니다.
+                              </div>
+                              <div className="flex items-center justify-center gap-2">
+                                <Button onClick={() => handleDifficultyUp(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">
+                                  ⬆️ 난이도 up
+                                </Button>
+                                <Button onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">
+                                  ⬇️ 난이도 down
+                                </Button>
+                                <Button onClick={() => handleMoreDetailed(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
+                                  더 자세히
+                                </Button>
+                              </div>
+                            </div>}
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -226,7 +252,7 @@ const Archive = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                          <DropdownMenuRadioGroup value={topic.priority} onValueChange={(value) => updateTopicPriority(topic.id, value as ArchivedTopic['priority'])}>
+                          <DropdownMenuRadioGroup value={topic.priority} onValueChange={value => updateTopicPriority(topic.id, value as ArchivedTopic['priority'])}>
                             <DropdownMenuRadioItem value="High">High</DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="Medium">Medium</DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="Low">Low</DropdownMenuRadioItem>
@@ -236,24 +262,15 @@ const Archive = () => {
                       </DropdownMenu>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={() => deleteTopic(topic.id)} 
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                      >
+                      <Button variant="ghost" size="icon" onClick={() => deleteTopic(topic.id)} className="h-8 w-8 text-destructive hover:text-destructive">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </TableCell>
-                  </TableRow>
-                ))}
+                  </TableRow>)}
               </TableBody>
             </Table>
-          </div>
-        )}
+          </div>}
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export default Archive;
