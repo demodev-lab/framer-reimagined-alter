@@ -62,7 +62,7 @@ const Index = () => {
             {/* Main Feature Cards */}
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               {/* Real-Time Analytics */}
-              <Card className="relative bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              <Card className="relative bg-white rounded-3xl shadow-lg border-2 border-gray-200 p-8 text-left">
                 <CardContent className="p-0">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 relative">
                     <BarChart3 className="w-8 h-8 text-gray-600" />
@@ -78,7 +78,7 @@ const Index = () => {
               </Card>
 
               {/* AI-Driven Growth */}
-              <Card className="relative bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              <Card className="relative bg-white rounded-3xl shadow-lg border-2 border-gray-200 p-8 text-left">
                 <CardContent className="p-0">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 relative">
                     <Brain className="w-8 h-8 text-gray-600" />
@@ -94,7 +94,7 @@ const Index = () => {
               </Card>
 
               {/* Sync in real time */}
-              <Card className="relative bg-white rounded-3xl shadow-lg border-0 p-8 text-left">
+              <Card className="relative bg-white rounded-3xl shadow-lg border-2 border-gray-200 p-8 text-left">
                 <CardContent className="p-0">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 relative">
                     <Users className="w-8 h-8 text-gray-600" />
@@ -151,7 +151,7 @@ const Index = () => {
             {/* 2x2 Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
               {/* Cutting-Edge AI - Top Left */}
-              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
+              <Card className="bg-white rounded-3xl shadow-lg border-2 border-gray-300 p-8 text-left relative">
                 <CardContent className="p-0">
                   <div className="mb-6">
                     <img 
@@ -171,7 +171,7 @@ const Index = () => {
               </Card>
 
               {/* Automated Workflows - Top Right */}
-              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
+              <Card className="bg-white rounded-3xl shadow-lg border-2 border-gray-300 p-8 text-left relative">
                 <CardContent className="p-0">
                   <div className="absolute top-6 right-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
                     <Cog className="w-6 h-6 text-white" />
@@ -184,7 +184,7 @@ const Index = () => {
               </Card>
 
               {/* Insightful Analytics - Bottom Left */}
-              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
+              <Card className="bg-white rounded-3xl shadow-lg border-2 border-gray-300 p-8 text-left relative">
                 <CardContent className="p-0">
                   <div className="absolute top-6 left-6 w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
                     <TrendingUp className="w-6 h-6 text-white" />
@@ -197,7 +197,7 @@ const Index = () => {
               </Card>
 
               {/* AI-Powered Support - Bottom Right */}
-              <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-8 text-left relative">
+              <Card className="bg-white rounded-3xl shadow-lg border-2 border-gray-300 p-8 text-left relative">
                 <CardContent className="p-0">
                   <div className="mb-6">
                     <img 
