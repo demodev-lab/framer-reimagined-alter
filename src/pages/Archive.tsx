@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -203,7 +204,7 @@ const Archive = () => {
                       <div className="space-y-1">
                         <div className="font-medium">{topic.title}</div>
                         <div className="flex gap-2 text-sm text-muted-foreground">
-                          {topic.concept && <span>{topic.concept}</span>}
+                          <span>교과 개념 : {topic.concept || '-'}</span>
                         </div>
                       </div>
                     </TableCell>
