@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -131,7 +132,7 @@ const Archive = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Task</TableHead>
+                  <TableHead className="w-[100px]">No.</TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Priority</TableHead>
@@ -139,9 +140,9 @@ const Archive = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedTopics.map((topic) => (
+                {sortedTopics.map((topic, index) => (
                   <TableRow key={topic.id}>
-                    <TableCell className="font-medium">{topic.id}</TableCell>
+                    <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
                       <div className="space-y-1">
                         <div className="font-medium">{topic.title}</div>
