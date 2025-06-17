@@ -1,6 +1,9 @@
 
-// 실제 프로덕션에서는 OCR API나 PDF 파싱 라이브러리를 사용해야 합니다
-// 여기서는 시뮬레이션을 위한 코드입니다
+import * as pdfjsLib from 'pdfjs-dist';
+import { createWorker } from 'tesseract.js';
+
+// PDF.js 워커 설정
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export interface SubjectTopic {
   subject: string;
@@ -12,164 +15,204 @@ export interface GradeData {
   subjects: SubjectTopic[];
 }
 
-// 파일 이름과 크기를 기반으로 다른 결과를 생성하는 함수
-const generateVariedData = (fileName: string, fileSize: number): GradeData[] => {
-  console.log(`파일 분석 중: ${fileName} (크기: ${fileSize} bytes)`);
+// PDF에서 텍스트 추출
+const extractTextFromPDF = async (file: File): Promise<string> => {
+  console.log('PDF 텍스트 추출 시작:', file.name);
   
-  // 파일 이름의 해시값을 기반으로 다른 데이터 세트 선택
-  const nameHash = fileName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const sizeVariation = Math.floor(fileSize / 1000) % 3;
-  const variation = (nameHash + sizeVariation) % 4;
-  
-  const dataSets: GradeData[][] = [
-    // 데이터 세트 1 - 이과 중심
-    [
-      {
-        grade: 1,
-        subjects: [
-          {
-            subject: "수학",
-            topics: [
-              "미적분학의 실생활 응용 사례 연구",
-              "통계를 활용한 빅데이터 분석 프로젝트"
-            ]
-          },
-          {
-            subject: "물리",
-            topics: [
-              "뉴턴 역학과 상대성 이론의 차이점 탐구",
-              "양자역학의 기본 원리와 현대 기술 응용"
-            ]
-          },
-          {
-            subject: "화학",
-            topics: [
-              "친환경 화학 반응을 이용한 신소재 개발",
-              "분자 구조와 물질의 성질 관계 분석"
-            ]
-          }
-        ]
-      }
-    ],
-    // 데이터 세트 2 - 문과 중심
-    [
-      {
-        grade: 2,
-        subjects: [
-          {
-            subject: "국어",
-            topics: [
-              "현대 문학 작품의 사회적 배경 분석",
-              "언어의 변화와 소통의 진화 연구"
-            ]
-          },
-          {
-            subject: "사회",
-            topics: [
-              "민주주의 발전 과정과 시민 참여",
-              "경제 시스템의 변화와 사회 불평등"
-            ]
-          },
-          {
-            subject: "역사",
-            topics: [
-              "근현대사 속 인물들의 선택과 결과",
-              "문화 교류가 역사에 미친 영향"
-            ]
-          }
-        ]
-      }
-    ],
-    // 데이터 세트 3 - 예체능 중심
-    [
-      {
-        grade: 1,
-        subjects: [
-          {
-            subject: "미술",
-            topics: [
-              "디지털 아트와 전통 미술의 융합",
-              "색채 심리학과 감정 표현 연구"
-            ]
-          },
-          {
-            subject: "음악",
-            topics: [
-              "음향학과 음악 치료의 과학적 원리",
-              "세계 음악 문화의 다양성과 공통점"
-            ]
-          },
-          {
-            subject: "체육",
-            topics: [
-              "스포츠 과학과 운동 능력 향상 방법",
-              "팀워크와 리더십 개발을 위한 체육 활동"
-            ]
-          }
-        ]
-      }
-    ],
-    // 데이터 세트 4 - 종합형
-    [
-      {
-        grade: 1,
-        subjects: [
-          {
-            subject: "과학",
-            topics: [
-              "기후 변화와 지속 가능한 에너지 연구",
-              "생명과학과 의료 기술의 발전"
-            ]
-          }
-        ]
-      },
-      {
-        grade: 2,
-        subjects: [
-          {
-            subject: "국어",
-            topics: [
-              "매체 언어와 디지털 문해력",
-              "창작과 표현의 다양한 방법 탐구"
-            ]
-          },
-          {
-            subject: "수학",
-            topics: [
-              "확률과 게임 이론의 실제 응용",
-              "기하학적 패턴과 자연 현상의 연관성"
-            ]
-          }
-        ]
-      }
-    ]
-  ];
-  
-  return dataSets[variation] || dataSets[0];
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    
+    console.log(`PDF 페이지 수: ${pdf.numPages}`);
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items
+        .map((item: any) => item.str)
+        .join(' ');
+      fullText += pageText + '\n';
+      console.log(`페이지 ${i} 텍스트 추출 완료`);
+    }
+    
+    console.log('PDF 텍스트 추출 완료, 총 길이:', fullText.length);
+    return fullText;
+  } catch (error) {
+    console.error('PDF 텍스트 추출 오류:', error);
+    throw new Error('PDF 파일을 읽을 수 없습니다.');
+  }
 };
 
-// 텍스트에서 탐구 주제를 추출하는 함수 (시뮬레이션)
-export const extractResearchTopics = (text: string, fileName: string = "", fileSize: number = 0): GradeData[] => {
-  console.log("탐구 주제 추출 시작:", { text: text.substring(0, 50) + "...", fileName, fileSize });
+// 이미지에서 OCR로 텍스트 추출
+const extractTextFromImage = async (file: File): Promise<string> => {
+  console.log('이미지 OCR 텍스트 추출 시작:', file.name);
   
-  // 실제로는 AI나 정규식을 사용하여 텍스트에서 탐구 주제를 추출
-  // 여기서는 파일 정보를 기반으로 다양한 데모용 데이터를 반환합니다
-  const result = generateVariedData(fileName, fileSize);
+  try {
+    const worker = await createWorker('kor+eng');
+    console.log('Tesseract 워커 생성 완료');
+    
+    const { data: { text } } = await worker.recognize(file);
+    console.log('OCR 텍스트 추출 완료, 길이:', text.length);
+    
+    await worker.terminate();
+    return text;
+  } catch (error) {
+    console.error('이미지 OCR 오류:', error);
+    throw new Error('이미지에서 텍스트를 추출할 수 없습니다.');
+  }
+};
+
+// 텍스트에서 탐구 주제와 과목 정보 분석
+const analyzeTextForResearchTopics = (text: string): GradeData[] => {
+  console.log('텍스트 분석 시작, 길이:', text.length);
+  
+  // 과목별 키워드 매핑
+  const subjectKeywords: { [key: string]: string[] } = {
+    '수학': ['수학', '미적분', '통계', '확률', '기하', '함수', '방정식', '미분', '적분'],
+    '국어': ['국어', '문학', '작품', '시', '소설', '고전', '현대문학', '언어'],
+    '영어': ['영어', '영문학', 'English', '회화', '독해', '문법'],
+    '과학': ['과학', '실험', '탐구', '관찰', '가설'],
+    '물리': ['물리', '역학', '전기', '자기', '광학', '열역학', '양자'],
+    '화학': ['화학', '분자', '원소', '반응', '화합물', '이온', '산화', '환원'],
+    '생명과학': ['생물', '생명과학', '세포', '유전', 'DNA', '진화', '생태'],
+    '지구과학': ['지구과학', '지질', '기상', '천문', '환경', '기후'],
+    '사회': ['사회', '역사', '지리', '정치', '경제', '법', '윤리', '철학'],
+    '역사': ['역사', '근대', '현대', '고대', '중세', '조선', '고려'],
+    '지리': ['지리', '기후', '지형', '인구', '도시', '농업', '공업'],
+    '미술': ['미술', '그림', '조형', '색채', '디자인', '작품', '표현'],
+    '음악': ['음악', '연주', '작곡', '리듬', '멜로디', '화성', '악기'],
+    '체육': ['체육', '운동', '스포츠', '건강', '체력', '경기', '훈련'],
+    '기술가정': ['기술', '가정', '컴퓨터', '프로그래밍', '요리', '재봉'],
+    '한문': ['한문', '한자', '고전', '사서삼경']
+  };
+
+  // 학년 키워드
+  const gradeKeywords = ['1학년', '2학년', '3학년', '고1', '고2', '고3'];
+  
+  const results: GradeData[] = [];
+  const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 10);
+  
+  console.log('분석할 문장 수:', sentences.length);
+  
+  // 학년별로 데이터 수집
+  for (let grade = 1; grade <= 3; grade++) {
+    const gradeData: GradeData = {
+      grade,
+      subjects: []
+    };
+    
+    const subjectTopics: { [key: string]: Set<string> } = {};
+    
+    sentences.forEach(sentence => {
+      // 해당 학년과 관련된 문장인지 확인
+      const isRelevantGrade = 
+        sentence.includes(`${grade}학년`) || 
+        sentence.includes(`고${grade}`) ||
+        (!gradeKeywords.some(keyword => sentence.includes(keyword))); // 학년 언급이 없으면 모든 학년에 포함
+      
+      if (isRelevantGrade) {
+        // 각 과목별로 키워드가 포함된 문장 찾기
+        Object.entries(subjectKeywords).forEach(([subject, keywords]) => {
+          const hasSubjectKeyword = keywords.some(keyword => 
+            sentence.toLowerCase().includes(keyword.toLowerCase())
+          );
+          
+          if (hasSubjectKeyword) {
+            // 탐구 활동을 나타내는 키워드가 있는지 확인
+            const researchKeywords = [
+              '탐구', '연구', '분석', '조사', '실험', '관찰', '프로젝트', 
+              '과제', '발표', '보고서', '토론', '논문', '설계', '제작',
+              '활동', '체험', '견학', '답사', '인터뷰'
+            ];
+            
+            const hasResearchKeyword = researchKeywords.some(keyword => 
+              sentence.toLowerCase().includes(keyword.toLowerCase())
+            );
+            
+            if (hasResearchKeyword && sentence.trim().length > 20) {
+              if (!subjectTopics[subject]) {
+                subjectTopics[subject] = new Set();
+              }
+              
+              // 문장을 정리하여 탐구 주제로 추가
+              let topic = sentence.trim()
+                .replace(/^\d+\.\s*/, '') // 앞의 숫자 제거
+                .replace(/^-\s*/, '') // 앞의 하이픈 제거
+                .replace(/\s+/g, ' ') // 연속된 공백 하나로
+                .substring(0, 100); // 최대 길이 제한
+              
+              if (topic.length > 15) {
+                subjectTopics[subject].add(topic);
+              }
+            }
+          }
+        });
+      }
+    });
+    
+    // Set을 배열로 변환하여 결과에 추가
+    Object.entries(subjectTopics).forEach(([subject, topicsSet]) => {
+      if (topicsSet.size > 0) {
+        gradeData.subjects.push({
+          subject,
+          topics: Array.from(topicsSet).slice(0, 5) // 최대 5개까지
+        });
+      }
+    });
+    
+    if (gradeData.subjects.length > 0) {
+      results.push(gradeData);
+    }
+  }
+  
+  console.log('텍스트 분석 완료, 추출된 학년 수:', results.length);
+  console.log('분석 결과:', results);
+  
+  // 결과가 없으면 기본 데이터 반환
+  if (results.length === 0) {
+    console.log('분석 결과가 없어 기본 데이터 반환');
+    return [{
+      grade: 1,
+      subjects: [{
+        subject: '일반',
+        topics: ['파일에서 구체적인 탐구 주제를 찾을 수 없습니다. 생활기록부의 세부능력 및 특기사항 부분을 확인해주세요.']
+      }]
+    }];
+  }
+  
+  return results;
+};
+
+// 파일에서 텍스트를 추출하는 함수
+export const extractTextFromFile = async (file: File): Promise<string> => {
+  console.log('파일에서 텍스트 추출 시작:', file.name, file.type, file.size);
+  
+  try {
+    let extractedText = '';
+    
+    if (file.type === 'application/pdf') {
+      extractedText = await extractTextFromPDF(file);
+    } else if (file.type.startsWith('image/')) {
+      extractedText = await extractTextFromImage(file);
+    } else {
+      throw new Error('지원하지 않는 파일 형식입니다.');
+    }
+    
+    console.log('텍스트 추출 완료, 길이:', extractedText.length);
+    return extractedText;
+  } catch (error) {
+    console.error('파일에서 텍스트 추출 오류:', error);
+    throw error;
+  }
+};
+
+// 텍스트에서 탐구 주제를 추출하는 함수
+export const extractResearchTopics = (text: string, fileName: string = "", fileSize: number = 0): GradeData[] => {
+  console.log("탐구 주제 추출 시작:", { textLength: text.length, fileName, fileSize });
+  
+  const result = analyzeTextForResearchTopics(text);
   
   console.log("추출된 탐구 주제:", result);
   return result;
-};
-
-// 파일에서 텍스트를 추출하는 함수 (시뮬레이션)
-export const extractTextFromFile = async (file: File): Promise<string> => {
-  console.log("파일에서 텍스트 추출 시작:", file.name, file.size);
-  
-  return new Promise((resolve) => {
-    // 실제로는 PDF 파싱이나 OCR API를 사용
-    setTimeout(() => {
-      const extractedText = `${file.name}에서 추출된 생활기록부 텍스트 (${file.size} bytes) - 시뮬레이션`;
-      console.log("텍스트 추출 완료:", extractedText);
-      resolve(extractedText);
-    }, 2000);
-  });
 };
