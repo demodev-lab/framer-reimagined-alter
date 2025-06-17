@@ -142,7 +142,7 @@ const Index = () => {
                 <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0 flex items-center gap-6">
                     <div className="w-32 h-32 flex-shrink-0">
-                      <img alt="Lock" className="rounded-2xl w-full h-full object-cover" src="/lovable-uploads/14c81c5a-9634-40f7-8b32-1d5673e2d3cc.png" />
+                      <img alt="Book with magnifying glass" className="rounded-2xl w-full h-full object-cover" src="/lovable-uploads/a5c859f4-2c10-4816-898b-05912cea4216.png" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
