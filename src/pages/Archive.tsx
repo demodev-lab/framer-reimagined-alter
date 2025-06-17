@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -32,9 +33,10 @@ import { ArchivedTopic } from '@/types/archive';
 
 const Archive = () => {
   const navigate = useNavigate();
-  const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic, updateTopicResearchMethods } = useArchive();
+  const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic } = useArchive();
   const [sortOrder, setSortOrder] = useState<string>('date');
   const [isRegeneratingMethods, setIsRegeneratingMethods] = useState<Record<string, boolean>>({});
+  const [topicResearchMethods, setTopicResearchMethods] = useState<Record<string, string[]>>({});
 
   const sortedTopics = [...archivedTopics].sort((a, b) => {
     if (sortOrder === 'date') {
@@ -95,9 +97,13 @@ const Archive = () => {
     // Simulate API call delay
     setTimeout(() => {
       const newMethods = generateResearchMethods(topic);
-      updateTopicResearchMethods(topicId, newMethods);
+      setTopicResearchMethods(prev => ({ ...prev, [topicId]: newMethods }));
       setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: false }));
     }, 1500);
+  };
+
+  const getTopicResearchMethods = (topicId: string) => {
+    return topicResearchMethods[topicId] || [];
   };
 
   return (
@@ -172,9 +178,11 @@ const Archive = () => {
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="flex items-center gap-2">
-                            <Eye className="h-4 w-4" />
-                            View
+                          <Button variant="ghost" className="h-8 p-2">
+                            <Badge variant="default">
+                              View
+                            </Badge>
+                            <ChevronDown className="ml-1 h-3 w-3" />
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl max-h-[70vh] overflow-y-auto">
@@ -185,11 +193,11 @@ const Archive = () => {
                             </DialogDescription>
                           </DialogHeader>
                           
-                          {topic.researchMethods && topic.researchMethods.length > 0 ? (
+                          {getTopicResearchMethods(topic.id).length > 0 ? (
                             <div className="space-y-4">
                               <div className="flex items-center justify-between">
                                 <span className="text-sm font-medium">
-                                  {topic.researchMethods.length}개의 탐구 방법
+                                  {getTopicResearchMethods(topic.id).length}개의 탐구 방법
                                 </span>
                                 <Button
                                   variant="outline"
@@ -203,7 +211,7 @@ const Archive = () => {
                                 </Button>
                               </div>
                               <div className="space-y-3">
-                                {topic.researchMethods.map((method, methodIndex) => (
+                                {getTopicResearchMethods(topic.id).map((method, methodIndex) => (
                                   <div key={methodIndex} className="p-3 bg-muted rounded-lg">
                                     <div className="text-sm font-medium mb-1">방법 {methodIndex + 1}</div>
                                     <div className="text-sm text-muted-foreground">{method}</div>
