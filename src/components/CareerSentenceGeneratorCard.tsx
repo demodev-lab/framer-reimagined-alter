@@ -104,7 +104,7 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>학생부가 이미 기록된 것이 있다면 반드시 눌러주세요</p>
+                <p>학생부에 이미 기록된 것이 있다면, 반드시 눌러주세요</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
