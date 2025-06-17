@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -133,7 +130,7 @@ const Index = () => {
                   <div className="absolute top-6 left-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-16">Insightful Analytics</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-16">탐구 방법까지 한번에</h3>
                   <p className="text-gray-600">
                     Gain deep, real-time data insights with advanced AI analytics to guide smarter strategies, decisions, and scalable business growth.
                   </p>
@@ -172,5 +169,3 @@ const Index = () => {
     </div>;
 };
 export default Index;
-
-
