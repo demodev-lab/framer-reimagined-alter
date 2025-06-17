@@ -110,7 +110,7 @@ const Feedback = () => {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8">
         <section className="text-center py-16 md:py-[53px]">
           <div className="flex flex-col items-center justify-center gap-6 mb-6">
-            <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-4xl">학생부 심폐 소생</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-foreground md:text-4xl">학생부 분석</h1>
           </div>
 
           <p className="mt-4 max-w-2xl mx-auto text-muted-foreground text-base">생활기록부에서 탐구 주제를 추출하고 학년별, 과목별로 정리해드립니다.
