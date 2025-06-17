@@ -11,7 +11,6 @@ import { Dialog, DialogContent, DialogClose, DialogTitle, DialogDescription } fr
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 interface TopicGeneratorSectionProps {
   topicRows: TopicRow[];
@@ -51,7 +50,6 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
-  const [carouselApi, setCarouselApi] = useState<any>(null);
 
   const handleRegenerateCareerSentence = () => {
     console.log("Career sentence regeneration requested");
@@ -84,31 +82,17 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     setSelectedCareerSentence(sentence);
   };
 
-  // 후속 탐구 추가 함수 - 마지막 행에 후속 탐구 설정을 활성화
   const handleAddFollowUpRow = () => {
-    // 새로운 행 추가
     handleAddRow();
     
-    // 새로 추가된 행에 대해 후속 탐구 설정
     setTimeout(() => {
-      const newRowId = Date.now(); // 새로 생성될 ID와 일치해야 함
+      const newRowId = Date.now();
       handleFollowUpChange(newRowId, true);
-      
-      if (carouselApi) {
-        carouselApi.scrollTo(topicRows.length); // 새로 추가된 행의 인덱스로 이동
-      }
     }, 100);
   };
 
-  // 새로운 일반 주제 추가 함수 - 일반적인 새 주제 생성기 추가
   const handleAddNewTopic = () => {
     handleAddRow();
-    // 새로운 행이 추가된 후 마지막 슬라이드로 이동
-    setTimeout(() => {
-      if (carouselApi) {
-        carouselApi.scrollTo(topicRows.length); // 새로 추가된 행의 인덱스로 이동
-      }
-    }, 100);
   };
 
   return (
@@ -117,7 +101,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
         <div className="w-full max-w-6xl">
           {/* 선택된 진로 문장 표시 섹션 */}
           {selectedCareerSentence && (
-            <div className="w-full max-w-4xl mx-auto mb-3">
+            <div className="w-full max-w-4xl mx-auto mb-6">
               <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
@@ -144,84 +128,68 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
             </div>
           )}
 
-          {/* 캐러셀로 주제 생성기와 결과 카드들 표시 */}
-          <div className="relative">
-            <Carousel 
-              className="w-full" 
-              opts={{ align: "start", loop: false }}
-              setApi={setCarouselApi}
-            >
-              <CarouselContent className="-ml-4">
-                {topicRows.map((row, index) => (
-                  <CarouselItem key={row.id} className="pl-4 basis-full">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
-                      <div className="h-full overflow-hidden">
-                        {row.stage === "topic_selected" ? (
-                          <SelectedTopicCard
-                            topic={row.selectedTopic!}
-                            subject={row.subject}
-                            concept={row.concept}
-                            topicNumber={index + 1}
-                            isLocked={row.isLocked}
-                            onRefresh={() => handleRefreshTopic(row.id)}
-                            onLock={() => handleLockTopic(row.id)}
-                            onDelete={() => handleDeleteTopic(row.id)}
-                            onRegenerateMethods={() => handleRegenerateMethods(row.id)}
-                            topicType={row.topicType}
-                            onTopicTypeChange={type => handleTopicTypeChange(row.id, type)}
-                          />
-                        ) : (
-                          <TopicGeneratorCard
-                            onGenerate={inputs => handleGenerate(row.id, inputs)}
-                            initialValues={{
-                              subject: row.subject,
-                              concept: row.concept,
-                              request: row.request,
-                              topicType: row.topicType
-                            }}
-                            showFollowUp={index > 0}
-                            isFollowUp={followUpStates[row.id] || false}
-                            onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)}
-                            rowId={row.id}
-                            selectedCareerSentence={selectedCareerSentence}
-                            onCareerSentenceSelect={setSelectedCareerSentence}
-                          />
-                        )}
-                      </div>
-                      <div className="h-full overflow-hidden">
-                        {row.stage === "topic_selected" ? (
-                          <TopicResultsCard
-                            title="탐구 방법"
-                            placeholder="탐구 방법을 생성 중입니다..."
-                            topics={row.researchMethods}
-                            onSelectTopic={method => console.log("Method selected:", method)}
-                            isLoading={row.isLoadingMethods}
-                            isSelectable={false}
-                            scrollable={true}
-                          />
-                        ) : (
-                          <TopicResultsCard
-                            title="탐구 주제 후보"
-                            placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다."
-                            topics={row.generatedTopics}
-                            onSelectTopic={topic => handleSelectTopic(row.id, topic)}
-                            isLoading={row.isLoadingTopics}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              
-              {/* 좌우 네비게이션 화살표 */}
-              {topicRows.length > 1 && (
-                <>
-                  <CarouselPrevious className="left-4" />
-                  <CarouselNext className="right-4" />
-                </>
-              )}
-            </Carousel>
+          {/* 주제 생성기와 결과 카드들을 세로로 배치 */}
+          <div className="space-y-8">
+            {topicRows.map((row, index) => (
+              <div key={row.id} className="w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[400px] px-4">
+                  <div className="h-full overflow-hidden">
+                    {row.stage === "topic_selected" ? (
+                      <SelectedTopicCard
+                        topic={row.selectedTopic!}
+                        subject={row.subject}
+                        concept={row.concept}
+                        topicNumber={index + 1}
+                        isLocked={row.isLocked}
+                        onRefresh={() => handleRefreshTopic(row.id)}
+                        onLock={() => handleLockTopic(row.id)}
+                        onDelete={() => handleDeleteTopic(row.id)}
+                        onRegenerateMethods={() => handleRegenerateMethods(row.id)}
+                        topicType={row.topicType}
+                        onTopicTypeChange={type => handleTopicTypeChange(row.id, type)}
+                      />
+                    ) : (
+                      <TopicGeneratorCard
+                        onGenerate={inputs => handleGenerate(row.id, inputs)}
+                        initialValues={{
+                          subject: row.subject,
+                          concept: row.concept,
+                          request: row.request,
+                          topicType: row.topicType
+                        }}
+                        showFollowUp={index > 0}
+                        isFollowUp={followUpStates[row.id] || false}
+                        onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)}
+                        rowId={row.id}
+                        selectedCareerSentence={selectedCareerSentence}
+                        onCareerSentenceSelect={setSelectedCareerSentence}
+                      />
+                    )}
+                  </div>
+                  <div className="h-full overflow-hidden">
+                    {row.stage === "topic_selected" ? (
+                      <TopicResultsCard
+                        title="탐구 방법"
+                        placeholder="탐구 방법을 생성 중입니다..."
+                        topics={row.researchMethods}
+                        onSelectTopic={method => console.log("Method selected:", method)}
+                        isLoading={row.isLoadingMethods}
+                        isSelectable={false}
+                        scrollable={true}
+                      />
+                    ) : (
+                      <TopicResultsCard
+                        title="탐구 주제 후보"
+                        placeholder="'주제 생성' 버튼을 누르면 주제 후보 3개가 생성됩니다."
+                        topics={row.generatedTopics}
+                        onSelectTopic={topic => handleSelectTopic(row.id, topic)}
+                        isLoading={row.isLoadingTopics}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
           
           {/* 버튼들 */}
