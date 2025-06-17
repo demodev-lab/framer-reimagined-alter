@@ -1,9 +1,9 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
+
 const Index = () => {
   return <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
@@ -142,7 +142,7 @@ const Index = () => {
                 <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0 flex items-center gap-6">
                     <div className="w-32 h-32 flex-shrink-0">
-                      <img alt="Lock" className="rounded-2xl w-full h-full object-cover" src="/lovable-uploads/14c81c5a-9634-40f7-8b32-1d5673e2d3cc.png" />
+                      <img alt="Lock" className="rounded-2xl w-full h-full object-cover" src="/lovable-uploads/4d9f6070-8e3c-448e-b4f1-c7eaf6fcf9b2.png" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
