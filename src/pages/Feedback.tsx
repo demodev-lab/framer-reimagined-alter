@@ -1,16 +1,39 @@
 
-import React from "react";
+import React, { useState } from "react";
 import Header from "@/components/Header";
-import { changelogData } from "@/data/changelogData";
-import ChangelogPostCard from "@/components/ChangelogPostCard";
+import FileUpload from "@/components/FileUpload";
+import ResearchTopicsResult from "@/components/ResearchTopicsResult";
+import { extractTextFromFile, extractResearchTopics, GradeData } from "@/utils/textExtraction";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2, CheckCircle } from "lucide-react";
 
 const Feedback = () => {
-  const years = Object.keys(changelogData).sort((a, b) => Number(b) - Number(a));
-  const allEntries = years.flatMap(year => Object.keys(changelogData[year]).flatMap(month => changelogData[year][month].map(entry => ({
-    ...entry,
-    year,
-    month
-  })))).sort((a, b) => new Date(`${b.month} 1, ${b.year}`).getTime() - new Date(`${a.month} 1, ${a.year}`).getTime());
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [researchData, setResearchData] = useState<GradeData[]>([]);
+  const [fileName, setFileName] = useState<string>("");
+
+  const handleFileUpload = async (file: File) => {
+    setIsProcessing(true);
+    setAnalysisComplete(false);
+    setFileName(file.name);
+
+    try {
+      // 텍스트 추출
+      const extractedText = await extractTextFromFile(file);
+      
+      // 탐구 주제 분석
+      const topics = extractResearchTopics(extractedText);
+      
+      setResearchData(topics);
+      setAnalysisComplete(true);
+    } catch (error) {
+      console.error('파일 처리 중 오류 발생:', error);
+      alert('파일 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -19,10 +42,10 @@ const Feedback = () => {
         <section className="text-center py-16 md:py-[53px]">
           <div className="inline-flex items-center gap-2 bg-muted text-muted-foreground rounded-full px-4 py-1.5 text-xs font-medium mb-4">
             <svg fill="none" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-              <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" />
+              <path d="m12 1.25-10.75 6.25v12.5l10.75 6.25 10.75-6.25v-12.5z" fill="currentColor" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.5" />
               <path d="m12 21.333-9.53125-5.5-1.21875-.75v-1.166l1.21875-.75 9.53125-5.5 9.5313 5.5 1.2187 0.75v1.1666l-1.2187.75z" fill="currentColor" />
-              <path d="m1.25 7.5 10.75 6.25 10.75-6.25" stroke="var(--background)" stroke-linejoin="round" stroke-width="1.5" />
-              <path d="m12 26.25v-12.5" stroke="var(--background)" stroke-linejoin="round" stroke-width="1.5" />
+              <path d="m1.25 7.5 10.75 6.25 10.75-6.25" stroke="var(--background)" strokeLinejoin="round" strokeWidth="1.5" />
+              <path d="m12 26.25v-12.5" stroke="var(--background)" strokeLinejoin="round" strokeWidth="1.5" />
             </svg>
             <span className="font-medium">탐구 연구소</span>
           </div>
@@ -37,19 +60,51 @@ const Feedback = () => {
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">학생부 심폐 소생</h1>
           </div>
 
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">늦었다고 생각했을 때가, 바로 마지막 기회입니다.</p>
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+            생활기록부에서 탐구 주제를 추출하고 학년별, 과목별로 정리해드립니다
+          </p>
         </section>
 
-        <div className="flex flex-col items-center">
-          <div className="w-full max-w-4xl px-[182px]">
-            <div className="-mx-[182px]">
-              <div className="py-8">
-                <div className="flex flex-col gap-8">
-                  {allEntries.map(entry => <ChangelogPostCard key={entry.id} entry={entry} month={entry.month} year={entry.year} />)}
+        <div className="flex flex-col items-center gap-8 pb-20">
+          {!analysisComplete && (
+            <FileUpload onFileUpload={handleFileUpload} isProcessing={isProcessing} />
+          )}
+
+          {isProcessing && (
+            <Card className="w-full max-w-2xl mx-auto">
+              <CardContent className="p-8 text-center">
+                <div className="flex flex-col items-center gap-4">
+                  <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      파일 분석 중...
+                    </h3>
+                    <p className="text-gray-600">
+                      {fileName}에서 탐구 주제를 추출하고 있습니다
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {analysisComplete && (
+            <>
+              <Card className="w-full max-w-2xl mx-auto bg-green-50 border-green-200">
+                <CardContent className="p-6 text-center">
+                  <div className="flex items-center justify-center gap-2 text-green-600 mb-2">
+                    <CheckCircle className="w-6 h-6" />
+                    <span className="font-semibold">분석 완료</span>
+                  </div>
+                  <p className="text-gray-700">
+                    {fileName}에서 탐구 주제를 성공적으로 추출했습니다
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <ResearchTopicsResult data={researchData} />
+            </>
+          )}
         </div>
       </main>
     </div>
