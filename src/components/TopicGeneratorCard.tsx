@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "./CareerSentenceGeneratorCard";
 import { useArchive } from "@/contexts/ArchiveContext";
+
 interface TopicGeneratorCardProps {
   onGenerate: (data: {
     subject: string;
@@ -114,12 +115,14 @@ const TopicGeneratorCard = ({
               </Button>
               <Input placeholder="예) 화학, 생명과학" value={subject} onChange={e => setSubject(e.target.value)} />
             </div>
+            
             <div className="flex items-center gap-4">
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 교과 개념
               </Button>
               <Input placeholder="예) 산화와 환원" value={concept} onChange={e => setConcept(e.target.value)} />
             </div>
+            
             <div className="flex items-center gap-4">
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 주제 유형
@@ -136,12 +139,21 @@ const TopicGeneratorCard = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="w-[110px] flex-shrink-0">
-                {showFollowUp ? <TooltipProvider>
+            
+            {showFollowUp && (
+              <div className="flex items-center gap-4">
+                <div className="w-[110px] flex-shrink-0">
+                  <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Toggle pressed={isFollowUp} onPressedChange={pressed => onFollowUpChange && onFollowUpChange(pressed)} variant="outline" size="sm" className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background" aria-label="후속 탐구">
+                        <Toggle 
+                          pressed={isFollowUp} 
+                          onPressedChange={pressed => onFollowUpChange && onFollowUpChange(pressed)} 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background" 
+                          aria-label="후속 탐구"
+                        >
                           후속 탐구
                         </Toggle>
                       </TooltipTrigger>
@@ -149,20 +161,12 @@ const TopicGeneratorCard = ({
                         <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
                       </TooltipContent>
                     </Tooltip>
-                  </TooltipProvider> : <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>돌아가기</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>}
+                  </TooltipProvider>
+                </div>
+                <div className="flex-1"></div>
               </div>
-            </div>
+            )}
             
-            {/* 후속 탐구 선택 섹션 */}
             <div className="flex items-center gap-4">
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 후속 탐구
@@ -172,13 +176,16 @@ const TopicGeneratorCard = ({
                   <SelectValue placeholder={archivedTopics.length === 0 ? "아직 주제가 없습니다" : "아카이브된 주제를 선택하세요"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {archivedTopics.length > 0 && archivedTopics.map(topic => <SelectItem key={topic.id} value={topic.id}>
-                        {topic.title}
-                      </SelectItem>)}
+                  {archivedTopics.length > 0 && archivedTopics.map(topic => 
+                    <SelectItem key={topic.id} value={topic.id}>
+                      {topic.title}
+                    </SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
           </div>
+          
           <div className="flex justify-end gap-2 pt-6">
             <Button variant="ghost" onClick={handleClear}>
               지우기
