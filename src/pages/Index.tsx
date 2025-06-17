@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Lightbulb, Users, Zap, Brain, FileText, Award, Clock, X, Cog, TrendingUp, MessageSquare, Play } from "lucide-react";
-
 const Index = () => {
   return <div className="min-h-screen bg-gray-100 font-sans">
       <Header />
@@ -142,7 +141,7 @@ const Index = () => {
                 <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0 flex items-center gap-6">
                     <div className="w-32 h-32 flex-shrink-0">
-                      <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=128&h=128&fit=crop" alt="Lock" className="rounded-2xl w-full h-full object-cover" />
+                      <img alt="Lock" className="rounded-2xl w-full h-full object-cover" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fko%2Fimages%2Fsearch%2Fu%25EC%259E%2590%25EB%25AC%25BC%25EC%2587%25A0%2F&psig=AOvVaw1DQrBJI5gJJR4hOCesXHAP&ust=1750253951789000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJjSw57K-I0DFQAAAAAdAAAAABAE" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
