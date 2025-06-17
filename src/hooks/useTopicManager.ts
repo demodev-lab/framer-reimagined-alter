@@ -64,7 +64,7 @@ export const useTopicManager = () => {
     }
   };
 
-  const handleAddFollowUpRow = () => {
+  const handleAddFollowUpRow = (groupId: number) => {
     const newId = Date.now();
     const newRow: TopicRow = {
       id: newId,
@@ -81,11 +81,17 @@ export const useTopicManager = () => {
       topicType: '보고서 주제',
     };
 
-    // Find the last carousel group and add to it
+    // Find the specific carousel group by ID and add to it
     setCarouselGroups(prev => {
-      const newGroups = [...prev];
-      const lastGroup = newGroups[newGroups.length - 1];
-      lastGroup.topicRows.push(newRow);
+      const newGroups = prev.map(group => {
+        if (group.id === groupId) {
+          return {
+            ...group,
+            topicRows: [...group.topicRows, newRow]
+          };
+        }
+        return group;
+      });
       return newGroups;
     });
 

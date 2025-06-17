@@ -29,7 +29,7 @@ interface TopicGeneratorSectionProps {
   carouselGroups: CarouselGroup[];
   followUpStates: Record<number, boolean>;
   handleAddRow: () => void;
-  handleAddFollowUpRow: () => void;
+  handleAddFollowUpRow: (groupId: number) => void;
   handleGenerate: (id: number, inputs: {
     subject: string;
     concept: string;
@@ -131,7 +131,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
           )}
 
           {/* 캐러셀 그룹들을 세로로 배치 */}
-          <div className="space-y-12">
+          <div className="space-y-8">
             {carouselGroups.map((group, groupIndex) => (
               <div key={group.id} className="w-full">
                 <Carousel className="w-full">
@@ -206,39 +206,42 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                     </>
                   )}
                 </Carousel>
+                
+                {/* 각 캐러셀 그룹별 후속 심화 탐구 버튼 */}
+                <div className="flex justify-center mt-4">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        onClick={() => handleAddFollowUpRow(group.id)}
+                        className="px-6 py-3 text-sm font-medium"
+                      >
+                        후속 심화 탐구 만들기
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>이 주제 세트에 후속 탐구를 추가합니다</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               </div>
             ))}
           </div>
           
-          {/* 버튼들 */}
-          <div className="flex justify-center gap-4 mt-8">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  onClick={handleAddFollowUpRow}
-                  className="w-1/5 py-6 text-lg font-bold"
-                >
-                  후속 심화 탐구 만들기
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>현재 캐러셀에서 오른쪽에 후속 탐구를 추가합니다</p>
-              </TooltipContent>
-            </Tooltip>
-            
+          {/* 새로운 주제 추가 버튼 */}
+          <div className="flex justify-center mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="outline"
                   onClick={handleAddRow}
-                  className="w-1/5 py-6 text-lg font-bold"
+                  className="px-8 py-4 text-lg font-bold"
                 >
                   새로운 주제 추가
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>아래에 새로운 캐러셀 구조를 추가합니다</p>
+                <p>아래에 새로운 주제 세트를 추가합니다</p>
               </TooltipContent>
             </Tooltip>
           </div>
