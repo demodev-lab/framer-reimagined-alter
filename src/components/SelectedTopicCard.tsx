@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, ChevronDown } from "lucide-react";
+import { RefreshCw, Lock, X, ChevronDown, Archive } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -45,6 +45,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topicType,
   onTopicTypeChange,
 }) => {
+  const handleArchiveSave = () => {
+    console.log("아카이브 저장 버튼 클릭");
+  };
+
   return (
     <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
@@ -137,14 +141,25 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </dl>
           </div>
           
-          {/* 탐구 방법 생성 버튼 */}
-          <div className="flex justify-center mt-4 pt-4 border-t">
+          {/* 탐구 방법 생성 버튼과 아카이브 저장 버튼 */}
+          <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
             <Button 
               onClick={onRegenerateMethods}
               className="bg-black text-white hover:bg-gray-800 px-6 py-2"
               disabled={isLocked}
             >
               탐구 방법 생성
+            </Button>
+            <Button 
+              onClick={handleArchiveSave}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1"
+              disabled={isLocked}
+              title="아카이브에 저장"
+            >
+              아카이브 저장
+              <Archive className="h-4 w-4" />
             </Button>
           </div>
         </CardContent>
