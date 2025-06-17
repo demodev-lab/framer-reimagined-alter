@@ -1,9 +1,11 @@
-
 import * as pdfjsLib from 'pdfjs-dist';
 import { createWorker } from 'tesseract.js';
 
-// PDF.js 워커 설정
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// PDF.js 워커 설정 - 로컬 워커 사용
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
 
 export interface SubjectTopic {
   subject: string;
@@ -21,26 +23,51 @@ const extractTextFromPDF = async (file: File): Promise<string> => {
   
   try {
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const loadingTask = pdfjsLib.getDocument({ 
+      data: arrayBuffer,
+      // 워커 설정을 비활성화하고 메인 스레드에서 처리
+      disableWorker: true,
+      // 더 관대한 설정
+      verbosity: 0
+    });
+    
+    const pdf = await loadingTask.promise;
     let fullText = '';
     
     console.log(`PDF 페이지 수: ${pdf.numPages}`);
     
     for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const textContent = await page.getTextContent();
-      const pageText = textContent.items
-        .map((item: any) => item.str)
-        .join(' ');
-      fullText += pageText + '\n';
-      console.log(`페이지 ${i} 텍스트 추출 완료`);
+      try {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items
+          .map((item: any) => item.str)
+          .join(' ');
+        fullText += pageText + '\n';
+        console.log(`페이지 ${i} 텍스트 추출 완료`);
+      } catch (pageError) {
+        console.warn(`페이지 ${i} 처리 중 오류:`, pageError);
+        // 개별 페이지 오류는 무시하고 계속 진행
+      }
     }
     
     console.log('PDF 텍스트 추출 완료, 총 길이:', fullText.length);
     return fullText;
   } catch (error) {
     console.error('PDF 텍스트 추출 오류:', error);
-    throw new Error('PDF 파일을 읽을 수 없습니다.');
+    
+    // 더 구체적인 오류 메시지 제공
+    if (error instanceof Error) {
+      if (error.message.includes('worker')) {
+        throw new Error('PDF 처리 중 워커 오류가 발생했습니다. 다른 PDF 파일을 시도해보세요.');
+      } else if (error.message.includes('Invalid PDF')) {
+        throw new Error('유효하지 않은 PDF 파일입니다. 다른 파일을 선택해주세요.');
+      } else if (error.message.includes('fetch')) {
+        throw new Error('PDF 처리를 위한 리소스 로딩에 실패했습니다. 페이지를 새로고침 후 다시 시도해주세요.');
+      }
+    }
+    
+    throw new Error('PDF 파일을 읽을 수 없습니다. 파일이 손상되었거나 암호화되어 있을 수 있습니다.');
   }
 };
 
@@ -59,7 +86,7 @@ const extractTextFromImage = async (file: File): Promise<string> => {
     return text;
   } catch (error) {
     console.error('이미지 OCR 오류:', error);
-    throw new Error('이미지에서 텍스트를 추출할 수 없습니다.');
+    throw new Error('이미지에서 텍스트를 추출할 수 없습니다. 이미지가 선명하지 않거나 지원하지 않는 형식일 수 있습니다.');
   }
 };
 
@@ -196,7 +223,11 @@ export const extractTextFromFile = async (file: File): Promise<string> => {
     } else if (file.type.startsWith('image/')) {
       extractedText = await extractTextFromImage(file);
     } else {
-      throw new Error('지원하지 않는 파일 형식입니다.');
+      throw new Error('지원하지 않는 파일 형식입니다. PDF 또는 이미지 파일을 업로드해주세요.');
+    }
+    
+    if (!extractedText || extractedText.trim().length === 0) {
+      throw new Error('파일에서 텍스트를 찾을 수 없습니다. 파일이 빈 페이지이거나 텍스트가 이미지 형태로만 되어 있을 수 있습니다.');
     }
     
     console.log('텍스트 추출 완료, 길이:', extractedText.length);
