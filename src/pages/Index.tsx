@@ -142,7 +142,7 @@ const Index = () => {
                 <Card className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 text-left transform hover:translate-y-[-4px] transition-all duration-300">
                   <CardContent className="p-0 flex items-center gap-6">
                     <div className="w-32 h-32 flex-shrink-0">
-                      <img src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=128&h=128&fit=crop" alt="Lock" className="rounded-2xl w-full h-full object-cover" />
+                      <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=128&h=128&fit=crop" alt="Lock" className="rounded-2xl w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
