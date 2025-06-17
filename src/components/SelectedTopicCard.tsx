@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, ChevronDown, Archive } from "lucide-react";
+import { RefreshCw, Lock, X, ChevronDown, Archive, House } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
@@ -82,19 +82,16 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                 <p>주제 삭제</p>
               </TooltipContent>
             </Tooltip>
-            <DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenuTrigger asChild>
-                    
-                  </DropdownMenuTrigger>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>주제 유형 변경</p>
-                </TooltipContent>
-              </Tooltip>
-              
-            </DropdownMenu>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={onGoBack} aria-label="돌아가기">
+                  <House className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>돌아가기</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </CardHeader>
         <CardContent className="overflow-hidden min-h-0 flex flex-col">
