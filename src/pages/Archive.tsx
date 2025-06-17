@@ -9,7 +9,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenu
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
-
 const Archive = () => {
   const navigate = useNavigate();
   const {
@@ -21,7 +20,6 @@ const Archive = () => {
   const [sortOrder, setSortOrder] = useState<string>('date');
   const [isRegeneratingMethods, setIsRegeneratingMethods] = useState<Record<string, boolean>>({});
   const [topicResearchMethods, setTopicResearchMethods] = useState<Record<string, string[]>>({});
-  
   const sortedTopics = [...archivedTopics].sort((a, b) => {
     if (sortOrder === 'date') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -59,7 +57,6 @@ const Archive = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
-  
   const generateResearchMethods = (topic: ArchivedTopic) => {
     return [`'${topic.title}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`, `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic.title}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`, `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`, `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`];
   };
@@ -150,7 +147,6 @@ const Archive = () => {
   const getTopicResearchMethods = (topicId: string) => {
     return topicResearchMethods[topicId] || [];
   };
-  
   return <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -193,7 +189,8 @@ const Archive = () => {
                   <TableHead className="w-[120px]">과목</TableHead>
                   <TableHead className="w-[120px]">주제 유형</TableHead>
                   <TableHead>탐구 방법</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-right">
+              </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -208,13 +205,9 @@ const Archive = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {topic.subject ? (
-                        <Badge variant="outline" className="text-xs">
+                      {topic.subject ? <Badge variant="outline" className="text-xs">
                           {topic.subject}
-                        </Badge>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">-</span>
-                      )}
+                        </Badge> : <span className="text-xs text-muted-foreground">-</span>}
                     </TableCell>
                     <TableCell>
                       <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
@@ -245,31 +238,13 @@ const Archive = () => {
                                 </span>
                               </div>
                               <div className="flex items-center justify-center gap-2">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  onClick={() => handleDifficultyUp(topic.id)} 
-                                  disabled={isRegeneratingMethods[topic.id]} 
-                                  className="flex items-center gap-1"
-                                > 
+                                <Button variant="outline" size="sm" onClick={() => handleDifficultyUp(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1"> 
                                   난이도 ⬆️ 
                                 </Button>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  onClick={() => handleDifficultyDown(topic.id)} 
-                                  disabled={isRegeneratingMethods[topic.id]} 
-                                  className="flex items-center gap-1"
-                                >
+                                <Button variant="outline" size="sm" onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">
                                   난이도 ⬇️ 
                                 </Button>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
-                                  onClick={() => handleMoreDetailed(topic.id)} 
-                                  disabled={isRegeneratingMethods[topic.id]} 
-                                  className="flex items-center gap-2"
-                                >
+                                <Button variant="outline" size="sm" onClick={() => handleMoreDetailed(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
                                   더 자세히
                                 </Button>
                               </div>
@@ -284,19 +259,11 @@ const Archive = () => {
                                 아직 탐구 방법이 생성되지 않았습니다.
                               </div>
                               <div className="flex justify-center">
-                                <Button 
-                                  onClick={() => handleGenerateResearchMethods(topic.id)} 
-                                  disabled={isRegeneratingMethods[topic.id]} 
-                                  className="flex items-center gap-2"
-                                >
-                                  {isRegeneratingMethods[topic.id] ? (
-                                    <>
+                                <Button onClick={() => handleGenerateResearchMethods(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
+                                  {isRegeneratingMethods[topic.id] ? <>
                                       <RefreshCw className="h-4 w-4 animate-spin" />
                                       생성 중...
-                                    </>
-                                  ) : (
-                                    '재생성'
-                                  )}
+                                    </> : '재생성'}
                                 </Button>
                               </div>
                             </div>}
@@ -315,5 +282,4 @@ const Archive = () => {
       </main>
     </div>;
 };
-
 export default Archive;
