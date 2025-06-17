@@ -1,5 +1,6 @@
 
 
+
 import React from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -119,7 +120,7 @@ const Index = () => {
                   <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-2xl flex items-center justify-center shadow-[0_8px_20px_rgba(0,0,0,0.3)] border-2 border-gray-700">
                     <Cog className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">Automated Workflows</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6 mt-8">최신 연구를 바탕으로 생성된 탐구 주제</h3>
                   <p className="text-gray-600 mb-8">
                     Streamline tasks and boost efficiency with powerful, scalable AI-powered automation tools for growing teams and projects.
                   </p>
@@ -171,4 +172,5 @@ const Index = () => {
     </div>;
 };
 export default Index;
+
 
