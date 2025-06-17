@@ -84,16 +84,23 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     setSelectedCareerSentence(sentence);
   };
 
+  // 후속 탐구 추가 함수 - 마지막 행에 후속 탐구 설정을 활성화
   const handleAddFollowUpRow = () => {
+    // 새로운 행 추가
     handleAddRow();
-    // 새로운 행이 추가된 후 마지막 슬라이드로 이동
+    
+    // 새로 추가된 행에 대해 후속 탐구 설정
     setTimeout(() => {
+      const newRowId = Date.now(); // 새로 생성될 ID와 일치해야 함
+      handleFollowUpChange(newRowId, true);
+      
       if (carouselApi) {
         carouselApi.scrollTo(topicRows.length); // 새로 추가된 행의 인덱스로 이동
       }
     }, 100);
   };
 
+  // 새로운 일반 주제 추가 함수 - 일반적인 새 주제 생성기 추가
   const handleAddNewTopic = () => {
     handleAddRow();
     // 새로운 행이 추가된 후 마지막 슬라이드로 이동
@@ -230,7 +237,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
+                <p>현재 주제를 기반으로 후속 탐구를 만듭니다</p>
               </TooltipContent>
             </Tooltip>
             
@@ -245,7 +252,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>새로운 주제 생성기를 추가합니다</p>
+                <p>완전히 새로운 주제 생성기를 추가합니다</p>
               </TooltipContent>
             </Tooltip>
           </div>
