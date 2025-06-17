@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useArchive } from '@/contexts/ArchiveContext';
@@ -20,13 +19,22 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Trash2, ChevronDown, Filter, ArrowLeft, Eye } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
 import { ArchivedTopic } from '@/types/archive';
 
 const Archive = () => {
   const navigate = useNavigate();
-  const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic } = useArchive();
+  const { archivedTopics, updateTopicStatus, updateTopicPriority, deleteTopic, updateTopicResearchMethods } = useArchive();
   const [sortOrder, setSortOrder] = useState<string>('date');
+  const [isRegeneratingMethods, setIsRegeneratingMethods] = useState<Record<string, boolean>>({});
 
   const sortedTopics = [...archivedTopics].sort((a, b) => {
     if (sortOrder === 'date') {
@@ -67,6 +75,29 @@ const Archive = () => {
       default:
         return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const generateResearchMethods = (topic: ArchivedTopic) => {
+    return [
+      `'${topic.title}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`,
+      `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic.title}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`,
+      `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`,
+      `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`
+    ];
+  };
+
+  const handleRegenerateResearchMethods = async (topicId: string) => {
+    setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: true }));
+    
+    const topic = archivedTopics.find(t => t.id === topicId);
+    if (!topic) return;
+
+    // Simulate API call delay
+    setTimeout(() => {
+      const newMethods = generateResearchMethods(topic);
+      updateTopicResearchMethods(topicId, newMethods);
+      setIsRegeneratingMethods(prev => ({ ...prev, [topicId]: false }));
+    }, 1500);
   };
 
   return (
@@ -139,27 +170,64 @@ const Archive = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="space-y-2">
-                        {topic.researchMethods && topic.researchMethods.length > 0 ? (
-                          <>
-                            <div className="flex items-center gap-2">
-                              <Eye className="h-4 w-4 text-muted-foreground" />
-                              <span className="text-sm font-medium">
-                                {topic.researchMethods.length}개 방법
-                              </span>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm" className="flex items-center gap-2">
+                            <Eye className="h-4 w-4" />
+                            View
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-2xl max-h-[70vh] overflow-y-auto">
+                          <DialogHeader>
+                            <DialogTitle>탐구 방법</DialogTitle>
+                            <DialogDescription>
+                              {topic.title}에 대한 탐구 방법입니다.
+                            </DialogDescription>
+                          </DialogHeader>
+                          
+                          {topic.researchMethods && topic.researchMethods.length > 0 ? (
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium">
+                                  {topic.researchMethods.length}개의 탐구 방법
+                                </span>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleRegenerateResearchMethods(topic.id)}
+                                  disabled={isRegeneratingMethods[topic.id]}
+                                  className="flex items-center gap-2"
+                                >
+                                  <RefreshCw className={`h-4 w-4 ${isRegeneratingMethods[topic.id] ? 'animate-spin' : ''}`} />
+                                  다시 생성
+                                </Button>
+                              </div>
+                              <div className="space-y-3">
+                                {topic.researchMethods.map((method, methodIndex) => (
+                                  <div key={methodIndex} className="p-3 bg-muted rounded-lg">
+                                    <div className="text-sm font-medium mb-1">방법 {methodIndex + 1}</div>
+                                    <div className="text-sm text-muted-foreground">{method}</div>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                            <div className="max-h-20 overflow-y-auto space-y-1">
-                              {topic.researchMethods.map((method, methodIndex) => (
-                                <div key={methodIndex} className="text-xs text-muted-foreground p-2 bg-muted rounded">
-                                  {method}
-                                </div>
-                              ))}
+                          ) : (
+                            <div className="text-center py-8 space-y-4">
+                              <div className="text-muted-foreground">
+                                아직 탐구 방법이 생성되지 않았습니다.
+                              </div>
+                              <Button
+                                onClick={() => handleRegenerateResearchMethods(topic.id)}
+                                disabled={isRegeneratingMethods[topic.id]}
+                                className="flex items-center gap-2"
+                              >
+                                <RefreshCw className={`h-4 w-4 ${isRegeneratingMethods[topic.id] ? 'animate-spin' : ''}`} />
+                                {isRegeneratingMethods[topic.id] ? '생성 중...' : '탐구 방법 생성'}
+                              </Button>
                             </div>
-                          </>
-                        ) : (
-                          <span className="text-sm text-muted-foreground">탐구 방법 없음</span>
-                        )}
-                      </div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
