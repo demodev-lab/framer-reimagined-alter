@@ -7,6 +7,7 @@ import StickyNav from "@/components/topic-generator/StickyNav";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
+
 const TopicGenerator = () => {
   const {
     selectedCareerSentence,
@@ -20,6 +21,7 @@ const TopicGenerator = () => {
     videoId: "",
     title: ""
   });
+
   useEffect(() => {
     const sections = ["preparation-method", "topic-generator-section"];
     const observer = new IntersectionObserver(entries => {
@@ -42,6 +44,7 @@ const TopicGenerator = () => {
       });
     };
   }, []);
+
   const navItems = [{
     id: "preparation-method",
     label: "학생부 준비 방법"
@@ -49,6 +52,7 @@ const TopicGenerator = () => {
     id: "topic-generator-section",
     label: "주제 생성기"
   }];
+
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setActiveTab(id);
@@ -60,6 +64,7 @@ const TopicGenerator = () => {
       });
     }
   };
+
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
       open: true,
@@ -67,6 +72,7 @@ const TopicGenerator = () => {
       title
     });
   };
+
   const handleCloseYouTubePopup = () => {
     setYoutubePopup({
       open: false,
@@ -74,7 +80,9 @@ const TopicGenerator = () => {
       title: ""
     });
   };
-  return <div className="min-h-screen bg-background font-sans">
+
+  return (
+    <div className="min-h-screen bg-background font-sans">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-0">
         <StickyNav navItems={navItems} activeTab={activeTab} onNavLinkClick={handleNavLinkClick} />
@@ -97,9 +105,9 @@ const TopicGenerator = () => {
         </div>
 
         <section id="topic-generator-section" className="scroll-mt-[150px] pb-96">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">탐구 주제 생성</h2>
-            <p className="mt-3 max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
+          <div className="text-center mb-3">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-3">탐구 주제 생성</h2>
+            <p className="max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 탐구 주제를 생성합니다.</p>
             
             {/* YouTube 버튼들 - 중앙 정렬 및 검은색 배경으로 스타일 변경 */}
             <div className="flex justify-center items-center gap-4 mt-6">
@@ -116,6 +124,8 @@ const TopicGenerator = () => {
       </main>
 
       <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
-    </div>;
+    </div>
+  );
 };
+
 export default TopicGenerator;
