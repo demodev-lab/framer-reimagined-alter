@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
@@ -153,7 +152,6 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             <Button 
               onClick={handleArchiveSave}
               variant="outline"
-              size="sm"
               className="flex items-center gap-1"
               disabled={isLocked}
               title="아카이브에 저장"
