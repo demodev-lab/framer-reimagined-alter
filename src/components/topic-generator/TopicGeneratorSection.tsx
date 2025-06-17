@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import SelectedTopicCard from "@/components/SelectedTopicCard";
 import TopicGeneratorCard from "@/components/TopicGeneratorCard";
@@ -11,8 +10,7 @@ import { Dialog, DialogContent, DialogClose, DialogTitle, DialogDescription } fr
 import { X } from "lucide-react";
 import CareerSentenceGeneratorCard from "@/components/CareerSentenceGeneratorCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { useCarousel } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, useCarousel } from "@/components/ui/carousel";
 
 // Custom carousel controls component
 const CustomCarouselControls = ({ groupId, canAddFollowUp, onAddFollowUp }: {
@@ -203,7 +201,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                                   }} 
                                   showFollowUp={index > 0} 
                                   isFollowUp={followUpStates[row.id] || false} 
-                                  onFollowUpChange={checked => handleFollowUpChange(row.id, checked as boolean)} 
+                                  onFollowUpChange={checked => handleFollowUpChange(row.id, Boolean(checked))} 
                                   rowId={row.id} 
                                   selectedCareerSentence={selectedCareerSentence} 
                                   onCareerSentenceSelect={setSelectedCareerSentence} 
