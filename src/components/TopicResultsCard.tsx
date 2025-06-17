@@ -2,6 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ArrowLeft } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import React from "react";
 
 interface TopicResultsCardProps {
@@ -12,6 +18,7 @@ interface TopicResultsCardProps {
   isLoading: boolean;
   isSelectable?: boolean;
   scrollable?: boolean;
+  onBack?: () => void;
 }
 
 const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
@@ -22,6 +29,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   isLoading,
   isSelectable = true,
   scrollable = true,
+  onBack,
 }) => {
   const topicsList = (
     <div className="flex flex-col gap-2">
@@ -41,8 +49,20 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
 
   return (
     <Card className="h-full flex flex-col">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{title}</CardTitle>
+        {onBack && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={onBack} aria-label="돌아가기">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>돌아가기</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden min-h-0">
         {isLoading ? (

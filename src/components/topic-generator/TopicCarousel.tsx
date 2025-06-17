@@ -39,6 +39,11 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   const lastRow = group.topicRows[group.topicRows.length - 1];
   const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
 
+  const handleBackToGenerator = (rowId: number) => {
+    // 주제 생성기로 돌아가기
+    onDeleteTopic(rowId);
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <Carousel className="w-full">
@@ -74,6 +79,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       topics={row.generatedTopics || []}
                       onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
                       isLoading={row.isLoadingTopics || false}
+                      onBack={() => handleBackToGenerator(row.id)}
                     />
                   )}
                   
