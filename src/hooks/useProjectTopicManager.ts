@@ -27,6 +27,17 @@ const semesterLabels = [
   "3학년 1학기 프로젝트"
 ];
 
+// 진로 문장을 바탕으로 학기별 프로젝트 주제를 생성하는 함수
+const generateProjectTopicsFromCareer = (careerSentence: string) => {
+  return [
+    `'${careerSentence}' 달성을 위한 1학년 기초 소양 프로젝트: 진로 탐색과 기본 역량 개발`,
+    `'${careerSentence}' 실현을 위한 1학년 심화 프로젝트: 관련 분야 기초 이론 연구와 실습`,
+    `'${careerSentence}' 목표 달성을 위한 2학년 전문성 개발 프로젝트: 핵심 역량 강화와 실무 경험`,
+    `'${careerSentence}' 구현을 위한 2학년 융합 프로젝트: 다학제적 접근과 창의적 문제 해결`,
+    `'${careerSentence}' 완성을 위한 3학년 종합 프로젝트: 전문성 통합과 실제 적용`
+  ];
+};
+
 export const useProjectTopicManager = () => {
   const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
   
@@ -103,45 +114,52 @@ export const useProjectTopicManager = () => {
     // 프로젝트 주제에서는 사용하지 않음 (고정 5개)
   };
 
-  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {
-    console.log("Generating project topics for row:", rowId, "with inputs:", inputs);
-    
+  // 전체 프로젝트 주제 재생성
+  const handleRegenerateAllTopics = () => {
     if (!selectedCareerSentence) {
       toast.warning("진로 문장을 먼저 생성하거나 선택해주세요.");
       return;
     }
 
+    console.log("Regenerating all project topics with career sentence:", selectedCareerSentence);
+    
+    // 모든 토픽 로딩 상태로 설정
     setCarouselGroups(prevGroups => 
       prevGroups.map(group => ({
         ...group,
-        topicRows: group.topicRows.map(row =>
-          row.id === rowId ? { ...row, ...inputs, isLoadingTopics: true, generatedTopics: [] } : row
-        )
+        topicRows: group.topicRows.map(row => ({
+          ...row,
+          isLoadingTopics: true,
+          selectedTopic: null,
+          researchMethods: [],
+          isLoadingMethods: false,
+          stage: 'initial'
+        }))
       }))
     );
 
     setTimeout(() => {
-      // 학기별 특화된 프로젝트 주제 생성
-      const semesterIndex = rowId - 1;
-      const semesterLabel = semesterLabels[semesterIndex];
+      const generatedTopics = generateProjectTopicsFromCareer(selectedCareerSentence);
       
-      const newTopics = [
-        `'${selectedCareerSentence}'를 실현하기 위한 ${semesterLabel} 단계별 프로젝트`,
-        `${semesterLabel}에 적합한 '${selectedCareerSentence}' 관련 심화 탐구`,
-        `'${selectedCareerSentence}' 목표 달성을 위한 ${semesterLabel} 실습 프로젝트`,
-      ];
-
       setCarouselGroups(prevGroups => 
         prevGroups.map(group => ({
           ...group,
-          topicRows: group.topicRows.map(row =>
-            row.id === rowId
-              ? { ...row, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
-              : row
-          )
+          topicRows: group.topicRows.map((row, index) => ({
+            ...row,
+            isLoadingTopics: false,
+            selectedTopic: generatedTopics[index],
+            stage: 'topic_selected'
+          }))
         }))
       );
-    }, 1500);
+      
+      toast.success("전체 프로젝트 주제가 새롭게 생성되었습니다.");
+    }, 2000);
+  };
+
+  const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {
+    // 개별 생성이 아닌 전체 생성으로 변경됨 - handleRegenerateAllTopics 사용
+    handleRegenerateAllTopics();
   };
 
   const handleSelectTopic = (rowId: number, topic: string) => {
@@ -169,61 +187,8 @@ export const useProjectTopicManager = () => {
   };
 
   const handleRefreshTopic = (rowId: number) => {
-    console.log("Regenerating topics for row:", rowId);
-    
-    const allRows = carouselGroups.flatMap(group => group.topicRows);
-    const row = allRows.find(r => r.id === rowId);
-    
-    if (!row) return;
-
-    const inputs = {
-      subject: row.subject,
-      concept: row.concept,
-      topicType: row.topicType
-    };
-
-    setCarouselGroups(prevGroups =>
-      prevGroups.map(group => ({
-        ...group,
-        topicRows: group.topicRows.map(r =>
-          r.id === rowId
-            ? {
-                ...r,
-                stage: 'topics_generated',
-                selectedTopic: null,
-                researchMethods: [],
-                isLoadingMethods: false,
-                isLoadingTopics: true,
-                generatedTopics: []
-              }
-            : r
-        )
-      }))
-    );
-
-    setTimeout(() => {
-      const semesterIndex = rowId - 1;
-      const semesterLabel = semesterLabels[semesterIndex];
-      
-      const newTopics = [
-        `'${selectedCareerSentence}' 달성을 위한 ${semesterLabel} 창의적 프로젝트`,
-        `${semesterLabel} 수준에 맞는 '${selectedCareerSentence}' 관련 연구 프로젝트`,
-        `'${selectedCareerSentence}' 전문성 개발을 위한 ${semesterLabel} 실무 프로젝트`,
-      ];
-
-      setCarouselGroups(prevGroups => 
-        prevGroups.map(group => ({
-          ...group,
-          topicRows: group.topicRows.map(r =>
-            r.id === rowId
-              ? { ...r, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
-              : r
-          )
-        }))
-      );
-      
-      toast.success("새로운 프로젝트 주제가 생성되었습니다.");
-    }, 1500);
+    // 개별 주제 재생성 대신 전체 재생성 사용
+    handleRegenerateAllTopics();
   };
 
   const handleLockTopic = (rowId: number) => {
@@ -339,5 +304,6 @@ export const useProjectTopicManager = () => {
     handleRegenerateMethods,
     handleTopicTypeChange,
     handleFollowUpChange,
+    handleRegenerateAllTopics,
   };
 };

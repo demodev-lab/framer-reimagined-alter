@@ -28,6 +28,7 @@ interface ProjectTopicGeneratorSectionProps {
   handleRegenerateMethods: (id: number) => void;
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
+  handleRegenerateAllTopics: () => void;
   selectedCareerSentence?: string | null;
   setSelectedCareerSentence: (sentence: string) => void;
 }
@@ -45,6 +46,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
   handleTopicTypeChange,
   followUpStates,
   handleFollowUpChange,
+  handleRegenerateAllTopics,
   selectedCareerSentence,
   setSelectedCareerSentence
 }) => {
@@ -79,6 +81,11 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
   const handleSelectCareerSentence = (sentence: string) => {
     setShowRegenerateDialog(false);
     setSelectedCareerSentence(sentence);
+    
+    // 진로 문장이 선택되면 자동으로 모든 프로젝트 주제 생성
+    setTimeout(() => {
+      handleRegenerateAllTopics();
+    }, 500);
   };
 
   return (
@@ -121,7 +128,8 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
                 onTopicTypeChange={handleTopicTypeChange} 
                 onFollowUpChange={handleFollowUpChange} 
                 onCareerSentenceSelect={setSelectedCareerSentence} 
-                onAddFollowUpRow={handleAddFollowUpRow} 
+                onAddFollowUpRow={handleAddFollowUpRow}
+                onRegenerateAllTopics={handleRegenerateAllTopics}
               />
             ))}
           </div>

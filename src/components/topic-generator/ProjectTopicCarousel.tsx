@@ -19,6 +19,7 @@ interface ProjectTopicCarouselProps {
   onTopicTypeChange: (rowId: number, type: string) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
+  onRegenerateAllTopics: () => void;
 }
 
 const semesterLabels = [
@@ -42,7 +43,8 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   onRegenerateMethods,
   onTopicTypeChange,
   onCareerSentenceSelect,
-  onAddFollowUpRow
+  onAddFollowUpRow,
+  onRegenerateAllTopics
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi>();
@@ -77,17 +79,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
       return;
     }
     
-    // 5개 학기 모든 주제를 한번에 생성
-    group.topicRows.forEach((row: any, index: number) => {
-      if (index < 5) { // 5개 학기만
-        const inputs = {
-          subject: semesterLabels[index],
-          concept: '프로젝트 주제',
-          topicType: '프로젝트 주제'
-        };
-        onGenerate(row.id, inputs);
-      }
-    });
+    onRegenerateAllTopics();
   };
 
   // 현재 슬라이드의 탐구 방법 생성
@@ -110,6 +102,11 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
     return currentRow && currentRow.selectedTopic;
   };
 
+  // 생성된 주제가 있는지 확인
+  const hasGeneratedTopics = () => {
+    return group.topicRows.some((row: any) => row.selectedTopic);
+  };
+
   console.log("Current slide index:", currentSlideIndex);
   console.log("Current row:", group.topicRows[currentSlideIndex]);
   console.log("Has selected topic:", getCurrentSlideHasSelectedTopic());
@@ -118,7 +115,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   return (
     <div className="w-full max-w-6xl mx-auto">
       {/* 진로 문장이 선택되었고 첫 번째 주제가 아직 생성되지 않았을 때 생성 버튼 표시 */}
-      {selectedCareerSentence && group.topicRows[0]?.stage === 'initial' && (
+      {selectedCareerSentence && !hasGeneratedTopics() && (
         <div className="text-center mb-8">
           <button
             onClick={handleProjectGenerate}
@@ -126,6 +123,21 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
           >
             전체 학기 프로젝트 주제 생성
           </button>
+        </div>
+      )}
+
+      {/* 프로젝트 주제 재생성 버튼 - 주제가 생성된 후에 표시 */}
+      {selectedCareerSentence && hasGeneratedTopics() && (
+        <div className="flex justify-center mb-6 bg-orange-50 p-4 rounded-lg border border-orange-200">
+          <div className="text-center">
+            <p className="text-sm text-orange-700 mb-2 font-medium">전체 프로젝트 주제 재생성</p>
+            <Button
+              onClick={onRegenerateAllTopics}
+              className="bg-orange-600 text-white hover:bg-orange-700 px-6 py-3"
+            >
+              프로젝트 주제 재생성
+            </Button>
+          </div>
         </div>
       )}
 
@@ -168,47 +180,19 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                   )}
                   
                   {/* 단계 2: 주제 생성 완료 */}
-                  {row.stage === "topics_generated" && (
-                    <TopicResultsCard 
-                      title="생성된 주제"
-                      placeholder="주제를 생성하려면 왼쪽 폼을 작성하고 '주제 생성' 버튼을 눌러주세요."
-                      topics={row.generatedTopics || []}
-                      onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
-                      isLoading={row.isLoadingTopics || false}
-                      onBack={() => handleBackToGenerator(row.id)}
-                    />
-                  )}
-                  
-                  {/* 단계 3: 주제 선택 완료 */}
                   {row.stage === "topic_selected" && (
                     <div className="flex flex-col space-y-6">
                       {/* 선택된 주제 표시 */}
                       <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-semibold text-lg mb-2">선택된 주제</h4>
+                        <h4 className="font-semibold text-lg mb-2">생성된 주제</h4>
                         <p className="text-gray-800">{row.selectedTopic}</p>
                         <div className="mt-4 flex gap-2">
-                          <Button 
-                            onClick={() => onRefreshTopic(row.id)}
-                            variant="outline" 
-                            size="sm"
-                            disabled={row.isLocked}
-                          >
-                            주제 재생성
-                          </Button>
                           <Button 
                             onClick={() => onLockTopic(row.id)}
                             variant="outline" 
                             size="sm"
                           >
                             {row.isLocked ? '잠금 해제' : '주제 잠금'}
-                          </Button>
-                          <Button 
-                            onClick={() => onDeleteTopic(row.id)}
-                            variant="outline" 
-                            size="sm"
-                            disabled={row.isLocked}
-                          >
-                            주제 삭제
                           </Button>
                         </div>
                       </div>
