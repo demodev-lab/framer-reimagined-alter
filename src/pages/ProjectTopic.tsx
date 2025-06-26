@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import ProjectTopicGeneratorSection from "@/components/topic-generator/ProjectTopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
+import CareerSentenceSection from "@/components/topic-generator/CareerSentenceSection";
+import CareerSentenceDialog from "@/components/topic-generator/CareerSentenceDialog";
 
 const ProjectTopic = () => {
   const {
@@ -19,6 +21,9 @@ const ProjectTopic = () => {
     videoId: "",
     title: ""
   });
+  const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
+  const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
+  const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
 
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
     setYoutubePopup({
@@ -34,6 +39,35 @@ const ProjectTopic = () => {
       videoId: "",
       title: ""
     });
+  };
+
+  const handleRegenerateCareerSentence = () => {
+    console.log("Career sentence regeneration requested");
+    setShowRegenerateDialog(true);
+  };
+
+  const handleCareerSentenceGenerate = (data: {
+    careerField: string;
+    activity: string;
+    file: File | null;
+    aspiration: string;
+  }) => {
+    console.log("Career sentence generated:", data);
+    setIsGeneratingCareerSentence(true);
+    setTimeout(() => {
+      const sentences = [
+        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
+        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
+        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
+      ];
+      setGeneratedCareerSentences(sentences);
+      setIsGeneratingCareerSentence(false);
+    }, 2000);
+  };
+
+  const handleSelectCareerSentence = (sentence: string) => {
+    setShowRegenerateDialog(false);
+    setSelectedCareerSentence(sentence);
   };
 
   return <div className="min-h-screen bg-background font-sans">
@@ -65,11 +99,27 @@ const ProjectTopic = () => {
               </Button>
             </div>
           </div>
+
+          {/* 진로 문장 섹션 추가 */}
+          <CareerSentenceSection 
+            selectedCareerSentence={selectedCareerSentence} 
+            onRegenerateCareerSentence={handleRegenerateCareerSentence} 
+          />
+
           <ProjectTopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
         </section>
       </main>
 
       <YouTubePopup open={youtubePopup.open} onOpenChange={open => !open && handleCloseYouTubePopup()} videoId={youtubePopup.videoId} title={youtubePopup.title} />
+      
+      <CareerSentenceDialog 
+        open={showRegenerateDialog} 
+        onOpenChange={setShowRegenerateDialog} 
+        generatedCareerSentences={generatedCareerSentences} 
+        isGeneratingCareerSentence={isGeneratingCareerSentence} 
+        onGenerate={handleCareerSentenceGenerate} 
+        onSelectCareerSentence={handleSelectCareerSentence} 
+      />
     </div>;
 };
 
