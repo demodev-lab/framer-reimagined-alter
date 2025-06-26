@@ -1,4 +1,5 @@
 
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ArchiveProvider } from "@/contexts/ArchiveContext";
 import Index from "./pages/Index";
 import TopicGenerator from "./pages/TopicGenerator";
+import ProjectTopic from "./pages/ProjectTopic";
 import Archive from "./pages/Archive";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
@@ -25,6 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/topic-generator" element={<TopicGenerator />} />
+            <Route path="/project-topic" element={<ProjectTopic />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/feedback" element={<Feedback />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

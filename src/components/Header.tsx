@@ -16,6 +16,9 @@ const Header = () => {
     name: "탐구 주제",
     href: "/topic-generator"
   }, {
+    name: "프로젝트 주제",
+    href: "/project-topic"
+  }, {
     name: "보관함",
     href: "/archive"
   }, {
