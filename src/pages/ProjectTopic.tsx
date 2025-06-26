@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
 import ProjectTopicGeneratorSection from "@/components/topic-generator/ProjectTopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
-import CareerSentenceSection from "@/components/topic-generator/CareerSentenceSection";
 import CareerSentenceDialog from "@/components/topic-generator/CareerSentenceDialog";
 
 const ProjectTopic = () => {
@@ -99,12 +98,6 @@ const ProjectTopic = () => {
               </Button>
             </div>
           </div>
-
-          {/* 진로 문장 섹션 추가 */}
-          <CareerSentenceSection 
-            selectedCareerSentence={selectedCareerSentence} 
-            onRegenerateCareerSentence={handleRegenerateCareerSentence} 
-          />
 
           <ProjectTopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
         </section>

@@ -85,11 +85,26 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
     <>
       <section className="flex flex-col items-center pb-8">
         <div className="w-full max-w-7xl mx-auto px-4">
+          {/* 진로 문장 생성 다이얼로그를 먼저 표시 */}
+          {!selectedCareerSentence && (
+            <div className="text-center mb-8 p-6 bg-gray-50 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4">진로 문장을 먼저 생성해주세요</h3>
+              <button
+                onClick={handleRegenerateCareerSentence}
+                className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                진로 문장 생성하기
+              </button>
+            </div>
+          )}
+
+          {/* 선택된 진로 문장 표시 */}
           <CareerSentenceSection 
             selectedCareerSentence={selectedCareerSentence} 
             onRegenerateCareerSentence={handleRegenerateCareerSentence} 
           />
 
+          {/* 캐러셀 표시 */}
           <div className="space-y-8">
             {carouselGroups.map(group => (
               <ProjectTopicCarousel 
