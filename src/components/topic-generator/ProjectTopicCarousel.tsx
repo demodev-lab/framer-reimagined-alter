@@ -6,6 +6,7 @@ import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
 import SelectedTopicCard from '../SelectedTopicCard';
 import ResearchMethodsCard from '../ResearchMethodsCard';
+import { Button } from '@/components/ui/button';
 
 interface ProjectTopicCarouselProps {
   group: any;
@@ -91,22 +92,24 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         </div>
       )}
 
-      {/* 5개 학기 프로젝트를 수평 캐러셀로 표시 */}
-      <Carousel className="w-full max-w-5xl mx-auto">
-        <CarouselContent className="-ml-2 md:-ml-4">
+      {/* 5개 학기 프로젝트를 하나씩 보이는 캐러셀로 표시 */}
+      <Carousel className="w-full max-w-4xl mx-auto">
+        <CarouselContent>
           {group.topicRows.slice(0, 5).map((row: any, index: number) => (
-            <CarouselItem key={row.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-              <div className="border rounded-lg p-4 bg-white shadow-sm h-full">
-                <h3 className="text-lg font-semibold mb-4 text-center text-gray-800">
+            <CarouselItem key={row.id}>
+              <div className="border rounded-lg p-6 bg-white shadow-sm h-full">
+                <h3 className="text-2xl font-bold mb-6 text-center text-gray-800">
                   {semesterLabels[index]}
                 </h3>
                 
-                <div className="min-h-[300px] flex flex-col">
+                <div className="min-h-[400px] flex flex-col">
                   {/* 단계 1: 초기 상태 */}
                   {row.stage === "initial" && (
-                    <div className="text-center text-gray-500 py-8">
-                      진로 문장을 선택하고<br />
-                      주제 생성 버튼을 눌러주세요
+                    <div className="text-center text-gray-500 py-12">
+                      <div className="text-lg">
+                        진로 문장을 선택하고<br />
+                        주제 생성 버튼을 눌러주세요
+                      </div>
                     </div>
                   )}
                   
@@ -124,29 +127,58 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                   
                   {/* 단계 3: 주제 선택 완료 */}
                   {row.stage === "topic_selected" && (
-                    <div className="flex flex-col space-y-4">
-                      <SelectedTopicCard 
-                        topic={row.selectedTopic!}
-                        subject={semesterLabels[index]}
-                        concept="프로젝트 주제"
-                        topicNumber={index + 1}
-                        isLocked={row.isLocked}
-                        onRefresh={() => onRefreshTopic(row.id)}
-                        onLock={() => onLockTopic(row.id)}
-                        onDelete={() => onDeleteTopic(row.id)}
-                        onRegenerateMethods={() => onRegenerateMethods(row.id)}
-                        topicType={row.topicType}
-                        onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
-                        onGoBack={handleGoToArchive}
-                      />
+                    <div className="flex flex-col space-y-6">
+                      {/* 선택된 주제 표시 */}
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <h4 className="font-semibold text-lg mb-2">선택된 주제</h4>
+                        <p className="text-gray-800">{row.selectedTopic}</p>
+                        <div className="mt-4 flex gap-2">
+                          <Button 
+                            onClick={() => onRefreshTopic(row.id)}
+                            variant="outline" 
+                            size="sm"
+                            disabled={row.isLocked}
+                          >
+                            주제 재생성
+                          </Button>
+                          <Button 
+                            onClick={() => onLockTopic(row.id)}
+                            variant="outline" 
+                            size="sm"
+                          >
+                            {row.isLocked ? '잠금 해제' : '주제 잠금'}
+                          </Button>
+                          <Button 
+                            onClick={() => onDeleteTopic(row.id)}
+                            variant="outline" 
+                            size="sm"
+                            disabled={row.isLocked}
+                          >
+                            주제 삭제
+                          </Button>
+                        </div>
+                      </div>
                       
-                      {/* 탐구 방법 카드 */}
-                      {(row.researchMethods && row.researchMethods.length > 0) || row.isLoadingMethods ? (
-                        <ResearchMethodsCard 
-                          researchMethods={row.researchMethods || []}
-                          isLoading={row.isLoadingMethods || false}
-                        />
-                      ) : null}
+                      {/* 탐구 방법 섹션 */}
+                      <div className="flex-1">
+                        {row.researchMethods && row.researchMethods.length > 0 ? (
+                          <ResearchMethodsCard 
+                            researchMethods={row.researchMethods}
+                            isLoading={row.isLoadingMethods || false}
+                          />
+                        ) : (
+                          <div className="text-center py-8">
+                            <p className="text-gray-600 mb-4">아직 탐구 방법이 생성되지 않았습니다.</p>
+                            <Button
+                              onClick={() => onRegenerateMethods(row.id)}
+                              className="bg-black text-white hover:bg-gray-800 px-6 py-3"
+                              disabled={row.isLoadingMethods || row.isLocked}
+                            >
+                              {row.isLoadingMethods ? '생성 중...' : '탐구 방법 생성'}
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
