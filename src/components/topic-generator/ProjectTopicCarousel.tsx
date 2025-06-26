@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
+import React, { useState, useEffect } from 'react';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselApi } from "@/components/ui/carousel"
 import TopicResultsCard from '../TopicResultsCard';
 import ResearchMethodsCard from '../ResearchMethodsCard';
 import { Button } from '@/components/ui/button';
@@ -45,8 +44,27 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   onAddFollowUpRow
 }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi>();
   const lastRow = group.topicRows[group.topicRows.length - 1];
   const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
+
+  // Track slide changes using the carousel API
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    const onSelect = () => {
+      setCurrentSlideIndex(api.selectedScrollSnap());
+    };
+
+    api.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      api?.off("select", onSelect);
+    };
+  }, [api]);
 
   const handleBackToGenerator = (rowId: number) => {
     onDeleteTopic(rowId);
@@ -106,7 +124,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
       )}
 
       {/* 5개 학기 프로젝트를 하나씩 보이는 캐러셀로 표시 */}
-      <Carousel className="w-full max-w-4xl mx-auto" onSlideChange={(index) => setCurrentSlideIndex(index)}>
+      <Carousel className="w-full max-w-4xl mx-auto" setApi={setApi}>
         <CarouselContent>
           {group.topicRows.slice(0, 5).map((row: any, index: number) => (
             <CarouselItem key={row.id}>
