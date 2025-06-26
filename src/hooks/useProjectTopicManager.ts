@@ -20,11 +20,11 @@ const generateMethods = (topic: string) => {
 };
 
 const semesterLabels = [
-  "1-1 프로젝트",
-  "1-2 프로젝트", 
-  "2-1 프로젝트",
-  "2-2 프로젝트",
-  "3-1 프로젝트"
+  "1학년 1학기 프로젝트",
+  "1학년 2학기 프로젝트", 
+  "2학년 1학기 프로젝트",
+  "2학년 2학기 프로젝트",
+  "3학년 1학기 프로젝트"
 ];
 
 export const useProjectTopicManager = () => {
