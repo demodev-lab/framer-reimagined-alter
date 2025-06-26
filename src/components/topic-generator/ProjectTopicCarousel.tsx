@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
 import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
 import SelectedTopicCard from '../SelectedTopicCard';
@@ -91,66 +91,72 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         </div>
       )}
 
-      {/* 5개 학기 프로젝트를 격자 형태로 표시 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {group.topicRows.slice(0, 5).map((row: any, index: number) => (
-          <div key={row.id} className="border rounded-lg p-4 bg-white shadow-sm">
-            <h3 className="text-lg font-semibold mb-4 text-center text-gray-800">
-              {semesterLabels[index]}
-            </h3>
-            
-            <div className="min-h-[300px] flex flex-col">
-              {/* 단계 1: 초기 상태 */}
-              {row.stage === "initial" && (
-                <div className="text-center text-gray-500 py-8">
-                  진로 문장을 선택하고<br />
-                  주제 생성 버튼을 눌러주세요
-                </div>
-              )}
-              
-              {/* 단계 2: 주제 생성 완료 */}
-              {row.stage === "topics_generated" && (
-                <TopicResultsCard 
-                  title="생성된 주제"
-                  placeholder="주제를 생성하려면 왼쪽 폼을 작성하고 '주제 생성' 버튼을 눌러주세요."
-                  topics={row.generatedTopics || []}
-                  onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
-                  isLoading={row.isLoadingTopics || false}
-                  onBack={() => handleBackToGenerator(row.id)}
-                />
-              )}
-              
-              {/* 단계 3: 주제 선택 완료 */}
-              {row.stage === "topic_selected" && (
-                <div className="flex flex-col space-y-4">
-                  <SelectedTopicCard 
-                    topic={row.selectedTopic!}
-                    subject={semesterLabels[index]}
-                    concept="프로젝트 주제"
-                    topicNumber={index + 1}
-                    isLocked={row.isLocked}
-                    onRefresh={() => onRefreshTopic(row.id)}
-                    onLock={() => onLockTopic(row.id)}
-                    onDelete={() => onDeleteTopic(row.id)}
-                    onRegenerateMethods={() => onRegenerateMethods(row.id)}
-                    topicType={row.topicType}
-                    onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
-                    onGoBack={handleGoToArchive}
-                  />
+      {/* 5개 학기 프로젝트를 수평 캐러셀로 표시 */}
+      <Carousel className="w-full max-w-5xl mx-auto">
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {group.topicRows.slice(0, 5).map((row: any, index: number) => (
+            <CarouselItem key={row.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+              <div className="border rounded-lg p-4 bg-white shadow-sm h-full">
+                <h3 className="text-lg font-semibold mb-4 text-center text-gray-800">
+                  {semesterLabels[index]}
+                </h3>
+                
+                <div className="min-h-[300px] flex flex-col">
+                  {/* 단계 1: 초기 상태 */}
+                  {row.stage === "initial" && (
+                    <div className="text-center text-gray-500 py-8">
+                      진로 문장을 선택하고<br />
+                      주제 생성 버튼을 눌러주세요
+                    </div>
+                  )}
                   
-                  {/* 탐구 방법 카드 */}
-                  {(row.researchMethods && row.researchMethods.length > 0) || row.isLoadingMethods ? (
-                    <ResearchMethodsCard 
-                      researchMethods={row.researchMethods || []}
-                      isLoading={row.isLoadingMethods || false}
+                  {/* 단계 2: 주제 생성 완료 */}
+                  {row.stage === "topics_generated" && (
+                    <TopicResultsCard 
+                      title="생성된 주제"
+                      placeholder="주제를 생성하려면 왼쪽 폼을 작성하고 '주제 생성' 버튼을 눌러주세요."
+                      topics={row.generatedTopics || []}
+                      onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
+                      isLoading={row.isLoadingTopics || false}
+                      onBack={() => handleBackToGenerator(row.id)}
                     />
-                  ) : null}
+                  )}
+                  
+                  {/* 단계 3: 주제 선택 완료 */}
+                  {row.stage === "topic_selected" && (
+                    <div className="flex flex-col space-y-4">
+                      <SelectedTopicCard 
+                        topic={row.selectedTopic!}
+                        subject={semesterLabels[index]}
+                        concept="프로젝트 주제"
+                        topicNumber={index + 1}
+                        isLocked={row.isLocked}
+                        onRefresh={() => onRefreshTopic(row.id)}
+                        onLock={() => onLockTopic(row.id)}
+                        onDelete={() => onDeleteTopic(row.id)}
+                        onRegenerateMethods={() => onRegenerateMethods(row.id)}
+                        topicType={row.topicType}
+                        onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
+                        onGoBack={handleGoToArchive}
+                      />
+                      
+                      {/* 탐구 방법 카드 */}
+                      {(row.researchMethods && row.researchMethods.length > 0) || row.isLoadingMethods ? (
+                        <ResearchMethodsCard 
+                          researchMethods={row.researchMethods || []}
+                          isLoading={row.isLoadingMethods || false}
+                        />
+                      ) : null}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </div>
   );
 };
