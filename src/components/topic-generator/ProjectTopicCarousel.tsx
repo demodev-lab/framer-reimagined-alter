@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselApi } from "@/components/ui/carousel"
 import TopicResultsCard from '../TopicResultsCard';
@@ -82,26 +81,6 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
     onRegenerateAllTopics();
   };
 
-  // 현재 슬라이드의 탐구 방법 생성
-  const handleGenerateCurrentMethods = () => {
-    const currentRow = group.topicRows[currentSlideIndex];
-    if (currentRow && currentRow.selectedTopic) {
-      onRegenerateMethods(currentRow.id);
-    }
-  };
-
-  // 현재 슬라이드의 탐구 방법이 있는지 확인
-  const getCurrentSlideHasMethods = () => {
-    const currentRow = group.topicRows[currentSlideIndex];
-    return currentRow && currentRow.researchMethods && currentRow.researchMethods.length > 0;
-  };
-
-  // 현재 슬라이드에 선택된 주제가 있는지 확인
-  const getCurrentSlideHasSelectedTopic = () => {
-    const currentRow = group.topicRows[currentSlideIndex];
-    return currentRow && currentRow.selectedTopic;
-  };
-
   // 생성된 주제가 있는지 확인
   const hasGeneratedTopics = () => {
     return group.topicRows.some((row: any) => row.selectedTopic);
@@ -109,8 +88,6 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
 
   console.log("Current slide index:", currentSlideIndex);
   console.log("Current row:", group.topicRows[currentSlideIndex]);
-  console.log("Has selected topic:", getCurrentSlideHasSelectedTopic());
-  console.log("Has methods:", getCurrentSlideHasMethods());
 
   return (
     <div className="w-full max-w-6xl mx-auto">
@@ -136,23 +113,6 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
               className="bg-orange-600 text-white hover:bg-orange-700 px-6 py-3"
             >
               프로젝트 주제 재생성
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* 탐구 방법 생성 버튼 - 캐러셀 위에 표시 */}
-      {getCurrentSlideHasSelectedTopic() && (
-        <div className="flex justify-center mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
-          <div className="text-center">
-            <p className="text-sm text-blue-700 mb-2 font-medium">현재 슬라이드: {semesterLabels[currentSlideIndex]}</p>
-            <Button
-              onClick={handleGenerateCurrentMethods}
-              className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3"
-              disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
-            >
-              {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
-               getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
             </Button>
           </div>
         </div>
@@ -193,6 +153,15 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                             size="sm"
                           >
                             {row.isLocked ? '잠금 해제' : '주제 잠금'}
+                          </Button>
+                          <Button
+                            onClick={() => onRegenerateMethods(row.id)}
+                            variant="outline"
+                            size="sm"
+                            disabled={row.isLoadingMethods || row.isLocked}
+                          >
+                            {row.isLoadingMethods ? '생성 중...' : 
+                             row.researchMethods && row.researchMethods.length > 0 ? '탐구 방법 재생성' : '탐구 방법 생성'}
                           </Button>
                         </div>
                       </div>
