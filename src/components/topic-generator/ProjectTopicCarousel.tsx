@@ -1,10 +1,7 @@
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel"
-import TopicGeneratorCard from '../TopicGeneratorCard';
 import TopicResultsCard from '../TopicResultsCard';
-import SelectedTopicCard from '../SelectedTopicCard';
 import ResearchMethodsCard from '../ResearchMethodsCard';
 import { Button } from '@/components/ui/button';
 
@@ -47,16 +44,12 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   onCareerSentenceSelect,
   onAddFollowUpRow
 }) => {
-  const navigate = useNavigate();
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const lastRow = group.topicRows[group.topicRows.length - 1];
   const canAddFollowUp = lastRow?.stage === 'topic_selected' && lastRow?.selectedTopic;
 
   const handleBackToGenerator = (rowId: number) => {
     onDeleteTopic(rowId);
-  };
-
-  const handleGoToArchive = () => {
-    navigate('/archive');
   };
 
   // 프로젝트 주제 페이지에서는 진로 문장 선택 후 한번에 5개 주제 생성
@@ -78,6 +71,26 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
     });
   };
 
+  // 현재 슬라이드의 탐구 방법 생성
+  const handleGenerateCurrentMethods = () => {
+    const currentRow = group.topicRows[currentSlideIndex];
+    if (currentRow && currentRow.selectedTopic) {
+      onRegenerateMethods(currentRow.id);
+    }
+  };
+
+  // 현재 슬라이드의 탐구 방법이 있는지 확인
+  const getCurrentSlideHasMethods = () => {
+    const currentRow = group.topicRows[currentSlideIndex];
+    return currentRow && currentRow.researchMethods && currentRow.researchMethods.length > 0;
+  };
+
+  // 현재 슬라이드에 선택된 주제가 있는지 확인
+  const getCurrentSlideHasSelectedTopic = () => {
+    const currentRow = group.topicRows[currentSlideIndex];
+    return currentRow && currentRow.selectedTopic;
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto">
       {/* 진로 문장이 선택되었고 첫 번째 주제가 아직 생성되지 않았을 때 생성 버튼 표시 */}
@@ -93,7 +106,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
       )}
 
       {/* 5개 학기 프로젝트를 하나씩 보이는 캐러셀로 표시 */}
-      <Carousel className="w-full max-w-4xl mx-auto">
+      <Carousel className="w-full max-w-4xl mx-auto" onSlideChange={(index) => setCurrentSlideIndex(index)}>
         <CarouselContent>
           {group.topicRows.slice(0, 5).map((row: any, index: number) => (
             <CarouselItem key={row.id}>
@@ -169,13 +182,6 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                         ) : (
                           <div className="text-center py-8">
                             <p className="text-gray-600 mb-4">아직 탐구 방법이 생성되지 않았습니다.</p>
-                            <Button
-                              onClick={() => onRegenerateMethods(row.id)}
-                              className="bg-black text-white hover:bg-gray-800 px-6 py-3"
-                              disabled={row.isLoadingMethods || row.isLocked}
-                            >
-                              {row.isLoadingMethods ? '생성 중...' : '탐구 방법 생성'}
-                            </Button>
                           </div>
                         )}
                       </div>
@@ -189,6 +195,20 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+
+      {/* 탐구 방법 생성 버튼 - 현재 슬라이드에 선택된 주제가 있을 때만 표시 */}
+      {getCurrentSlideHasSelectedTopic() && (
+        <div className="flex justify-center mt-8">
+          <Button
+            onClick={handleGenerateCurrentMethods}
+            className="bg-black text-white hover:bg-gray-800 px-6 py-3"
+            disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
+          >
+            {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
+             getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
