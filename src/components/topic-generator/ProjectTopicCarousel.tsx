@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselApi } from "@/components/ui/carousel";
 import TopicResultsCard from '../TopicResultsCard';
@@ -88,14 +89,13 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         </div>}
 
       {/* 프로젝트 주제 재생성 버튼 - 주제가 생성된 후에 표시 */}
-      {selectedCareerSentence && hasGeneratedTopics() && <div className="flex justify-center mb-6 bg-orange-50 p-4 rounded-lg border border-orange-200">
-          <div className="text-center">
-            
-            <Button onClick={onRegenerateAllTopics} className="bg-orange-600 text-white hover:bg-orange-700 px-6 py-3">
-              프로젝트 주제 재생성
-            </Button>
-          </div>
-        </div>}
+      {selectedCareerSentence && hasGeneratedTopics() && (
+        <div className="flex justify-center mb-6">
+          <Button onClick={onRegenerateAllTopics} className="bg-orange-600 text-white hover:bg-orange-700 px-6 py-3">
+            프로젝트 주제 재생성
+          </Button>
+        </div>
+      )}
 
       {/* 5개 학기 프로젝트를 하나씩 보이는 캐러셀로 표시 */}
       <Carousel className="w-full max-w-4xl mx-auto" setApi={setApi}>
