@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, CarouselApi } from "@/components/ui/carousel"
 import TopicResultsCard from '../TopicResultsCard';
@@ -109,6 +110,11 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
     return currentRow && currentRow.selectedTopic;
   };
 
+  console.log("Current slide index:", currentSlideIndex);
+  console.log("Current row:", group.topicRows[currentSlideIndex]);
+  console.log("Has selected topic:", getCurrentSlideHasSelectedTopic());
+  console.log("Has methods:", getCurrentSlideHasMethods());
+
   return (
     <div className="w-full max-w-6xl mx-auto">
       {/* 진로 문장이 선택되었고 첫 번째 주제가 아직 생성되지 않았을 때 생성 버튼 표시 */}
@@ -216,15 +222,18 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
 
       {/* 탐구 방법 생성 버튼 - 현재 슬라이드에 선택된 주제가 있을 때만 표시 */}
       {getCurrentSlideHasSelectedTopic() && (
-        <div className="flex justify-center mt-8">
-          <Button
-            onClick={handleGenerateCurrentMethods}
-            className="bg-black text-white hover:bg-gray-800 px-6 py-3"
-            disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
-          >
-            {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
-             getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
-          </Button>
+        <div className="flex justify-center mt-6 bg-yellow-100 p-4 rounded-lg">
+          <div className="text-center">
+            <p className="text-sm text-gray-600 mb-2">현재 슬라이드: {semesterLabels[currentSlideIndex]}</p>
+            <Button
+              onClick={handleGenerateCurrentMethods}
+              className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3"
+              disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
+            >
+              {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
+               getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
+            </Button>
+          </div>
         </div>
       )}
     </div>
