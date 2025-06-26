@@ -129,6 +129,23 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         </div>
       )}
 
+      {/* 탐구 방법 생성 버튼 - 캐러셀 위에 표시 */}
+      {getCurrentSlideHasSelectedTopic() && (
+        <div className="flex justify-center mb-6 bg-blue-50 p-4 rounded-lg border border-blue-200">
+          <div className="text-center">
+            <p className="text-sm text-blue-700 mb-2 font-medium">현재 슬라이드: {semesterLabels[currentSlideIndex]}</p>
+            <Button
+              onClick={handleGenerateCurrentMethods}
+              className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3"
+              disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
+            >
+              {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
+               getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* 5개 학기 프로젝트를 하나씩 보이는 캐러셀로 표시 */}
       <Carousel className="w-full max-w-4xl mx-auto" setApi={setApi}>
         <CarouselContent>
@@ -205,7 +222,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                           />
                         ) : (
                           <div className="text-center py-8">
-                            <p className="text-gray-600 mb-4">아직 탐구 방법이 생성되지 않았습니다.</p>
+                            <p className="text-gray-600 mb-4">위의 '탐구 방법 생성' 버튼을 눌러 탐구 방법을 생성해주세요.</p>
                           </div>
                         )}
                       </div>
@@ -219,23 +236,6 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-
-      {/* 탐구 방법 생성 버튼 - 현재 슬라이드에 선택된 주제가 있을 때만 표시 */}
-      {getCurrentSlideHasSelectedTopic() && (
-        <div className="flex justify-center mt-6 bg-yellow-100 p-4 rounded-lg">
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-2">현재 슬라이드: {semesterLabels[currentSlideIndex]}</p>
-            <Button
-              onClick={handleGenerateCurrentMethods}
-              className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-3"
-              disabled={group.topicRows[currentSlideIndex]?.isLoadingMethods || group.topicRows[currentSlideIndex]?.isLocked}
-            >
-              {group.topicRows[currentSlideIndex]?.isLoadingMethods ? '생성 중...' : 
-               getCurrentSlideHasMethods() ? '탐구 방법 재생성' : '탐구 방법 생성'}
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
