@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
@@ -28,15 +29,12 @@ const semesterLabels = [
 
 // 진로 문장을 바탕으로 학기별 프로젝트 주제를 생성하는 함수
 const generateProjectTopicsFromCareer = (careerSentence: string) => {
-  // 진로 문장에서 핵심 키워드 추출
-  const cleanSentence = careerSentence.replace(/\s+/g, ' ').trim();
-  
   return [
-    `${cleanSentence}를 위한 1학년 기초 소양 프로젝트: 진로 탐색과 기본 역량 개발`,
-    `${cleanSentence}를 위한 1학년 심화 프로젝트: 관련 분야 기초 이론 연구와 실습`,
-    `${cleanSentence}를 위한 2학년 전문성 개발 프로젝트: 핵심 역량 강화와 실무 경험`,
-    `${cleanSentence}를 위한 2학년 융합 프로젝트: 다학제적 접근과 창의적 문제 해결`,
-    `${cleanSentence}를 위한 3학년 종합 프로젝트: 전문성 통합과 실제 적용`
+    `'${careerSentence}' 달성을 위한 1학년 기초 소양 프로젝트: 진로 탐색과 기본 역량 개발`,
+    `'${careerSentence}' 실현을 위한 1학년 심화 프로젝트: 관련 분야 기초 이론 연구와 실습`,
+    `'${careerSentence}' 목표 달성을 위한 2학년 전문성 개발 프로젝트: 핵심 역량 강화와 실무 경험`,
+    `'${careerSentence}' 구현을 위한 2학년 융합 프로젝트: 다학제적 접근과 창의적 문제 해결`,
+    `'${careerSentence}' 완성을 위한 3학년 종합 프로젝트: 전문성 통합과 실제 적용`
   ];
 };
 
