@@ -1,10 +1,10 @@
 
 import React, { useState } from "react";
-import { useTopicManager } from "@/hooks/useTopicManager";
+import { useProjectTopicManager } from "@/hooks/useProjectTopicManager";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import PreparationMethodSection from "@/components/topic-generator/PreparationMethodSection";
-import TopicGeneratorSection from "@/components/topic-generator/TopicGeneratorSection";
+import ProjectTopicGeneratorSection from "@/components/topic-generator/ProjectTopicGeneratorSection";
 import YouTubePopup from "@/components/topic-generator/YouTubePopup";
 
 const ProjectTopic = () => {
@@ -13,7 +13,7 @@ const ProjectTopic = () => {
     setSelectedCareerSentence,
     carouselGroups,
     ...topicManager
-  } = useTopicManager();
+  } = useProjectTopicManager();
   const [youtubePopup, setYoutubePopup] = useState({
     open: false,
     videoId: "",
@@ -53,7 +53,7 @@ const ProjectTopic = () => {
         <section id="topic-generator-section" className="scroll-mt-[150px] pb-96">
           <div className="text-center mb-3">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-3">프로젝트 주제 생성</h2>
-            <p className="max-w-xl mx-auto text-base text-muted-foreground">최신 논문 연구, 진로 문장, 교과 개념을 바탕으로 심화 프로젝트 주제를 생성합니다.</p>
+            <p className="max-w-xl mx-auto text-base text-muted-foreground">진로 문장을 바탕으로 고등학교 5개 학기별 프로젝트 주제를 한번에 생성합니다.</p>
             
             {/* YouTube 버튼들 - 중앙 정렬 및 동일한 너비 적용 */}
             <div className="flex justify-center items-center gap-4 mt-6">
@@ -65,7 +65,7 @@ const ProjectTopic = () => {
               </Button>
             </div>
           </div>
-          <TopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
+          <ProjectTopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
         </section>
       </main>
 
