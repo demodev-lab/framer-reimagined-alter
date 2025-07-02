@@ -12,6 +12,7 @@ const ProjectTopic = () => {
     selectedCareerSentence,
     setSelectedCareerSentence,
     carouselGroups,
+    handleUpdateTopicsFromWebhook,
     ...topicManager
   } = useProjectTopicManager();
   const [youtubePopup, setYoutubePopup] = useState({
@@ -98,7 +99,7 @@ const ProjectTopic = () => {
             </div>
           </div>
 
-          <ProjectTopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
+          <ProjectTopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} handleUpdateTopicsFromWebhook={handleUpdateTopicsFromWebhook} />
         </section>
       </main>
 

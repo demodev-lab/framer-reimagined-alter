@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { TopicRow } from '@/types';
+import { DetailedProjectInfo } from '@/types/projectTypes';
 import CareerSentenceSection from './CareerSentenceSection';
 import CareerSentenceDialog from './CareerSentenceDialog';
 import ProjectTopicCarousel from './ProjectTopicCarousel';
@@ -29,6 +30,7 @@ interface ProjectTopicGeneratorSectionProps {
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
   handleRegenerateAllTopics: () => void;
+  handleUpdateTopicsFromWebhook: (detailedProjects: DetailedProjectInfo[]) => void;
   selectedCareerSentence?: string | null;
   setSelectedCareerSentence: (sentence: string) => void;
 }
@@ -47,6 +49,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
   followUpStates,
   handleFollowUpChange,
   handleRegenerateAllTopics,
+  handleUpdateTopicsFromWebhook,
   selectedCareerSentence,
   setSelectedCareerSentence
 }) => {
@@ -130,6 +133,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
                 onCareerSentenceSelect={setSelectedCareerSentence} 
                 onAddFollowUpRow={handleAddFollowUpRow}
                 onRegenerateAllTopics={handleRegenerateAllTopics}
+                onUpdateTopicsFromWebhook={handleUpdateTopicsFromWebhook}
               />
             ))}
           </div>

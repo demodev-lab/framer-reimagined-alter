@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
+import { DetailedProjectInfo } from '@/types/projectTypes';
 
 interface CarouselGroup {
   id: number;
@@ -114,7 +115,65 @@ export const useProjectTopicManager = () => {
     // 프로젝트 주제에서는 사용하지 않음 (고정 5개)
   };
 
-  // 전체 프로젝트 주제 재생성
+  // n8n 웹훅 응답으로 상세 프로젝트 정보 업데이트
+  const handleUpdateTopicsFromWebhook = (detailedProjects: DetailedProjectInfo[]) => {
+    console.log("=== handleUpdateTopicsFromWebhook 호출됨 ===");
+    console.log("받은 detailedProjects:", detailedProjects);
+    console.log("detailedProjects 길이:", detailedProjects.length);
+    console.log("현재 carouselGroups 상태:", carouselGroups);
+    
+    if (!detailedProjects || detailedProjects.length === 0) {
+      console.error("❌ 빈 프로젝트 데이터:", detailedProjects);
+      toast.error("웹훅에서 받은 프로젝트 데이터가 비어있습니다.");
+      return;
+    }
+
+    setCarouselGroups(prevGroups => {
+      console.log("=== 상태 업데이트 시작 ===");
+      console.log("이전 groups:", prevGroups);
+      
+      const updatedGroups = prevGroups.map(group => {
+        console.log(`Group ${group.id} 처리 중, topicRows 길이:`, group.topicRows.length);
+        
+        return {
+          ...group,
+          topicRows: group.topicRows.map((row, index) => {
+            const projectInfo = detailedProjects[index];
+            console.log(`Row ${index} (ID: ${row.id}) 업데이트:`, {
+              기존: row.selectedTopic,
+              새로운데이터: projectInfo,
+              새주제명: projectInfo?.주제명
+            });
+            
+            const updatedRow = {
+              ...row,
+              isLoadingTopics: false,
+              selectedTopic: projectInfo?.주제명 || `주제 ${index + 1} (데이터 부족)`,
+              stage: 'topic_selected' as const,
+              // 상세 정보 추가
+              detailedProjectInfo: projectInfo ? {
+                사전_조사: projectInfo.사전_조사,
+                핵심_활동: projectInfo.핵심_활동,
+                연관_교과목: projectInfo.연관_교과목,
+                사용_도구: projectInfo.사용_도구
+              } : undefined
+            };
+            
+            console.log(`Row ${index} 업데이트 완료:`, updatedRow);
+            return updatedRow;
+          })
+        };
+      });
+      
+      console.log("=== 상태 업데이트 완료 ===");
+      console.log("업데이트된 groups:", updatedGroups);
+      return updatedGroups;
+    });
+    
+    toast.success("AI가 생성한 상세 프로젝트 가이드라인이 업데이트되었습니다.");
+  };
+
+  // 전체 프로젝트 주제 재생성 (목업 데이터 사용)
   const handleRegenerateAllTopics = () => {
     if (!selectedCareerSentence) {
       toast.warning("진로 문장을 먼저 생성하거나 선택해주세요.");
@@ -305,5 +364,6 @@ export const useProjectTopicManager = () => {
     handleTopicTypeChange,
     handleFollowUpChange,
     handleRegenerateAllTopics,
+    handleUpdateTopicsFromWebhook,
   };
 };
