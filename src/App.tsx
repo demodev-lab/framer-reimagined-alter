@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ArchiveProvider } from "@/contexts/ArchiveContext";
+import { CareerSentenceProvider } from "@/contexts/CareerSentenceContext";
 import Index from "./pages/Index";
 import TopicGenerator from "./pages/TopicGenerator";
 import ProjectTopic from "./pages/ProjectTopic";
@@ -19,25 +20,27 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ArchiveProvider>
-      <TooltipProvider delayDuration={100}>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/topic-generator" element={<TopicGenerator />} />
-            <Route path="/project-topic" element={<ProjectTopic />} />
-            <Route path="/archive" element={<Archive />} />
-            <Route path="/feedback" element={<Feedback />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <FaqChat />
-      </TooltipProvider>
-    </ArchiveProvider>
+    <CareerSentenceProvider>
+      <ArchiveProvider>
+        <TooltipProvider delayDuration={100}>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/topic-generator" element={<TopicGenerator />} />
+              <Route path="/project-topic" element={<ProjectTopic />} />
+              <Route path="/archive" element={<Archive />} />
+              <Route path="/feedback" element={<Feedback />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <FaqChat />
+        </TooltipProvider>
+      </ArchiveProvider>
+    </CareerSentenceProvider>
   </QueryClientProvider>
 );
 

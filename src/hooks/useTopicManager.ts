@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
+import { useCareerSentence } from '@/contexts/CareerSentenceContext';
 
 interface CarouselGroup {
   id: number;
@@ -11,7 +12,7 @@ const TOPIC_MANAGER_STORAGE_KEY = 'topic_manager_state';
 
 
 export const useTopicManager = () => {
-  const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
+  const { selectedCareerSentence, setSelectedCareerSentence } = useCareerSentence();
   const [carouselGroups, setCarouselGroups] = useState<CarouselGroup[]>([
     {
       id: 1,
@@ -34,13 +35,12 @@ export const useTopicManager = () => {
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
   const [followUpStates, setFollowUpStates] = useState<Record<number, boolean>>({ 1: false });
 
-  // localStorage에서 상태 로드
+  // localStorage에서 상태 로드 (진로 문장 제외)
   useEffect(() => {
     try {
       const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
       if (savedState) {
         const parsed = JSON.parse(savedState);
-        setSelectedCareerSentence(parsed.selectedCareerSentence);
         setCarouselGroups(parsed.carouselGroups);
         setLockedTopics(parsed.lockedTopics);
         setFollowUpStates(parsed.followUpStates);
@@ -50,11 +50,10 @@ export const useTopicManager = () => {
     }
   }, []);
 
-  // 상태가 변경될 때마다 localStorage에 저장
+  // 상태가 변경될 때마다 localStorage에 저장 (진로 문장 제외)
   useEffect(() => {
     try {
       const stateToSave = {
-        selectedCareerSentence,
         carouselGroups,
         lockedTopics,
         followUpStates
@@ -63,7 +62,7 @@ export const useTopicManager = () => {
     } catch (error) {
       console.error('Failed to save topic manager state to localStorage:', error);
     }
-  }, [selectedCareerSentence, carouselGroups, lockedTopics, followUpStates]);
+  }, [carouselGroups, lockedTopics, followUpStates]);
 
   // Get all topic rows flattened for compatibility
   const topicRows = carouselGroups.flatMap(group => group.topicRows);

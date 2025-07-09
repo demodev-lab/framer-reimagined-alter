@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
 import { DetailedProjectInfo } from '@/types/projectTypes';
+import { useCareerSentence } from '@/contexts/CareerSentenceContext';
 
 interface CarouselGroup {
   id: number;
@@ -30,7 +31,7 @@ const semesterLabels = [
 
 
 export const useProjectTopicManager = () => {
-  const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
+  const { selectedCareerSentence, setSelectedCareerSentence } = useCareerSentence();
   
   // 5개 학기 프로젝트를 위한 초기 설정
   const [carouselGroups, setCarouselGroups] = useState<CarouselGroup[]>([
@@ -56,13 +57,12 @@ export const useProjectTopicManager = () => {
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
   const [followUpStates, setFollowUpStates] = useState<Record<number, boolean>>({});
 
-  // localStorage에서 상태 로드
+  // localStorage에서 상태 로드 (진로 문장 제외)
   useEffect(() => {
     try {
       const savedState = localStorage.getItem(PROJECT_TOPIC_MANAGER_STORAGE_KEY);
       if (savedState) {
         const parsed = JSON.parse(savedState);
-        setSelectedCareerSentence(parsed.selectedCareerSentence);
         setCarouselGroups(parsed.carouselGroups);
         setLockedTopics(parsed.lockedTopics);
         setFollowUpStates(parsed.followUpStates);
@@ -72,11 +72,10 @@ export const useProjectTopicManager = () => {
     }
   }, []);
 
-  // 상태가 변경될 때마다 localStorage에 저장
+  // 상태가 변경될 때마다 localStorage에 저장 (진로 문장 제외)
   useEffect(() => {
     try {
       const stateToSave = {
-        selectedCareerSentence,
         carouselGroups,
         lockedTopics,
         followUpStates
@@ -85,7 +84,7 @@ export const useProjectTopicManager = () => {
     } catch (error) {
       console.error('Failed to save project topic manager state to localStorage:', error);
     }
-  }, [selectedCareerSentence, carouselGroups, lockedTopics, followUpStates]);
+  }, [carouselGroups, lockedTopics, followUpStates]);
 
   // Get all topic rows flattened for compatibility
   const topicRows = carouselGroups.flatMap(group => group.topicRows);
