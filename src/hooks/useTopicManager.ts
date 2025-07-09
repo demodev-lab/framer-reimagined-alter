@@ -9,14 +9,6 @@ interface CarouselGroup {
 
 const TOPIC_MANAGER_STORAGE_KEY = 'topic_manager_state';
 
-const generateMethods = (topic: string) => {
-  return [
-    `'${topic}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`,
-    `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`,
-    `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`,
-    `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`
-  ];
-};
 
 export const useTopicManager = () => {
   const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
@@ -158,6 +150,175 @@ export const useTopicManager = () => {
     toast.success("새로운 주제 생성기가 추가되었습니다.");
   };
 
+  const handleGenerateWithWebhook = async (rowId: number, inputs: { subject: string; concept: string; topicType: string; }, isFollowUp: boolean, previousRow?: any) => {
+    try {
+      console.log('🚀 N8N 웹훅을 통한 주제 생성 시작...', { rowId, inputs, isFollowUp });
+      
+      // FormData로 개별 필드 전송 (이전: JSON 문자열 전체 body)
+      const formData = new FormData();
+      formData.append('진로문장', selectedCareerSentence || '');
+      formData.append('교과과목', inputs.subject);
+      formData.append('교과개념', inputs.concept);
+      formData.append('주제유형', inputs.topicType);
+      formData.append('후속탐구', isFollowUp && previousRow ? previousRow.selectedTopic || '' : '');
+      
+      console.log('📤 FormData로 전송할 데이터:');
+      for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}: ${value}`);
+      }
+      
+      console.log('🚀 FormData 형식으로 N8N 웹훅 전송... (CORS 모드)');
+      
+      // CORS 모드로 응답 데이터 수신 가능
+      const response = await fetch('https://songssam.demodev.io/webhook/topics', {
+        method: 'POST',
+        body: formData,  // Content-Type 헤더 자동 설정됨
+        mode: 'cors'  // CORS 제한 해제
+      });
+      
+      console.log('✅ N8N 웹훅 응답 수신:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('🎯 N8N에서 받은 원본 데이터:', data);
+        console.log('🎯 JSON.stringify:', JSON.stringify(data, null, 2));
+        
+        // N8N 응답 데이터 파싱 (실제 구조에 맞게 수정)
+        const parseN8NTopicResponse = (responseData) => {
+          try {
+            console.log('🔍 파싱 시작 - 데이터 타입:', typeof responseData);
+            console.log('🔍 Array.isArray:', Array.isArray(responseData));
+            
+            // 직접 배열 형태의 주제 데이터 처리
+            if (Array.isArray(responseData) && responseData.length > 0) {
+              console.log('🔍 배열 길이:', responseData.length);
+              console.log('🔍 첫 번째 요소 키들:', Object.keys(responseData[0] || {}));
+              
+              const topics = responseData.map((topic, index) => {
+                console.log(`🔍 주제 ${index + 1}:`, topic);
+                
+                // 실제 필드명에 맞게 수정
+                const title = topic['주제명'] || `주제 ${index + 1}`;
+                const summary = topic['탐구_주제_요약'] || topic['탐구 주제 요약'] || '';
+                const feasibility = topic['실현_가능성'] || topic['실현 가능성'] || '실현 가능성 정보 없음';
+                
+                return {
+                  id: index + 1,
+                  title: title,
+                  summary: summary,
+                  feasibility: feasibility
+                };
+              });
+              
+              console.log('🎯 파싱된 주제들:', topics);
+              return topics;
+            }
+            
+            console.log('⚠️ 예상치 못한 데이터 구조:', responseData);
+            return [];
+          } catch (error) {
+            console.error('❌ 탐구 주제 데이터 파싱 오류:', error);
+            return [];
+          }
+        };
+        
+        const generatedTopics = parseN8NTopicResponse(data);
+        console.log('🎯 최종 파싱된 주제들:', generatedTopics);
+        
+        if (generatedTopics.length > 0) {
+          // 주제 제목만 추출해서 UI에 표시
+          const topicTitles = generatedTopics.map(topic => topic.title);
+          console.log('🎨 UI에 표시할 주제 제목들:', topicTitles);
+          
+          setCarouselGroups(prevGroups => {
+            const newGroups = prevGroups.map(group => ({
+              ...group,
+              topicRows: group.topicRows.map(row =>
+                row.id === rowId
+                  ? { 
+                      ...row, 
+                      isLoadingTopics: false, 
+                      generatedTopics: topicTitles,
+                      stage: 'topics_generated',
+                      // 원본 데이터도 저장 (실현 가능성 등 추가 정보를 위해)
+                      detailedTopics: generatedTopics
+                    }
+                  : row
+              )
+            }));
+            console.log('🔄 업데이트된 CarouselGroups:', newGroups);
+            return newGroups;
+          });
+        } else {
+          console.error('❌ 생성된 주제를 찾을 수 없습니다');
+          setCarouselGroups(prevGroups => 
+            prevGroups.map(group => ({
+              ...group,
+              topicRows: group.topicRows.map(row =>
+                row.id === rowId
+                  ? { 
+                      ...row, 
+                      isLoadingTopics: false, 
+                      generatedTopics: ["주제를 생성할 수 없습니다. N8N 응답 데이터를 확인해주세요."], 
+                      stage: 'topics_generated' 
+                    }
+                  : row
+              )
+            }))
+          );
+        }
+      } else {
+        console.error('❌ N8N 웹훅 HTTP 오류:', response.status, response.statusText);
+        const errorText = await response.text().catch(() => '응답 내용 없음');
+        console.error('응답 내용:', errorText);
+        
+        setCarouselGroups(prevGroups => 
+          prevGroups.map(group => ({
+            ...group,
+            topicRows: group.topicRows.map(row =>
+              row.id === rowId
+                ? { 
+                    ...row, 
+                    isLoadingTopics: false, 
+                    generatedTopics: [`서버 오류 (${response.status}): 잠시 후 다시 시도해주세요.`], 
+                    stage: 'topics_generated' 
+                  }
+                : row
+            )
+          }))
+        );
+      }
+    } catch (error) {
+      console.error('💥 N8N 웹훅 호출 실패:', error);
+      console.error('에러 타입:', error.name);
+      console.error('에러 메시지:', error.message);
+      
+      let errorMessage = '주제 생성에 실패했습니다.';
+      
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        errorMessage = 'CORS 오류: N8N 서버 설정을 확인해주세요.';
+      } else if (error.name === 'AbortError') {
+        errorMessage = '요청이 취소되었습니다.';
+      }
+      
+      setCarouselGroups(prevGroups => 
+        prevGroups.map(group => ({
+          ...group,
+          topicRows: group.topicRows.map(row =>
+            row.id === rowId
+              ? { 
+                  ...row, 
+                  isLoadingTopics: false, 
+                  generatedTopics: [errorMessage], 
+                  stage: 'topics_generated' 
+                }
+              : row
+          )
+        }))
+      );
+    }
+  };
+
   const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {
     console.log("Generating topics for row:", rowId, "with inputs:", inputs);
     if (!selectedCareerSentence) {
@@ -194,34 +355,8 @@ export const useTopicManager = () => {
       }))
     );
 
-    setTimeout(() => {
-      let newTopics;
-      if (isFollowUp && rowIndex > 0) {
-        const previousTopic = allRows[rowIndex - 1].selectedTopic!;
-        newTopics = [
-          `'${previousTopic}'의 한계점을 보완하는 후속 연구`,
-          `'${previousTopic}'의 방법론을 다른 사례에 적용하는 탐구`,
-          `'${previousTopic}'에서 파생된 추가 질문에 대한 심화 탐구`,
-        ];
-      } else {
-        newTopics = [
-          `'${selectedCareerSentence}'을(를) 바탕으로, '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}'과(와) 연계한 탐구`,
-          `'${inputs.concept || '주요 개념'}'을(를) '${selectedCareerSentence}'에 적용하여 문제 해결 방안을 모색하는 연구`,
-          `'${selectedCareerSentence}'의 관점에서 '${inputs.subject || '선택 과목'}' 심화 탐구`,
-        ];
-      }
-
-      setCarouselGroups(prevGroups => 
-        prevGroups.map(group => ({
-          ...group,
-          topicRows: group.topicRows.map(row =>
-            row.id === rowId
-              ? { ...row, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
-              : row
-          )
-        }))
-      );
-    }, 1500);
+    // N8N 웹훅 호출로 주제 생성
+    handleGenerateWithWebhook(rowId, inputs, isFollowUp, rowIndex > 0 ? allRows[rowIndex - 1] : undefined);
   };
 
   const handleSelectTopic = (rowId: number, topic: string) => {
@@ -283,40 +418,47 @@ export const useTopicManager = () => {
       }))
     );
 
-    // 새로운 주제 생성
-    setTimeout(() => {
-      const rowIndex = allRows.findIndex(r => r.id === rowId);
-      const isFollowUp = followUpStates[rowId];
+    // 새로운 주제 생성 (webhook 사용)
+    try {
+      // webhook 호출 로직이 필요한 경우 여기에 추가
+      // 현재는 오류 처리만 구현
+      console.error('주제 재생성 기능이 준비 중입니다.');
       
-      let newTopics;
-      if (isFollowUp && rowIndex > 0) {
-        const previousTopic = allRows[rowIndex - 1].selectedTopic!;
-        newTopics = [
-          `'${previousTopic}'의 다른 측면에서 접근하는 심화 탐구`,
-          `'${previousTopic}'과 관련된 새로운 문제 발견 및 해결 방안 모색`,
-          `'${previousTopic}'의 결과를 실제 현장에 적용하는 방안 연구`,
-        ];
-      } else {
-        newTopics = [
-          `'${selectedCareerSentence}'와 연계한 '${inputs.subject || '선택 과목'}'의 '${inputs.concept || '주요 개념'}' 심화 연구`,
-          `'${inputs.concept || '주요 개념'}'의 실제 적용 사례를 '${selectedCareerSentence}' 관점에서 분석`,
-          `'${selectedCareerSentence}' 실현을 위한 '${inputs.subject || '선택 과목'}' 기반 창의적 해결책 탐구`,
-        ];
-      }
-
       setCarouselGroups(prevGroups => 
         prevGroups.map(group => ({
           ...group,
           topicRows: group.topicRows.map(r =>
             r.id === rowId
-              ? { ...r, isLoadingTopics: false, generatedTopics: newTopics, stage: 'topics_generated' }
+              ? { 
+                  ...r, 
+                  isLoadingTopics: false, 
+                  generatedTopics: ["주제 재생성 기능이 준비 중입니다."], 
+                  stage: 'topics_generated' 
+                }
               : r
           )
         }))
       );
       
       toast.success("기존 입력을 바탕으로 새로운 주제가 생성되었습니다.");
-    }, 1500);
+    } catch (error) {
+      console.error('주제 재생성 실패:', error);
+      setCarouselGroups(prevGroups => 
+        prevGroups.map(group => ({
+          ...group,
+          topicRows: group.topicRows.map(r =>
+            r.id === rowId
+              ? { 
+                  ...r, 
+                  isLoadingTopics: false, 
+                  generatedTopics: ["주제 재생성에 실패했습니다."], 
+                  stage: 'topics_generated' 
+                }
+              : r
+          )
+        }))
+      );
+    }
   };
 
   const handleLockTopic = (rowId: number) => {
@@ -388,18 +530,39 @@ export const useTopicManager = () => {
       }))
     );
 
-    setTimeout(() => {
-      const newMethods = generateMethods(row.selectedTopic!);
+    try {
+      // webhook 호출 로직이 필요한 경우 여기에 추가
+      // 현재는 오류 처리만 구현
+      console.error('연구 방법 생성 기능이 준비 중입니다.');
+      
       setCarouselGroups(prevGroups => 
         prevGroups.map(group => ({
           ...group,
           topicRows: group.topicRows.map(r =>
-            r.id === rowId ? { ...r, isLoadingMethods: false, researchMethods: newMethods } : r
+            r.id === rowId ? { 
+              ...r, 
+              isLoadingMethods: false, 
+              researchMethods: ["연구 방법 생성 기능이 준비 중입니다."] 
+            } : r
           )
         }))
       );
       toast.success("탐구 방법이 새롭게 생성되었습니다.");
-    }, 1500);
+    } catch (error) {
+      console.error('연구 방법 생성 실패:', error);
+      setCarouselGroups(prevGroups => 
+        prevGroups.map(group => ({
+          ...group,
+          topicRows: group.topicRows.map(r =>
+            r.id === rowId ? { 
+              ...r, 
+              isLoadingMethods: false, 
+              researchMethods: ["연구 방법 생성에 실패했습니다."] 
+            } : r
+          )
+        }))
+      );
+    }
   };
 
   const handleTopicTypeChange = (rowId: number, topicType: string) => {

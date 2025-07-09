@@ -10,44 +10,131 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
   const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
   const [isCareerSentenceLoading, setIsCareerSentenceLoading] = useState(false);
 
-  const handleGenerateCareerSentence = (inputs: { careerField: string; activity: string; file: File | null; aspiration: string; }) => {
+  const handleGenerateCareerSentence = async (inputs: { careerField: string; activity: string; file: File | null; aspiration: string; }, webhookResponse?: string[]) => {
     onSelectCareerSentence(null);
     setIsCareerSentenceLoading(true);
     setGeneratedCareerSentences([]);
-    setTimeout(() => {
-      const job = inputs.careerField.trim() || "희망 직업";
-      
-      let newSentences: string[];
-
-      switch (inputs.activity) {
-        case "이전 활동이 존재합니다.":
-          const fileName = inputs.file?.name ? `'${inputs.file.name}' 파일에 기록된 활동` : "이전 활동";
-          newSentences = [
-            `${fileName} 경험을 통해 발견한 문제점을 해결하여 전문성을 강화하는 ${job}`,
-            `${fileName}에서 얻은 역량을 바탕으로 새로운 가치를 창출하는 ${job}`,
-            `심화된 전공 지식을 ${fileName}과 연결하여 융합적 역량을 갖춘 ${job}`
-          ];
-          break;
-        case "직업을 가진 후 하고 싶은 것이 있습니다.":
-          const aspiration = inputs.aspiration.trim() || "사회에 기여";
-          newSentences = [
-            `'${aspiration}'을(를) 목표로 삼아 사회 발전에 기여하는 ${job}`,
-            `'${aspiration}'을(를) 실현하기 위한 구체적인 기술적, 사회적 해결책을 탐구하는 ${job}`,
-            `'${aspiration}'이라는 비전을 통해 인류의 삶에 긍정적인 영향을 미치는 ${job}`
-          ];
-          break;
-        default: // "요청 사항 없음."
-          newSentences = [
-            `첨단 기술을 활용하여 특정 산업 분야의 문제를 해결하는 ${job}`,
-            `창의적인 아이디어를 통해 사람들의 일상에 긍정적인 변화를 가져오는 ${job}`,
-            `자신의 전문성을 바탕으로 사회 발전에 기여하는 책임감 있는 ${job}`
-          ];
-          break;
-      }
-      
-      setGeneratedCareerSentences(newSentences);
+    
+    // 입력 데이터 검증
+    console.log('🔍 입력 데이터 검증:', inputs);
+    
+    if (!inputs.careerField || !inputs.careerField.trim()) {
+      console.error('❌ 직업 필드가 비어있습니다.');
+      setGeneratedCareerSentences(["직업을 입력해주세요."]);
       setIsCareerSentenceLoading(false);
-    }, 1500);
+      return;
+    }
+    
+    if (!inputs.activity || !inputs.activity.trim()) {
+      console.error('❌ 요청사항 필드가 비어있습니다.');
+      setGeneratedCareerSentences(["요청사항을 선택해주세요."]);
+      setIsCareerSentenceLoading(false);
+      return;
+    }
+    
+    // 요청사항이 '직업을 가진 후 하고 싶은 것이 있습니다.'인 경우 추가 입력 확인
+    if (inputs.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' && (!inputs.aspiration || !inputs.aspiration.trim())) {
+      console.error('❌ 추가 입력 필드가 비어있습니다.');
+      setGeneratedCareerSentences(["직업을 가진 후 하고 싶은 것을 구체적으로 입력해주세요."]);
+      setIsCareerSentenceLoading(false);
+      return;
+    }
+    
+    console.log('✅ 입력 데이터 검증 통과');
+    
+    // Always make API call (no webhook response is passed anymore)
+    try {
+      const webhookData = {
+        careerField: inputs.careerField,
+        request: inputs.activity,
+        aspiration: inputs.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' ? inputs.aspiration : null
+      };
+      
+      console.log('🚀 진로 문장 생성 요청 시작...');
+      
+      const response = await fetch('https://songssam.demodev.io/webhook/dream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'Connection': 'keep-alive'
+        },
+        body: JSON.stringify(webhookData),
+        keepalive: true,
+        mode: 'cors',
+        redirect: 'follow'
+        // signal 제거 - 브라우저 자체 타임아웃도 방지
+      });
+      
+      console.log('✅ 웹훅 응답 수신:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('🎯 N8N이 전달한 원본 데이터:', data);
+        console.log('🎯 데이터 타입:', typeof data);
+        console.log('🎯 JSON.stringify:', JSON.stringify(data, null, 2));
+        
+        // N8N이 전달한 데이터를 그대로 문자열로 변환해서 표시
+        let resultText = '';
+        
+        if (typeof data === 'string') {
+          resultText = data;
+        } else if (data && typeof data === 'object') {
+          // 객체의 모든 값을 확인해서 문자열인 것 중 가장 긴 것을 선택
+          const allValues = [];
+          const extractValues = (obj) => {
+            if (typeof obj === 'string' && obj.trim()) {
+              allValues.push(obj.trim());
+            } else if (obj && typeof obj === 'object') {
+              Object.values(obj).forEach(extractValues);
+            }
+          };
+          extractValues(data);
+          
+          console.log('🎯 추출된 모든 문자열 값들:', allValues);
+          
+          // 가장 긴 문자열을 진로 문장으로 선택
+          if (allValues.length > 0) {
+            resultText = allValues.reduce((longest, current) => 
+              current.length > longest.length ? current : longest
+            );
+          }
+        }
+        
+        console.log('🎯 최종 선택된 텍스트:', resultText);
+        
+        if (resultText) {
+          setGeneratedCareerSentences([resultText]);
+        } else {
+          console.error('❌ 사용 가능한 텍스트를 찾을 수 없습니다');
+          setGeneratedCareerSentences(["텍스트를 추출할 수 없습니다. N8N 응답을 확인해주세요."]);
+        }
+      } else {
+        console.error('❌ HTTP 응답 오류:', response.status, response.statusText);
+        const errorText = await response.text().catch(() => '응답 내용 없음');
+        console.error('응답 내용:', errorText);
+        setGeneratedCareerSentences([`서버 오류 (${response.status}): 잠시 후 다시 시도해주세요.`]);
+      }
+    } catch (error) {
+      console.error('💥 Webhook 호출 실패:', error);
+      console.error('에러 타입:', error.name);
+      console.error('에러 메시지:', error.message);
+      
+      if (error.name === 'AbortError') {
+        console.log('⏹️ 요청이 사용자에 의해 취소되었습니다.');
+        setGeneratedCareerSentences(["요청이 취소되었습니다."]);
+      } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        console.error('🌐 네트워크 연결 오류 감지');
+        setGeneratedCareerSentences(["네트워크 연결을 확인해주세요."]);
+      } else {
+        console.error('🔥 예상치 못한 에러:', error);
+        setGeneratedCareerSentences([`오류: ${error.message || '알 수 없는 오류가 발생했습니다.'}`]);
+      }
+    }
+    
+    setIsCareerSentenceLoading(false);
   };
 
   // 최소한의 위/아래 여백, minHeight 조정
@@ -75,7 +162,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
               <div>
                 <TopicResultsCard
                   title="생성된 진로 문장"
-                  placeholder="'문장 생성' 버튼을 누르면 진로 문장 3개가 생성됩니다."
+                  placeholder="'문장 생성' 버튼을 누르면 진로 문장 1개가 생성됩니다."
                   topics={generatedCareerSentences}
                   onSelectTopic={onSelectCareerSentence}
                   isLoading={isCareerSentenceLoading}

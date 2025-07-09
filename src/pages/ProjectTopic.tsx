@@ -45,7 +45,7 @@ const ProjectTopic = () => {
     setShowRegenerateDialog(true);
   };
 
-  const handleCareerSentenceGenerate = (data: {
+  const handleCareerSentenceGenerate = async (data: {
     careerField: string;
     activity: string;
     file: File | null;
@@ -53,15 +53,45 @@ const ProjectTopic = () => {
   }) => {
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
-    setTimeout(() => {
-      const sentences = [
-        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
-        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
-        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
-      ];
-      setGeneratedCareerSentences(sentences);
-      setIsGeneratingCareerSentence(false);
-    }, 2000);
+    setGeneratedCareerSentences([]);
+    
+    try {
+      const webhookData = {
+        careerField: data.careerField,
+        request: data.activity,
+        aspiration: data.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' ? data.aspiration : null
+      };
+      
+      const response = await fetch('https://songssam.demodev.io/webhook/dream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        body: JSON.stringify(webhookData),
+        keepalive: true,  // 무제한 대기 설정
+        mode: 'cors',
+        redirect: 'follow'
+      });
+      
+      if (response.ok) {
+        const responseData = await response.json();
+        if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].진로_문장) {
+          setGeneratedCareerSentences([responseData[0].진로_문장]);
+        } else {
+          setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+        }
+      } else {
+        setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+      }
+    } catch (error) {
+      console.error('Webhook 호출 실패:', error);
+      setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+    }
+    
+    setIsGeneratingCareerSentence(false);
   };
 
   const handleSelectCareerSentence = (sentence: string) => {

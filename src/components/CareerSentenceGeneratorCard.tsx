@@ -15,7 +15,7 @@ interface CareerSentenceGeneratorCardProps {
     activity: string;
     file: File | null;
     aspiration: string;
-  }) => void;
+  }, webhookResponse?: string[]) => void;
 }
 
 const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = ({
@@ -52,7 +52,8 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
     setDialogFileInputKey(Date.now());
   };
 
-  const handleGenerateClick = () => {
+  const handleGenerateClick = async () => {
+    // Just pass data to parent without API call (parent will handle API call)
     onGenerate({
       careerField,
       activity: request,
@@ -61,7 +62,8 @@ const CareerSentenceGeneratorCard: React.FC<CareerSentenceGeneratorCardProps> = 
     });
   };
 
-  const handleDialogGenerateClick = () => {
+  const handleDialogGenerateClick = async () => {
+    // Just pass data to parent without API call (parent will handle API call)
     onGenerate({
       careerField: dialogCareerField,
       activity: dialogRequest,

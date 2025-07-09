@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { Button } from "./ui/button";
-import { RefreshCw, Lock, X, ChevronDown, Archive, House, ExternalLink } from "lucide-react";
+import { RefreshCw, Lock, X, ChevronDown, Archive, House, ExternalLink, ArrowLeft } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
@@ -22,6 +22,7 @@ interface SelectedTopicCardProps {
   onTopicTypeChange: (type: string) => void;
   researchMethods?: string[];
   onGoBack?: () => void;
+  onGenerateResearchMethod?: () => void;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -37,7 +38,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   topicType,
   onTopicTypeChange,
   researchMethods = [],
-  onGoBack
+  onGoBack,
+  onGenerateResearchMethod
 }) => {
   const { saveTopic } = useArchive();
   const navigate = useNavigate();
@@ -66,7 +68,19 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
     <div className="flex flex-col h-full space-y-4">
       <Card className="flex-shrink-0">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>세특 주제 {topicNumber}</CardTitle>
+          <div className="flex items-center gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={handleGoBackToInput} aria-label="주제 목록으로 돌아가기">
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>주제 목록으로 돌아가기</p>
+              </TooltipContent>
+            </Tooltip>
+            <CardTitle>세특 주제 {topicNumber}</CardTitle>
+          </div>
           <div className="flex gap-1">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -124,12 +138,17 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </dl>
           </div>
           
-          {/* 보관함 저장 버튼만 남김 */}
+          {/* 보관함 저장 버튼과 탐구 방법 생성 버튼 */}
           <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
             <Button onClick={handleArchiveSave} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="보관함에 저장">
               보관함 저장
               <Archive className="h-4 w-4" />
             </Button>
+            {onGenerateResearchMethod && (
+              <Button onClick={onGenerateResearchMethod} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="탐구 방법 생성">
+                탐구 방법 생성
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

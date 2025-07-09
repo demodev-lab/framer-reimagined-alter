@@ -21,6 +21,7 @@ interface TopicCarouselProps {
   onTopicTypeChange: (rowId: number, type: string) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
+  onOpenCareerSentenceDialog: () => void;
 }
 
 const TopicCarousel: React.FC<TopicCarouselProps> = ({
@@ -36,7 +37,8 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onRegenerateMethods,
   onTopicTypeChange,
   onCareerSentenceSelect,
-  onAddFollowUpRow
+  onAddFollowUpRow,
+  onOpenCareerSentenceDialog
 }) => {
   const navigate = useNavigate();
   const lastRow = group.topicRows[group.topicRows.length - 1];
@@ -76,6 +78,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       rowId={row.id}
                       selectedCareerSentence={selectedCareerSentence}
                       onCareerSentenceSelect={onCareerSentenceSelect}
+                      onOpenCareerSentenceDialog={onOpenCareerSentenceDialog}
                     />
                   )}
                   
@@ -88,6 +91,23 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                       onSelectTopic={(topic) => onSelectTopic(row.id, topic)}
                       isLoading={row.isLoadingTopics || false}
                       onBack={() => handleBackToGenerator(row.id)}
+                      detailedTopics={row.detailedTopics ? row.detailedTopics.map((topic, index) => ({
+                        id: index,
+                        주제명: topic.title,
+                        탐구_주제_요약: topic.summary,
+                        실현_가능성: topic.feasibility
+                      })) : undefined}
+                      showDetailedView={!!row.detailedTopics}
+                      onGenerateResearchMethod={(topic) => {
+                        console.log('탐구 방법 생성 요청:', topic);
+                        // TODO: N8N 탐구 방법 생성 API 호출
+                      }}
+                      onBackToTopicList={() => {
+                        console.log('주제 목록으로 돌아가기');
+                        // TODO: 주제 목록 상태로 변경
+                      }}
+                      isLoadingResearchMethod={row.isLoadingResearchMethod || false}
+                      researchMethods={row.researchMethods || []}
                     />
                   )}
                   
@@ -107,6 +127,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         topicType={row.topicType}
                         onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
                         onGoBack={handleGoToArchive}
+                        onGenerateResearchMethod={() => onRegenerateMethods(row.id)}
                       />
                       
                       {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}

@@ -28,16 +28,6 @@ const semesterLabels = [
   "3학년 1학기 프로젝트"
 ];
 
-// 진로 문장을 바탕으로 학기별 프로젝트 주제를 생성하는 함수
-const generateProjectTopicsFromCareer = (careerSentence: string) => {
-  return [
-    `'${careerSentence}' 달성을 위한 1학년 기초 소양 프로젝트: 진로 탐색과 기본 역량 개발`,
-    `'${careerSentence}' 실현을 위한 1학년 심화 프로젝트: 관련 분야 기초 이론 연구와 실습`,
-    `'${careerSentence}' 목표 달성을 위한 2학년 전문성 개발 프로젝트: 핵심 역량 강화와 실무 경험`,
-    `'${careerSentence}' 구현을 위한 2학년 융합 프로젝트: 다학제적 접근과 창의적 문제 해결`,
-    `'${careerSentence}' 완성을 위한 3학년 종합 프로젝트: 전문성 통합과 실제 적용`
-  ];
-};
 
 export const useProjectTopicManager = () => {
   const [selectedCareerSentence, setSelectedCareerSentence] = useState<string | null>(null);
@@ -152,11 +142,16 @@ export const useProjectTopicManager = () => {
               stage: 'topic_selected' as const,
               // 상세 정보 추가
               detailedProjectInfo: projectInfo ? {
-                사전_조사: projectInfo.사전_조사,
-                핵심_활동: projectInfo.핵심_활동,
-                연관_교과목: projectInfo.연관_교과목,
-                사용_도구: projectInfo.사용_도구
-              } : undefined
+                사전_조사: projectInfo.사전_조사 || '',
+                핵심_활동: projectInfo.핵심_활동 || '',
+                연관_교과목: Array.isArray(projectInfo.연관_교과목) ? projectInfo.연관_교과목 : [],
+                사용_도구: Array.isArray(projectInfo.사용_도구) ? projectInfo.사용_도구 : []
+              } : {
+                사전_조사: '',
+                핵심_활동: '',
+                연관_교과목: [],
+                사용_도구: []
+              }
             };
             
             console.log(`Row ${index} 업데이트 완료:`, updatedRow);
@@ -173,8 +168,8 @@ export const useProjectTopicManager = () => {
     toast.success("AI가 생성한 상세 프로젝트 가이드라인이 업데이트되었습니다.");
   };
 
-  // 전체 프로젝트 주제 재생성 (목업 데이터 사용)
-  const handleRegenerateAllTopics = () => {
+  // 전체 프로젝트 주제 재생성 (webhook 사용)
+  const handleRegenerateAllTopics = async () => {
     if (!selectedCareerSentence) {
       toast.warning("진로 문장을 먼저 생성하거나 선택해주세요.");
       return;
@@ -197,23 +192,35 @@ export const useProjectTopicManager = () => {
       }))
     );
 
-    setTimeout(() => {
-      const generatedTopics = generateProjectTopicsFromCareer(selectedCareerSentence);
+    try {
+      // 이 기능은 ProjectTopicCarousel.tsx에서 직접 처리됩니다.
+      console.log('📄 프로젝트 주제 생성은 ProjectTopicCarousel 컴포넌트에서 처리됩니다.');
       
+      // 로딩 상태 해제
       setCarouselGroups(prevGroups => 
         prevGroups.map(group => ({
           ...group,
-          topicRows: group.topicRows.map((row, index) => ({
+          topicRows: group.topicRows.map(row => ({
             ...row,
-            isLoadingTopics: false,
-            selectedTopic: generatedTopics[index],
-            stage: 'topic_selected'
+            isLoadingTopics: false
           }))
         }))
       );
+    } catch (error) {
+      console.error('프로젝트 주제 생성 실패:', error);
+      toast.error("프로젝트 주제 생성에 실패했습니다.");
       
-      toast.success("전체 프로젝트 주제가 새롭게 생성되었습니다.");
-    }, 2000);
+      // 로딩 상태 해제
+      setCarouselGroups(prevGroups => 
+        prevGroups.map(group => ({
+          ...group,
+          topicRows: group.topicRows.map(row => ({
+            ...row,
+            isLoadingTopics: false
+          }))
+        }))
+      );
+    }
   };
 
   const handleGenerate = (rowId: number, inputs: { subject: string; concept: string; topicType: string; }) => {

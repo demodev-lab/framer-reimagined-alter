@@ -19,7 +19,7 @@ const Index = () => {
               </svg>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
-              학생부 분석
+              탐구 연구소
             </h1>
           </div>
 

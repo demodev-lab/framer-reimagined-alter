@@ -19,8 +19,13 @@ const DetailedProjectCard: React.FC<DetailedProjectCardProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   
-  // N8N 데이터가 있으면 무조건 표시 (빈 문자열이라도 표시)
-  const hasDetailedInfo = true;
+  // 실제 데이터가 있는지 확인
+  const hasDetailedInfo = !!(
+    사전_조사 || 
+    핵심_활동 || 
+    (연관_교과목 && 연관_교과목.length > 0) || 
+    (사용_도구 && 사용_도구.length > 0)
+  );
 
   const renderTags = (items: string[], bgColor: string, textColor: string) => {
     if (!items || items.length === 0) return null;
@@ -95,7 +100,7 @@ const DetailedProjectCard: React.FC<DetailedProjectCardProps> = ({
                   <span className="mr-3 text-xl">🔍</span>
                   사전 조사
                 </h5>
-                {renderLongText(사전_조사 || 'N8N에서 데이터를 받아오는 중입니다...')}
+                {renderLongText(사전_조사 || '사전 조사 정보가 없습니다.')}
               </div>
 
               {/* 핵심 활동 */}
@@ -106,7 +111,7 @@ const DetailedProjectCard: React.FC<DetailedProjectCardProps> = ({
                 </h5>
                 <div className="relative">
                   <p className="text-gray-700 text-sm leading-relaxed bg-white p-4 rounded-lg border-l-4 border-green-400 whitespace-pre-wrap">
-                    {핵심_활동 || 'N8N에서 데이터를 받아오는 중입니다...'}
+                    {핵심_활동 || '핵심 활동 정보가 없습니다.'}
                   </p>
                 </div>
               </div>
@@ -128,7 +133,7 @@ const DetailedProjectCard: React.FC<DetailedProjectCardProps> = ({
                       </span>
                     ))
                   ) : (
-                    <span className="text-gray-500 text-sm">N8N에서 데이터를 받아오는 중입니다...</span>
+                    <span className="text-gray-500 text-sm">연관 교과목 정보가 없습니다.</span>
                   )}
                 </div>
               </div>
@@ -150,7 +155,7 @@ const DetailedProjectCard: React.FC<DetailedProjectCardProps> = ({
                       </span>
                     ))
                   ) : (
-                    <span className="text-gray-500 text-sm">N8N에서 데이터를 받아오는 중입니다...</span>
+                    <span className="text-gray-500 text-sm">사용 도구 정보가 없습니다.</span>
                   )}
                 </div>
               </div>

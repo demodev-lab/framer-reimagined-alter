@@ -19,4 +19,10 @@ export interface TopicRow {
     연관_교과목: string[];
     사용_도구: string[];
   };
+  // 탐구 주제 포트폴리오 (추가 정보 포함)
+  topicsWithDetails?: {
+    id: number;
+    title: string;
+    feasibility: string;
+  }[];
 }

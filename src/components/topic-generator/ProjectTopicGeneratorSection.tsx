@@ -62,7 +62,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
     setShowRegenerateDialog(true);
   };
 
-  const handleCareerSentenceGenerate = (data: {
+  const handleCareerSentenceGenerate = async (data: {
     careerField: string;
     activity: string;
     file: File | null;
@@ -70,15 +70,124 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
   }) => {
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
-    setTimeout(() => {
-      const sentences = [
-        `${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`,
-        `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`,
-        `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`
-      ];
-      setGeneratedCareerSentences(sentences);
+    setGeneratedCareerSentences([]);
+    
+    // 입력 데이터 검증 (프로젝트)
+    console.log('🔍 입력 데이터 검증 (프로젝트):', data);
+    
+    if (!data.careerField || !data.careerField.trim()) {
+      console.error('❌ 직업 필드가 비어있습니다 (프로젝트).');
+      setGeneratedCareerSentences(["직업을 입력해주세요."]);
       setIsGeneratingCareerSentence(false);
-    }, 2000);
+      return;
+    }
+    
+    if (!data.activity || !data.activity.trim()) {
+      console.error('❌ 요청사항 필드가 비어있습니다 (프로젝트).');
+      setGeneratedCareerSentences(["요청사항을 선택해주세요."]);
+      setIsGeneratingCareerSentence(false);
+      return;
+    }
+    
+    // 요청사항이 '직업을 가진 후 하고 싶은 것이 있습니다.'인 경우 추가 입력 확인
+    if (data.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' && (!data.aspiration || !data.aspiration.trim())) {
+      console.error('❌ 추가 입력 필드가 비어있습니다 (프로젝트).');
+      setGeneratedCareerSentences(["직업을 가진 후 하고 싶은 것을 구체적으로 입력해주세요."]);
+      setIsGeneratingCareerSentence(false);
+      return;
+    }
+    
+    console.log('✅ 입력 데이터 검증 통과 (프로젝트)');
+    
+    try {
+      const webhookData = {
+        careerField: data.careerField,
+        request: data.activity,
+        aspiration: data.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' ? data.aspiration : null
+      };
+      
+      console.log('🚀 진로 문장 생성 요청 시작 (프로젝트)...');
+      
+      const response = await fetch('https://songssam.demodev.io/webhook/dream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'Connection': 'keep-alive'
+        },
+        body: JSON.stringify(webhookData),
+        keepalive: true,
+        mode: 'cors',
+        redirect: 'follow'
+        // signal 제거 - 브라우저 자체 타임아웃도 방지
+      });
+      
+      console.log('✅ 웹훅 응답 수신 (프로젝트):', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('🎯 N8N이 전달한 원본 데이터 (프로젝트):', data);
+        console.log('🎯 JSON.stringify (프로젝트):', JSON.stringify(data, null, 2));
+        
+        // N8N이 전달한 데이터를 그대로 문자열로 변환해서 표시
+        let resultText = '';
+        
+        if (typeof data === 'string') {
+          resultText = data;
+        } else if (data && typeof data === 'object') {
+          const allValues = [];
+          const extractValues = (obj) => {
+            if (typeof obj === 'string' && obj.trim()) {
+              allValues.push(obj.trim());
+            } else if (obj && typeof obj === 'object') {
+              Object.values(obj).forEach(extractValues);
+            }
+          };
+          extractValues(data);
+          
+          console.log('🎯 추출된 모든 문자열 값들 (프로젝트):', allValues);
+          
+          if (allValues.length > 0) {
+            resultText = allValues.reduce((longest, current) => 
+              current.length > longest.length ? current : longest
+            );
+          }
+        }
+        
+        console.log('🎯 최종 선택된 텍스트 (프로젝트):', resultText);
+        
+        if (resultText) {
+          setGeneratedCareerSentences([resultText]);
+        } else {
+          console.error('❌ 사용 가능한 텍스트를 찾을 수 없습니다 (프로젝트)');
+          setGeneratedCareerSentences(["텍스트를 추출할 수 없습니다. N8N 응답을 확인해주세요."]);
+        }
+      } else {
+        console.error('❌ HTTP 응답 오류 (프로젝트):', response.status, response.statusText);
+        const errorText = await response.text().catch(() => '응답 내용 없음');
+        console.error('응답 내용 (프로젝트):', errorText);
+        setGeneratedCareerSentences([`서버 오류 (${response.status}): 잠시 후 다시 시도해주세요.`]);
+      }
+    } catch (error) {
+      console.error('💥 Webhook 호출 실패 (프로젝트):', error);
+      console.error('에러 타입 (프로젝트):', error.name);
+      console.error('에러 메시지 (프로젝트):', error.message);
+      
+      if (error.name === 'AbortError') {
+        console.log('⏹️ 요청이 사용자에 의해 취소되었습니다 (프로젝트).');
+        setGeneratedCareerSentences(["요청이 취소되었습니다."]);
+      } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        console.error('🌐 네트워크 연결 오류 감지 (프로젝트)');
+        setGeneratedCareerSentences(["네트워크 연결을 확인해주세요."]);
+      } else {
+        console.error('🔥 예상치 못한 에러 (프로젝트):', error);
+        setGeneratedCareerSentences([`오류: ${error.message || '알 수 없는 오류가 발생했습니다.'}`]);
+      }
+    }
+    
+    setIsGeneratingCareerSentence(false);
   };
 
   const handleSelectCareerSentence = (sentence: string) => {

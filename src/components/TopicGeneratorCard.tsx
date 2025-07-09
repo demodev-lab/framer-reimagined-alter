@@ -28,6 +28,7 @@ interface TopicGeneratorCardProps {
   rowId: number;
   selectedCareerSentence?: string | null;
   onCareerSentenceSelect?: (sentence: string) => void;
+  onOpenCareerSentenceDialog?: () => void;
   onGoBack?: () => void;
 }
 const TopicGeneratorCard = ({
@@ -39,6 +40,7 @@ const TopicGeneratorCard = ({
   rowId,
   selectedCareerSentence,
   onCareerSentenceSelect,
+  onOpenCareerSentenceDialog,
   onGoBack
 }: TopicGeneratorCardProps) => {
   const [subject, setSubject] = useState(initialValues?.subject || "");
@@ -79,7 +81,7 @@ const TopicGeneratorCard = ({
   const handleCloseDialog = () => {
     setShowVideoDialog(false);
   };
-  const handleCareerSentenceGenerate = (data: {
+  const handleCareerSentenceGenerate = async (data: {
     careerField: string;
     activity: string;
     file: File | null;
@@ -87,13 +89,69 @@ const TopicGeneratorCard = ({
   }) => {
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
+    setGeneratedCareerSentences([]);
 
-    // 시뮬레이션: 3개의 진로 문장 생성
-    setTimeout(() => {
-      const sentences = [`${data.careerField}이 되어 ${data.activity}을 통해 사회에 기여하고 싶습니다.`, `${data.careerField}으로서 ${data.activity} 분야에서 전문성을 발휘하고 싶습니다.`, `${data.careerField}의 꿈을 이루기 위해 ${data.activity}을 깊이 탐구하고 싶습니다.`];
-      setGeneratedCareerSentences(sentences);
-      setIsGeneratingCareerSentence(false);
-    }, 2000);
+    try {
+      const webhookData = {
+        careerField: data.careerField,
+        request: data.activity,
+        aspiration: data.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' ? data.aspiration : null
+      };
+      
+      const response = await fetch('https://songssam.demodev.io/webhook/dream', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(webhookData)
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('🎯 N8N이 전달한 원본 데이터 (TopicGeneratorCard):', data);
+        console.log('🎯 JSON.stringify (TopicGeneratorCard):', JSON.stringify(data, null, 2));
+        
+        let resultText = '';
+        
+        if (typeof data === 'string') {
+          resultText = data;
+        } else if (data && typeof data === 'object') {
+          const allValues = [];
+          const extractValues = (obj) => {
+            if (typeof obj === 'string' && obj.trim()) {
+              allValues.push(obj.trim());
+            } else if (obj && typeof obj === 'object') {
+              Object.values(obj).forEach(extractValues);
+            }
+          };
+          extractValues(data);
+          
+          console.log('🎯 추출된 모든 문자열 값들 (TopicGeneratorCard):', allValues);
+          
+          if (allValues.length > 0) {
+            resultText = allValues.reduce((longest, current) => 
+              current.length > longest.length ? current : longest
+            );
+          }
+        }
+        
+        console.log('🎯 최종 선택된 텍스트 (TopicGeneratorCard):', resultText);
+        
+        if (resultText) {
+          setGeneratedCareerSentences([resultText]);
+        } else {
+          console.error('❌ 사용 가능한 텍스트를 찾을 수 없습니다 (TopicGeneratorCard)');
+          setGeneratedCareerSentences(["텍스트를 추출할 수 없습니다. N8N 응답을 확인해주세요."]);
+        }
+      } else {
+        setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+      }
+    } catch (error) {
+      console.error('Webhook 호출 실패:', error);
+      setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+    }
+    
+    setIsGeneratingCareerSentence(false);
   };
   const handleSelectCareerSentence = (sentence: string) => {
     setShowVideoDialog(false);
@@ -113,22 +171,54 @@ const TopicGeneratorCard = ({
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 교과 과목
               </Button>
-              <Input placeholder="예) 화학, 생명과학" value={subject} onChange={e => setSubject(e.target.value)} />
+              <Input 
+                placeholder="예) 화학, 생명과학" 
+                value={subject} 
+                onChange={e => setSubject(e.target.value)}
+                onClick={() => {
+                  if (!selectedCareerSentence && onOpenCareerSentenceDialog) {
+                    onOpenCareerSentenceDialog();
+                  }
+                }}
+              />
             </div>
             
             <div className="flex items-center gap-4">
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 교과 개념
               </Button>
-              <Input placeholder="예) 산화와 환원" value={concept} onChange={e => setConcept(e.target.value)} />
+              <Input 
+                placeholder="예) 산화와 환원" 
+                value={concept} 
+                onChange={e => setConcept(e.target.value)}
+                onClick={() => {
+                  if (!selectedCareerSentence && onOpenCareerSentenceDialog) {
+                    onOpenCareerSentenceDialog();
+                  }
+                }}
+              />
             </div>
             
             <div className="flex items-center gap-4">
               <Button variant="secondary" size="sm" className="w-[110px] flex-shrink-0">
                 주제 유형
               </Button>
-              <Select value={topicType} onValueChange={setTopicType}>
-                <SelectTrigger>
+              <Select 
+                value={topicType} 
+                onValueChange={setTopicType}
+                onOpenChange={(open) => {
+                  if (open && !selectedCareerSentence && onOpenCareerSentenceDialog) {
+                    onOpenCareerSentenceDialog();
+                  }
+                }}
+              >
+                <SelectTrigger
+                  onClick={() => {
+                    if (!selectedCareerSentence && onOpenCareerSentenceDialog) {
+                      onOpenCareerSentenceDialog();
+                    }
+                  }}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -228,7 +318,7 @@ const TopicGeneratorCard = ({
                         <p>진로 문장을 생성 중입니다...</p>
                       </div> : generatedCareerSentences.length === 0 ? <div className="flex items-center justify-center h-full">
                         <p className="text-muted-foreground text-center">
-                          '문장 생성' 버튼을 누르면 진로 문장 후보 3개가 생성됩니다.
+                          '문장 생성' 버튼을 누르면 진로 문장 1개가 생성됩니다.
                         </p>
                       </div> : <div className="flex flex-col gap-2 h-full overflow-y-auto">
                         {generatedCareerSentences.map((sentence, index) => <Button key={index} variant="outline" className="justify-start text-left h-auto whitespace-normal py-3 px-4 hover:bg-green-50 hover:border-green-300" onClick={() => handleSelectCareerSentence(sentence)}>
