@@ -23,6 +23,7 @@ interface ProjectTopicCarouselProps {
   onLockTopic: (rowId: number) => void;
   onDeleteTopic: (rowId: number) => void;
   onRegenerateMethods: (rowId: number) => void;
+  onUpdateResearchMethods?: (rowId: number, methods: string[]) => void;
   onTopicTypeChange: (rowId: number, type: string) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
@@ -41,6 +42,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   onLockTopic,
   onDeleteTopic,
   onRegenerateMethods,
+  onUpdateResearchMethods,
   onTopicTypeChange,
   onCareerSentenceSelect,
   onAddFollowUpRow,
@@ -605,16 +607,110 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
                         <Button onClick={() => onLockTopic(row.id)} variant="outline" size="sm">
                           {row.isLocked ? '잠금 해제' : '주제 잠금'}
                         </Button>
-                        <Button onClick={() => onRegenerateMethods(row.id)} variant="outline" size="sm" disabled={row.isLoadingMethods || row.isLocked}>
+                        <Button onClick={async () => {
+                          const topicName = row.selectedTopic || '';
+                          try {
+                            const response = await fetch('/webhook/protocol', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                topicName: topicName,
+                                timestamp: new Date().toISOString(),
+                                source: 'project-topic-carousel'
+                              })
+                            });
+                            
+                            if (response.ok) {
+                              try {
+                                const result = await response.json();
+                                console.log('N8N 응답:', result);
+                                
+                                // N8N 응답 데이터를 직접 전달 (원본 객체 그대로)
+                                let researchMethods = result;
+                                
+                                console.log('파싱된 탐구 방법들:', researchMethods);
+                                
+                                if (Array.isArray(researchMethods) && researchMethods.length > 0 && onUpdateResearchMethods) {
+                                  onUpdateResearchMethods(row.id, researchMethods);
+                                } else if (researchMethods && typeof researchMethods === 'object' && onUpdateResearchMethods) {
+                                  onUpdateResearchMethods(row.id, [researchMethods]);
+                                } else {
+                                  onRegenerateMethods(row.id);
+                                }
+                              } catch (parseError) {
+                                console.error('N8N 응답 파싱 오류:', parseError);
+                                onRegenerateMethods(row.id);
+                              }
+                            } else {
+                              console.error('웹훅 호출 실패:', response.statusText);
+                              // Gateway Timeout이나 다른 서버 오류 처리
+                              if (response.status === 504 || response.statusText.includes('Gateway Timeout')) {
+                                console.log('Gateway Timeout 발생');
+                                // 에러 메시지만 표시하고 기본 생성은 하지 않음
+                              }
+                            }
+                          } catch (error) {
+                            console.error('웹훅 호출 중 오류:', error);
+                            // 네트워크 오류 시 에러 메시지만 표시
+                            console.log('네트워크 오류 발생');
+                          }
+                        }} variant="outline" size="sm" disabled={row.isLoadingMethods || row.isLocked}>
                           {row.isLoadingMethods ? '생성 중...' : row.researchMethods && row.researchMethods.length > 0 ? '탐구 방법 재생성' : '탐구 방법 생성'}
                         </Button>
                       </div>
                       
                       {/* 탐구 방법 섹션 */}
                       <div className="flex-1">
-                        {row.researchMethods && row.researchMethods.length > 0 ? <ResearchMethodsCard researchMethods={row.researchMethods} isLoading={row.isLoadingMethods || false} /> : <div className="text-center py-8">
+                        {row.researchMethods && row.researchMethods.length > 0 ? (
+                          <ResearchMethodsCard 
+                            researchMethods={row.researchMethods} 
+                            isLoading={row.isLoadingMethods || false}
+                            currentTopic={row.selectedTopic || ''}
+                            onGenerateDetailedMethods={async (currentTopic) => {
+                              console.log('더 자세한 탐구 방법 생성 요청 (프로젝트):', currentTopic);
+                              try {
+                                const response = await fetch('/webhook/protocol', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({
+                                    topicName: currentTopic,
+                                    detailLevel: 'very_detailed', // 더 자세한 버전 요청
+                                    timestamp: new Date().toISOString(),
+                                    source: 'detailed-research-methods-project'
+                                  })
+                                });
+                                
+                                if (response.ok) {
+                                  try {
+                                    const result = await response.json();
+                                    console.log('더 자세한 N8N 응답 (프로젝트):', result);
+                                    
+                                    // 이전 탐구 방법 제거하고 새로운 방법으로 교체
+                                    if (Array.isArray(result) && result.length > 0 && onUpdateResearchMethods) {
+                                      onUpdateResearchMethods(row.id, result);
+                                    } else if (result && typeof result === 'object' && onUpdateResearchMethods) {
+                                      onUpdateResearchMethods(row.id, [result]);
+                                    }
+                                  } catch (parseError) {
+                                    console.error('더 자세한 N8N 응답 파싱 오류 (프로젝트):', parseError);
+                                  }
+                                } else {
+                                  console.error('더 자세한 웹훅 호출 실패 (프로젝트):', response.statusText);
+                                }
+                              } catch (error) {
+                                console.error('더 자세한 웹훅 호출 중 오류 (프로젝트):', error);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div className="text-center py-8">
                             <p className="text-gray-600 mb-4">위의 '탐구 방법 생성' 버튼을 눌러 탐구 방법을 생성해주세요.</p>
-                          </div>}
+                          </div>
+                        )}
                       </div>
                     </div>}
                 </div>

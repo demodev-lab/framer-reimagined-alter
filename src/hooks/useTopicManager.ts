@@ -149,7 +149,7 @@ export const useTopicManager = () => {
     toast.success("새로운 주제 생성기가 추가되었습니다.");
   };
 
-  const handleGenerateWithWebhook = async (rowId: number, inputs: { subject: string; concept: string; topicType: string; }, isFollowUp: boolean, previousRow?: any) => {
+  const handleGenerateWithWebhook = async (rowId: number, inputs: { subject: string; concept: string; topicType: string; }, isFollowUp: boolean, previousRow?: TopicRow) => {
     try {
       console.log('🚀 N8N 웹훅을 통한 주제 생성 시작...', { rowId, inputs, isFollowUp });
       
@@ -162,7 +162,7 @@ export const useTopicManager = () => {
       formData.append('후속탐구', isFollowUp && previousRow ? previousRow.selectedTopic || '' : '');
       
       console.log('📤 FormData로 전송할 데이터:');
-      for (let [key, value] of formData.entries()) {
+      for (const [key, value] of formData.entries()) {
         console.log(`  ${key}: ${value}`);
       }
       
@@ -514,54 +514,28 @@ export const useTopicManager = () => {
   };
 
   const handleRegenerateMethods = (rowId: number) => {
-    const allRows = carouselGroups.flatMap(group => group.topicRows);
-    const row = allRows.find(r => r.id === rowId);
-    if (!row || !row.selectedTopic) return;
-    
-    console.log("Regenerating methods for row:", rowId);
+    // N8N을 통해서만 탐구 방법을 생성하므로 이 함수는 호출되지 않음
+    console.log("handleRegenerateMethods는 더 이상 사용되지 않습니다. N8N 웹훅을 사용하세요.");
+    toast.info("탐구 방법 생성 버튼을 다시 눌러주세요.");
+  };
 
+  const handleUpdateResearchMethods = (rowId: number, methods: string[]) => {
+    console.log(`N8N 탐구 방법 업데이트 - rowId: ${rowId}, methods:`, methods);
+    
     setCarouselGroups(prevGroups => 
       prevGroups.map(group => ({
         ...group,
         topicRows: group.topicRows.map(r =>
-          r.id === rowId ? { ...r, isLoadingMethods: true, researchMethods: [] } : r
+          r.id === rowId ? { 
+            ...r, 
+            isLoadingMethods: false, 
+            researchMethods: methods 
+          } : r
         )
       }))
     );
-
-    try {
-      // webhook 호출 로직이 필요한 경우 여기에 추가
-      // 현재는 오류 처리만 구현
-      console.error('연구 방법 생성 기능이 준비 중입니다.');
-      
-      setCarouselGroups(prevGroups => 
-        prevGroups.map(group => ({
-          ...group,
-          topicRows: group.topicRows.map(r =>
-            r.id === rowId ? { 
-              ...r, 
-              isLoadingMethods: false, 
-              researchMethods: ["연구 방법 생성 기능이 준비 중입니다."] 
-            } : r
-          )
-        }))
-      );
-      toast.success("탐구 방법이 새롭게 생성되었습니다.");
-    } catch (error) {
-      console.error('연구 방법 생성 실패:', error);
-      setCarouselGroups(prevGroups => 
-        prevGroups.map(group => ({
-          ...group,
-          topicRows: group.topicRows.map(r =>
-            r.id === rowId ? { 
-              ...r, 
-              isLoadingMethods: false, 
-              researchMethods: ["연구 방법 생성에 실패했습니다."] 
-            } : r
-          )
-        }))
-      );
-    }
+    
+    toast.success("N8N에서 받은 탐구 방법이 업데이트되었습니다.");
   };
 
   const handleTopicTypeChange = (rowId: number, topicType: string) => {
@@ -591,6 +565,7 @@ export const useTopicManager = () => {
     handleLockTopic,
     handleDeleteTopic,
     handleRegenerateMethods,
+    handleUpdateResearchMethods,
     handleTopicTypeChange,
     handleFollowUpChange,
   };

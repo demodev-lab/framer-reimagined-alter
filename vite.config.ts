@@ -8,6 +8,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/webhook': {
+        target: 'https://songssam.demodev.io',
+        changeOrigin: true,
+        secure: true,
+      }
+    }
   },
   plugins: [
     react(),

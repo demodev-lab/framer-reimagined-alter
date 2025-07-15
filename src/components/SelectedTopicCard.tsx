@@ -7,6 +7,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { useArchive } from "@/contexts/ArchiveContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface SelectedTopicCardProps {
   topic: string;
@@ -145,7 +146,61 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               <Archive className="h-4 w-4" />
             </Button>
             {onGenerateResearchMethod && (
-              <Button onClick={onGenerateResearchMethod} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="탐구 방법 생성">
+              <Button onClick={async () => {
+                toast.info('N8N에서 탐구 방법을 생성 중입니다...');
+                try {
+                  const response = await fetch('/webhook/protocol', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      topicName: topic,
+                      timestamp: new Date().toISOString(),
+                      source: 'selected-topic-card'
+                    })
+                  });
+                  
+                  if (response.ok) {
+                    try {
+                      const result = await response.json();
+                      console.log('N8N 응답:', result);
+                      
+                      // N8N 응답 데이터를 직접 전달 (원본 객체 그대로)
+                      let researchMethods = result;
+                      
+                      console.log('파싱된 탐구 방법들:', researchMethods);
+                      
+                      if (Array.isArray(researchMethods) && researchMethods.length > 0) {
+                        // 실제 탐구 방법 데이터가 있을 때만 상태 업데이트
+                        toast.success(`N8N에서 ${researchMethods.length}개의 탐구 방법을 받았습니다!`);
+                        onGenerateResearchMethod(researchMethods);
+                      } else if (researchMethods && typeof researchMethods === 'object') {
+                        // 단일 객체인 경우 배열로 감싸서 전달
+                        toast.success('N8N에서 탐구 방법을 받았습니다!');
+                        onGenerateResearchMethod([researchMethods]);
+                      } else {
+                        console.log('N8N 응답에서 탐구 방법을 찾을 수 없음, 기본 로직 실행');
+                        toast.info('기본 탐구 방법으로 생성합니다.');
+                        onGenerateResearchMethod();
+                      }
+                    } catch (parseError) {
+                      console.error('N8N 응답 파싱 오류:', parseError);
+                      onGenerateResearchMethod();
+                    }
+                  } else {
+                    console.error('웹훅 호출 실패:', response.statusText);
+                    if (response.status === 504 || response.statusText.includes('Gateway Timeout')) {
+                      toast.error('N8N 서버 응답 시간이 초과되었습니다. 탐구 방법 생성을 다시 눌러주세요.');
+                    } else {
+                      toast.error('탐구 방법 생성에 실패했습니다. 다시 시도해주세요.');
+                    }
+                  }
+                } catch (error) {
+                  console.error('웹훅 호출 중 오류:', error);
+                  toast.error('N8N 연결에 문제가 있습니다. 탐구 방법 생성을 다시 눌러주세요.');
+                }
+              }} variant="outline" className="flex items-center gap-1" disabled={isLocked} title="탐구 방법 생성">
                 탐구 방법 생성
               </Button>
             )}

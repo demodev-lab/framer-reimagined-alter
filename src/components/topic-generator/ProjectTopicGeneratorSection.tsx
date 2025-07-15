@@ -27,6 +27,7 @@ interface ProjectTopicGeneratorSectionProps {
   handleLockTopic: (id: number) => void;
   handleDeleteTopic: (id: number) => void;
   handleRegenerateMethods: (id: number) => void;
+  handleUpdateResearchMethods?: (id: number, methods: string[]) => void;
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
   handleRegenerateAllTopics: () => void;
@@ -45,6 +46,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
   handleLockTopic,
   handleDeleteTopic,
   handleRegenerateMethods,
+  handleUpdateResearchMethods,
   handleTopicTypeChange,
   followUpStates,
   handleFollowUpChange,
@@ -237,6 +239,7 @@ const ProjectTopicGeneratorSection: React.FC<ProjectTopicGeneratorSectionProps> 
                 onLockTopic={handleLockTopic} 
                 onDeleteTopic={handleDeleteTopic} 
                 onRegenerateMethods={handleRegenerateMethods} 
+                onUpdateResearchMethods={handleUpdateResearchMethods}
                 onTopicTypeChange={handleTopicTypeChange} 
                 onFollowUpChange={handleFollowUpChange} 
                 onCareerSentenceSelect={setSelectedCareerSentence} 

@@ -18,6 +18,7 @@ interface TopicCarouselProps {
   onLockTopic: (rowId: number) => void;
   onDeleteTopic: (rowId: number) => void;
   onRegenerateMethods: (rowId: number) => void;
+  onUpdateResearchMethods?: (rowId: number, methods: string[]) => void;
   onTopicTypeChange: (rowId: number, type: string) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
@@ -35,6 +36,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onLockTopic,
   onDeleteTopic,
   onRegenerateMethods,
+  onUpdateResearchMethods,
   onTopicTypeChange,
   onCareerSentenceSelect,
   onAddFollowUpRow,
@@ -98,10 +100,6 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         실현_가능성: topic.feasibility
                       })) : undefined}
                       showDetailedView={!!row.detailedTopics}
-                      onGenerateResearchMethod={(topic) => {
-                        console.log('탐구 방법 생성 요청:', topic);
-                        // TODO: N8N 탐구 방법 생성 API 호출
-                      }}
                       onBackToTopicList={() => {
                         console.log('주제 목록으로 돌아가기');
                         // TODO: 주제 목록 상태로 변경
@@ -127,7 +125,17 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         topicType={row.topicType}
                         onTopicTypeChange={(type) => onTopicTypeChange(row.id, type)}
                         onGoBack={handleGoToArchive}
-                        onGenerateResearchMethod={() => onRegenerateMethods(row.id)}
+                        onGenerateResearchMethod={(methods) => {
+                          if (methods && Array.isArray(methods)) {
+                            // N8N에서 받은 탐구 방법 데이터를 직접 상태에 반영
+                            if (onUpdateResearchMethods) {
+                              onUpdateResearchMethods(row.id, methods);
+                            }
+                          } else {
+                            // 기본 탐구 방법 생성 로직
+                            onRegenerateMethods(row.id);
+                          }
+                        }}
                       />
                       
                       {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}
@@ -135,6 +143,44 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         <ResearchMethodsCard 
                           researchMethods={row.researchMethods || []}
                           isLoading={row.isLoadingMethods || false}
+                          currentTopic={row.selectedTopic || ''}
+                          onGenerateDetailedMethods={async (currentTopic) => {
+                            console.log('더 자세한 탐구 방법 생성 요청:', currentTopic);
+                            try {
+                              const response = await fetch('/webhook/protocol', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  topicName: currentTopic,
+                                  detailLevel: 'very_detailed', // 더 자세한 버전 요청
+                                  timestamp: new Date().toISOString(),
+                                  source: 'detailed-research-methods'
+                                })
+                              });
+                              
+                              if (response.ok) {
+                                try {
+                                  const result = await response.json();
+                                  console.log('더 자세한 N8N 응답:', result);
+                                  
+                                  // 이전 탐구 방법 제거하고 새로운 방법으로 교체
+                                  if (Array.isArray(result) && result.length > 0 && onUpdateResearchMethods) {
+                                    onUpdateResearchMethods(row.id, result);
+                                  } else if (result && typeof result === 'object' && onUpdateResearchMethods) {
+                                    onUpdateResearchMethods(row.id, [result]);
+                                  }
+                                } catch (parseError) {
+                                  console.error('더 자세한 N8N 응답 파싱 오류:', parseError);
+                                }
+                              } else {
+                                console.error('더 자세한 웹훅 호출 실패:', response.statusText);
+                              }
+                            } catch (error) {
+                              console.error('더 자세한 웹훅 호출 중 오류:', error);
+                            }
+                          }}
                         />
                       ) : null}
                     </>

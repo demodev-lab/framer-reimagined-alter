@@ -30,6 +30,7 @@ interface TopicGeneratorSectionProps {
   handleLockTopic: (id: number) => void;
   handleDeleteTopic: (id: number) => void;
   handleRegenerateMethods: (id: number) => void;
+  handleUpdateResearchMethods?: (id: number, methods: string[]) => void;
   handleTopicTypeChange: (id: number, type: string) => void;
   handleFollowUpChange: (id: number, checked: boolean) => void;
   selectedCareerSentence?: string | null;
@@ -46,6 +47,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   handleLockTopic,
   handleDeleteTopic,
   handleRegenerateMethods,
+  handleUpdateResearchMethods,
   handleTopicTypeChange,
   followUpStates,
   handleFollowUpChange,
@@ -173,6 +175,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
                 onLockTopic={handleLockTopic} 
                 onDeleteTopic={handleDeleteTopic} 
                 onRegenerateMethods={handleRegenerateMethods} 
+                onUpdateResearchMethods={handleUpdateResearchMethods}
                 onTopicTypeChange={handleTopicTypeChange} 
                 onFollowUpChange={handleFollowUpChange} 
                 onCareerSentenceSelect={setSelectedCareerSentence} 

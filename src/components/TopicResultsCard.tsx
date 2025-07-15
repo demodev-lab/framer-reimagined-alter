@@ -163,18 +163,6 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
           {renderCarouselContent()}
         </div>
         
-        {/* 탐구 방법 생성 버튼 */}
-        {onGenerateResearchMethod && (
-          <Button
-            variant="outline"
-            onClick={() => onGenerateResearchMethod(carouselData[currentIndex]?.주제명 || '')}
-            className="justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background text-foreground border-foreground hover:bg-foreground hover:text-background dark:bg-primary dark:text-primary-foreground dark:border-primary dark:hover:bg-primary-foreground dark:hover:text-primary h-10 px-4 py-2 flex items-center gap-1"
-            title="탐구 방법 생성"
-          >
-            탐구 방법 생성
-            <Archive className="h-4 w-4" />
-          </Button>
-        )}
       </div>
       
       {/* 탐구 방법 영역 */}

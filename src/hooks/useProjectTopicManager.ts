@@ -352,6 +352,25 @@ export const useProjectTopicManager = () => {
     toast.info(`주제 유형이 '${topicType}'(으)로 변경되었습니다.`);
   };
 
+  const handleUpdateResearchMethods = (rowId: number, methods: string[]) => {
+    console.log(`N8N 탐구 방법 업데이트 (프로젝트) - rowId: ${rowId}, methods:`, methods);
+    
+    setCarouselGroups(prevGroups => 
+      prevGroups.map(group => ({
+        ...group,
+        topicRows: group.topicRows.map(r =>
+          r.id === rowId ? { 
+            ...r, 
+            isLoadingMethods: false, 
+            researchMethods: methods 
+          } : r
+        )
+      }))
+    );
+    
+    toast.success("N8N에서 받은 탐구 방법이 업데이트되었습니다.");
+  };
+
   return {
     topicRows,
     carouselGroups,
@@ -367,6 +386,7 @@ export const useProjectTopicManager = () => {
     handleLockTopic,
     handleDeleteTopic,
     handleRegenerateMethods,
+    handleUpdateResearchMethods,
     handleTopicTypeChange,
     handleFollowUpChange,
     handleRegenerateAllTopics,
