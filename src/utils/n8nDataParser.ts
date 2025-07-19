@@ -43,6 +43,52 @@ export function parseN8NResearchMethods(data: any): ParsedResearchMethod[] {
   try {
     console.log('🔍 N8N 데이터 파싱 시작:', data);
     
+    // 새로운 응답 구조 처리 (workflowType: protocol)
+    if (data && data.workflowType === 'protocol') {
+      console.log('🔍 Protocol 워크플로우 응답 감지');
+      
+      // 에러가 있는 경우 처리
+      if (data.data && data.data.error === 'FINAL_JSON_PARSE_FAILED') {
+        console.log('⚠️ JSON 파싱 에러 감지, original_output 파싱 시도');
+        
+        // original_output에서 JSON 추출 시도
+        const originalOutput = data.data.original_output;
+        if (originalOutput) {
+          try {
+            // ```json ... ``` 패턴에서 JSON 추출
+            const jsonMatch = originalOutput.match(/```json\n([\s\S]*?)\n```/);
+            if (jsonMatch && jsonMatch[1]) {
+              const parsedJson = JSON.parse(jsonMatch[1]);
+              console.log('✅ original_output에서 JSON 추출 성공');
+              
+              // 단일 객체를 배열로 변환
+              return [parsedJson];
+            }
+          } catch (parseError) {
+            console.error('original_output 파싱 실패:', parseError);
+            
+            // 파싱 실패 시 원본 텍스트를 간단한 형태로 변환
+            return [{
+              탐구주제: '탐구 방법 생성 중 오류 발생',
+              탐구목표: {
+                주요목표: 'JSON 파싱 오류로 인해 탐구 방법을 표시할 수 없습니다.',
+                세부목표: ['원본 데이터는 생성되었으나 형식 변환 중 오류가 발생했습니다.']
+              },
+              탐구가설: '다시 시도하거나 관리자에게 문의해주세요.',
+              필요한준비물: [],
+              단계별프로토콜: {},
+              참고자료: []
+            }];
+          }
+        }
+      }
+      
+      // 정상적인 data가 있는 경우
+      if (data.data && !data.data.error) {
+        data = data.data;
+      }
+    }
+    
     // 데이터가 배열인지 확인
     let researchData = Array.isArray(data) ? data : [data];
     

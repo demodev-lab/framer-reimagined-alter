@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
 import { useCareerSentence } from '@/contexts/CareerSentenceContext';
+import { n8nPollingClient } from '@/utils/n8nPollingClient';
 
 interface CarouselGroup {
   id: number;
@@ -13,6 +14,7 @@ const TOPIC_MANAGER_STORAGE_KEY = 'topic_manager_state';
 
 export const useTopicManager = () => {
   const { selectedCareerSentence, setSelectedCareerSentence } = useCareerSentence();
+  const abortControllerRef = useRef<AbortController | null>(null);
   const [carouselGroups, setCarouselGroups] = useState<CarouselGroup[]>([
     {
       id: 1,
@@ -168,32 +170,72 @@ export const useTopicManager = () => {
       
       console.log('🚀 FormData 형식으로 N8N 웹훅 전송... (CORS 모드)');
       
-      // CORS 모드로 응답 데이터 수신 가능
-      const response = await fetch('https://songssam.demodev.io/webhook/topics', {
-        method: 'POST',
-        body: formData,  // Content-Type 헤더 자동 설정됨
-        mode: 'cors'  // CORS 제한 해제
-      });
+      // 이전 요청이 진행 중이면 취소
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
       
-      console.log('✅ N8N 웹훅 응답 수신:', response.status);
+      // 새로운 AbortController 생성
+      abortControllerRef.current = new AbortController();
       
-      if (response.ok) {
-        const data = await response.json();
+      // JSON 데이터 준비
+      const jsonData = {
+        sentence: selectedCareerSentence,
+        진로문장: selectedCareerSentence || '',
+        교과과목: inputs.subject,
+        교과개념: inputs.concept,
+        주제유형: inputs.topicType,
+        후속탐구: isFollowUp && previousRow ? previousRow.selectedTopic || '' : '',
+        ...inputs
+      };
+      
+      console.log('🚀 비동기 폴링 방식으로 N8N 웹훅 전송...');
+      
+      const response = await n8nPollingClient.requestTopics(
+        jsonData,
+        abortControllerRef.current.signal
+      );
+      
+      console.log('✅ N8N 폴링 완료:', response);
+      
+      if (response.success && response.data) {
+        const data = response.data;
         console.log('🎯 N8N에서 받은 원본 데이터:', data);
         console.log('🎯 JSON.stringify:', JSON.stringify(data, null, 2));
         
-        // N8N 응답 데이터 파싱 (실제 구조에 맞게 수정)
+        // N8N 응답 데이터 파싱 (새로운 구조에 맞게 수정)
         const parseN8NTopicResponse = (responseData) => {
           try {
             console.log('🔍 파싱 시작 - 데이터 타입:', typeof responseData);
-            console.log('🔍 Array.isArray:', Array.isArray(responseData));
+            console.log('🔍 전체 응답 구조:', responseData);
             
-            // 직접 배열 형태의 주제 데이터 처리
-            if (Array.isArray(responseData) && responseData.length > 0) {
-              console.log('🔍 배열 길이:', responseData.length);
-              console.log('🔍 첫 번째 요소 키들:', Object.keys(responseData[0] || {}));
+            let topicsData = responseData;
+            
+            // 새로운 응답 구조 처리 (workflowType, data 등)
+            if (responseData && responseData.workflowType === 'topics' && responseData.data) {
+              console.log('🔍 새로운 N8N 응답 구조 감지');
+              topicsData = responseData.data;
+            }
+            
+            // 단일 주제 객체인 경우 (새로운 구조)
+            if (topicsData && typeof topicsData === 'object' && topicsData['주제명']) {
+              console.log('🔍 단일 주제 객체 감지');
+              const topic = {
+                id: 1,
+                title: topicsData['주제명'] || '주제 1',
+                summary: topicsData['탐구 주제 요약'] || topicsData['탐구_주제_요약'] || '',
+                feasibility: topicsData['실현 가능성'] || topicsData['실현_가능성'] || '실현 가능성 정보 없음'
+              };
+              console.log('🎯 파싱된 주제:', topic);
+              return [topic];
+            }
+            
+            // 배열 형태의 주제 데이터 처리 (기존 방식)
+            if (Array.isArray(topicsData) && topicsData.length > 0) {
+              console.log('🔍 배열 길이:', topicsData.length);
+              console.log('🔍 첫 번째 요소 키들:', Object.keys(topicsData[0] || {}));
               
-              const topics = responseData.map((topic, index) => {
+              const topics = topicsData.map((topic, index) => {
                 console.log(`🔍 주제 ${index + 1}:`, topic);
                 
                 // 실제 필드명에 맞게 수정
@@ -267,9 +309,7 @@ export const useTopicManager = () => {
           );
         }
       } else {
-        console.error('❌ N8N 웹훅 HTTP 오류:', response.status, response.statusText);
-        const errorText = await response.text().catch(() => '응답 내용 없음');
-        console.error('응답 내용:', errorText);
+        console.error('❌ N8N 주제 생성 실패:', response.error);
         
         setCarouselGroups(prevGroups => 
           prevGroups.map(group => ({
@@ -279,7 +319,7 @@ export const useTopicManager = () => {
                 ? { 
                     ...row, 
                     isLoadingTopics: false, 
-                    generatedTopics: [`서버 오류 (${response.status}): 잠시 후 다시 시도해주세요.`], 
+                    generatedTopics: [response.error || '주제 생성에 실패했습니다. 다시 시도해주세요.'], 
                     stage: 'topics_generated' 
                   }
                 : row

@@ -17,7 +17,7 @@ export interface N8NResponse<T = any> {
 }
 
 export class N8NClient {
-  private baseURL = 'https://songssam.demodev.io';
+  private baseURL = import.meta.env.DEV ? '' : 'https://songssam.demodev.io';
 
   async request<T = any>(options: N8NRequestOptions): Promise<N8NResponse<T>> {
     const {
@@ -48,7 +48,7 @@ export class N8NClient {
     data: any,
     signal?: AbortSignal
   ): Promise<any> {
-    const url = `${this.baseURL}/webhook/${endpoint}`;
+    const url = `${this.baseURL}/webhook/request?path=${endpoint}`;
     
     // 브라우저 기본 타임아웃 우회 - 무제한 대기 강제 설정
     const response = await fetch(url, {
@@ -136,7 +136,8 @@ export const cancelN8NRequest = async (requestId?: string) => {
   try {
     console.log('📶 N8N 백엔드에 중단 신호 전송 중...');
     
-    const response = await fetch('https://songssam.demodev.io/webhook/cancel', {
+    const baseURL = import.meta.env.DEV ? '' : 'https://songssam.demodev.io';
+    const response = await fetch(`${baseURL}/webhook/request?path=cancel`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

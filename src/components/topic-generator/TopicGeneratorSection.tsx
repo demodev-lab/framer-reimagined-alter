@@ -1,13 +1,18 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Archive } from 'lucide-react';
-import { TopicRow } from '@/types';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import CareerSentenceSection from './CareerSentenceSection';
-import CareerSentenceDialog from './CareerSentenceDialog';
-import TopicCarousel from './TopicCarousel';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Archive } from "lucide-react";
+import { TopicRow } from "@/types";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import CareerSentenceSection from "./CareerSentenceSection";
+import CareerSentenceDialog from "./CareerSentenceDialog";
+import TopicCarousel from "./TopicCarousel";
+import { n8nPollingClient } from "@/utils/n8nPollingClient";
+import { useRef } from "react";
 
 interface CarouselGroup {
   id: number;
@@ -20,11 +25,14 @@ interface TopicGeneratorSectionProps {
   followUpStates: Record<number, boolean>;
   handleAddRow: () => void;
   handleAddFollowUpRow: (groupId: number) => void;
-  handleGenerate: (id: number, inputs: {
-    subject: string;
-    concept: string;
-    topicType: string;
-  }) => void;
+  handleGenerate: (
+    id: number,
+    inputs: {
+      subject: string;
+      concept: string;
+      topicType: string;
+    }
+  ) => void;
   handleSelectTopic: (id: number, topic: string) => void;
   handleRefreshTopic: (id: number) => void;
   handleLockTopic: (id: number) => void;
@@ -52,12 +60,16 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   followUpStates,
   handleFollowUpChange,
   selectedCareerSentence,
-  setSelectedCareerSentence
+  setSelectedCareerSentence,
 }) => {
   const navigate = useNavigate();
   const [showRegenerateDialog, setShowRegenerateDialog] = useState(false);
-  const [generatedCareerSentences, setGeneratedCareerSentences] = useState<string[]>([]);
-  const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] = useState(false);
+  const [generatedCareerSentences, setGeneratedCareerSentences] = useState<
+    string[]
+  >([]);
+  const [isGeneratingCareerSentence, setIsGeneratingCareerSentence] =
+    useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleRegenerateCareerSentence = () => {
     console.log("Career sentence regeneration requested");
@@ -73,74 +85,59 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
     console.log("Career sentence generated:", data);
     setIsGeneratingCareerSentence(true);
     setGeneratedCareerSentences([]);
+
+    // 이전 요청이 진행 중이면 취소
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
     
+    // 새로운 AbortController 생성
+    abortControllerRef.current = new AbortController();
+
     try {
       const webhookData = {
         careerField: data.careerField,
         request: data.activity,
-        aspiration: data.activity === '직업을 가진 후 하고 싶은 것이 있습니다.' ? data.aspiration : null
+        aspiration:
+          data.activity === "직업을 가진 후 하고 싶은 것이 있습니다."
+            ? data.aspiration
+            : null,
       };
+
+      console.log('🚀 진로 문장 생성 요청 시작 (비동기 폴링)...');
       
-      const response = await fetch('https://songssam.demodev.io/webhook/dream', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Connection': 'keep-alive'
-        },
-        body: JSON.stringify(webhookData),
-        keepalive: true,  // 무제한 대기 설정
-        mode: 'cors',
-        redirect: 'follow'
-      });
+      const response = await n8nPollingClient.requestCareerSentence(
+        webhookData,
+        abortControllerRef.current.signal
+      );
       
-      if (response.ok) {
-        const data = await response.json();
-        console.log('🎯 N8N이 전달한 원본 데이터 (TopicGeneratorSection):', data);
-        console.log('🎯 JSON.stringify (TopicGeneratorSection):', JSON.stringify(data, null, 2));
+      if (response.success && response.data) {
+        console.log('✅ 진로 문장 생성 완료');
+        console.log('🎯 최종 결과:', response.data);
         
-        let resultText = '';
-        
-        if (typeof data === 'string') {
-          resultText = data;
-        } else if (data && typeof data === 'object') {
-          const allValues = [];
-          const extractValues = (obj) => {
-            if (typeof obj === 'string' && obj.trim()) {
-              allValues.push(obj.trim());
-            } else if (obj && typeof obj === 'object') {
-              Object.values(obj).forEach(extractValues);
-            }
-          };
-          extractValues(data);
-          
-          console.log('🎯 추출된 모든 문자열 값들 (TopicGeneratorSection):', allValues);
-          
-          if (allValues.length > 0) {
-            resultText = allValues.reduce((longest, current) => 
-              current.length > longest.length ? current : longest
-            );
-          }
-        }
-        
-        console.log('🎯 최종 선택된 텍스트 (TopicGeneratorSection):', resultText);
-        
-        if (resultText) {
-          setGeneratedCareerSentences([resultText]);
-        } else {
-          console.error('❌ 사용 가능한 텍스트를 찾을 수 없습니다 (TopicGeneratorSection)');
-          setGeneratedCareerSentences(["텍스트를 추출할 수 없습니다. N8N 응답을 확인해주세요."]);
-        }
+        setGeneratedCareerSentences([response.data]);
       } else {
-        setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+        console.error('❌ 진로 문장 생성 실패:', response.error);
+        
+        let errorMessage = response.error || '진로 문장 생성에 실패했습니다.';
+        if (response.status === 'timeout') {
+          errorMessage = '응답 시간이 초과되었습니다. 다시 시도해주세요.';
+        } else if (response.status === 'cancelled') {
+          errorMessage = '요청이 취소되었습니다.';
+        }
+        
+        setGeneratedCareerSentences([errorMessage]);
       }
     } catch (error) {
-      console.error('Webhook 호출 실패:', error);
-      setGeneratedCareerSentences(["오류가 발생했습니다. 다시 시도해주세요."]);
+      console.error("예상치 못한 오류:", error);
+      
+      if (error.name === 'AbortError') {
+        setGeneratedCareerSentences(["요청이 취소되었습니다."]);
+      } else {
+        setGeneratedCareerSentences([`오류: ${error.message || '알 수 없는 오류가 발생했습니다.'}`]);
+      }
     }
-    
+
     setIsGeneratingCareerSentence(false);
   };
 
@@ -150,36 +147,36 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
   };
 
   const handleGoToArchive = () => {
-    navigate('/archive');
+    navigate("/archive");
   };
 
   return (
     <>
       <section className="flex flex-col items-center pb-8">
         <div className="w-full max-w-7xl mx-auto px-4">
-          <CareerSentenceSection 
-            selectedCareerSentence={selectedCareerSentence} 
-            onRegenerateCareerSentence={handleRegenerateCareerSentence} 
+          <CareerSentenceSection
+            selectedCareerSentence={selectedCareerSentence}
+            onRegenerateCareerSentence={handleRegenerateCareerSentence}
           />
 
           <div className="space-y-8">
-            {carouselGroups.map(group => (
-              <TopicCarousel 
-                key={group.id} 
-                group={group} 
-                followUpStates={followUpStates} 
-                selectedCareerSentence={selectedCareerSentence} 
-                onGenerate={handleGenerate} 
-                onSelectTopic={handleSelectTopic} 
-                onRefreshTopic={handleRefreshTopic} 
-                onLockTopic={handleLockTopic} 
-                onDeleteTopic={handleDeleteTopic} 
-                onRegenerateMethods={handleRegenerateMethods} 
+            {carouselGroups.map((group) => (
+              <TopicCarousel
+                key={group.id}
+                group={group}
+                followUpStates={followUpStates}
+                selectedCareerSentence={selectedCareerSentence}
+                onGenerate={handleGenerate}
+                onSelectTopic={handleSelectTopic}
+                onRefreshTopic={handleRefreshTopic}
+                onLockTopic={handleLockTopic}
+                onDeleteTopic={handleDeleteTopic}
+                onRegenerateMethods={handleRegenerateMethods}
                 onUpdateResearchMethods={handleUpdateResearchMethods}
-                onTopicTypeChange={handleTopicTypeChange} 
-                onFollowUpChange={handleFollowUpChange} 
-                onCareerSentenceSelect={setSelectedCareerSentence} 
-                onAddFollowUpRow={handleAddFollowUpRow} 
+                onTopicTypeChange={handleTopicTypeChange}
+                onFollowUpChange={handleFollowUpChange}
+                onCareerSentenceSelect={setSelectedCareerSentence}
+                onAddFollowUpRow={handleAddFollowUpRow}
                 onOpenCareerSentenceDialog={handleRegenerateCareerSentence}
               />
             ))}
@@ -189,7 +186,7 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
           <div className="flex justify-center mt-8">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
+                <Button
                   onClick={handleGoToArchive}
                   className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
                 >
@@ -205,13 +202,13 @@ const TopicGeneratorSection: React.FC<TopicGeneratorSectionProps> = ({
         </div>
       </section>
 
-      <CareerSentenceDialog 
-        open={showRegenerateDialog} 
-        onOpenChange={setShowRegenerateDialog} 
-        generatedCareerSentences={generatedCareerSentences} 
-        isGeneratingCareerSentence={isGeneratingCareerSentence} 
-        onGenerate={handleCareerSentenceGenerate} 
-        onSelectCareerSentence={handleSelectCareerSentence} 
+      <CareerSentenceDialog
+        open={showRegenerateDialog}
+        onOpenChange={setShowRegenerateDialog}
+        generatedCareerSentences={generatedCareerSentences}
+        isGeneratingCareerSentence={isGeneratingCareerSentence}
+        onGenerate={handleCareerSentenceGenerate}
+        onSelectCareerSentence={handleSelectCareerSentence}
       />
     </>
   );

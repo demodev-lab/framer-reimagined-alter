@@ -1,0 +1,3 @@
+curl -X POST https://songssam.demodev.io/webhook/dream \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "test"}'
