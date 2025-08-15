@@ -6,6 +6,7 @@ import {
   Lock,
   X,
   ChevronDown,
+  ChevronRight,
   Archive,
   House,
   ExternalLink,
@@ -43,7 +44,7 @@ interface SelectedTopicCardProps {
   onTopicTypeChange: (type: string) => void;
   researchMethods?: string[];
   onGoBack?: () => void;
-  onGenerateResearchMethod?: () => void;
+  onGenerateResearchMethod?: (methods?: string[]) => void;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -190,21 +191,16 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
             </dl>
           </div>
 
-          {/* 보관함 저장 버튼과 탐구 방법 생성 버튼 */}
+          {/* 탐구 방법 생성 버튼과 보관함 저장 버튼 */}
           <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
-            <Button
-              onClick={handleArchiveSave}
-              variant="outline"
-              className="flex items-center gap-1"
-              disabled={isLocked}
-              title="보관함에 저장"
-            >
-              보관함 저장
-              <Archive className="h-4 w-4" />
-            </Button>
             {onGenerateResearchMethod && (
               <Button
                 onClick={async () => {
+                  // 버튼 클릭 즉시 탐구 방법 섹션 표시
+                  if (onGenerateResearchMethod) {
+                    onGenerateResearchMethod();
+                  }
+                  
                   toast.info("N8N에서 탐구 방법을 생성 중입니다...");
                   
                   // 이전 요청이 진행 중이면 취소
@@ -291,6 +287,16 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                 탐구 방법 생성
               </Button>
             )}
+            <Button
+              onClick={handleArchiveSave}
+              variant="outline"
+              className="flex items-center gap-1"
+              disabled={isLocked}
+              title="보관함에 저장"
+            >
+              보관함 저장
+              <Archive className="h-4 w-4" />
+            </Button>
           </div>
         </CardContent>
       </Card>

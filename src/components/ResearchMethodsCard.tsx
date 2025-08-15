@@ -2,37 +2,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { ChevronRight, BookOpen, Target, Lightbulb, Settings, AlertTriangle, FileText } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import StructuredResearchMethod from "@/components/StructuredResearchMethod";
 import React, { useState } from "react";
-import { parseN8NResearchMethods, formatResearchMethodForDisplay, type ParsedResearchMethod } from "@/utils/n8nDataParser";
+import { parseN8NResearchMethods, type ParsedResearchMethod } from "@/utils/n8nDataParser";
 
 interface ResearchMethodsCardProps {
   researchMethods: string[] | any[];
   isLoading: boolean;
-  onGenerateDetailedMethods?: (currentTopic: string) => void;
-  currentTopic?: string;
 }
 
 const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
   researchMethods,
   isLoading,
-  onGenerateDetailedMethods,
-  currentTopic = '',
 }) => {
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({});
-  
-
-  const handleMoreDetails = async () => {
-    if (!onGenerateDetailedMethods || !currentTopic) {
-      console.log("더 자세한 탐구 방법 생성 함수 또는 현재 주제가 없습니다.");
-      return;
-    }
-    
-    console.log("더 자세한 탐구 방법 생성 시작:", currentTopic);
-    onGenerateDetailedMethods(currentTopic);
-  };
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => ({
@@ -54,28 +39,15 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
 
   return (
     <Card className="w-full">
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader>
         <CardTitle>탐구 방법</CardTitle>
-        <div className="flex gap-2">
-          <Button 
-            onClick={handleMoreDetails}
-            size="sm"
-            className="flex items-center gap-2 bg-black text-white hover:bg-gray-800"
-            disabled={isLoading}
-            title="초등학생도 할 수 있는 상세한 단계별 설명"
-          >
-            더 자세히
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
       </CardHeader>
       <CardContent>
         <div className="pr-4">
           {isLoading ? (
-            <div className="space-y-3">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
+            <div className="flex flex-col items-center justify-center py-8 space-y-4">
+              <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+              <p className="text-sm text-gray-600">N8N에서 탐구 방법을 생성하는 중...</p>
             </div>
           ) : isN8NData && parsedMethods.length > 0 ? (
             // N8N 구조화된 데이터 렌더링
@@ -285,10 +257,11 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
             // 기존 문자열 배열 렌더링
             <div className="space-y-4">
               {researchMethods.map((method, index) => (
-                <div key={index} className="text-sm leading-relaxed">
-                  <span className="font-medium text-primary">{index + 1}. </span>
-                  {typeof method === 'string' ? method : JSON.stringify(method)}
-                </div>
+                <StructuredResearchMethod 
+                  key={index} 
+                  method={typeof method === 'string' ? method : JSON.stringify(method)} 
+                  index={index} 
+                />
               ))}
             </div>
           )}

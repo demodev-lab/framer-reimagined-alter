@@ -11,6 +11,7 @@ export interface TopicRow {
   researchMethods: string[];
   isLoadingMethods: boolean;
   isLoadingResearchMethod?: boolean; // TopicResultsCard에서 사용
+  showResearchMethods: boolean; // 탐구 방법 섹션 표시 여부
   isLocked: boolean;
   topicType: string;
   // 상세 프로젝트 정보 (N8N 웹훅으로부터 받은 데이터)
@@ -24,13 +25,11 @@ export interface TopicRow {
   topicsWithDetails?: {
     id: number;
     title: string;
-    feasibility: string;
   }[];
-  // N8N에서 받은 상세 주제 정보 (실현 가능성 포함)
+  // N8N에서 받은 상세 주제 정보
   detailedTopics?: {
     id: number;
     title: string;
     summary: string;
-    feasibility: string;
   }[];
 }

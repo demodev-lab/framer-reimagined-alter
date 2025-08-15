@@ -8,6 +8,10 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Trash2, ChevronDown, Filter, ArrowLeft, Eye, RefreshCw } from 'lucide-react';
+import StructuredResearchMethod from '@/components/StructuredResearchMethod';
+import ResearchMethodsCard from '@/components/ResearchMethodsCard';
+import { n8nPollingClient } from '@/utils/n8nPollingClient';
+import { toast } from '@/hooks/use-toast';
 import { ArchivedTopic } from '@/types/archive';
 const Archive = () => {
   const navigate = useNavigate();
@@ -57,92 +61,89 @@ const Archive = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
-  const generateResearchMethods = (topic: ArchivedTopic) => {
-    return [`'${topic.title}'의 선행 연구 분석: 기존 연구의 한계점을 명확히 하고, 본 연구의 독창적 기여 지점을 구체화하는 방법론.`, `심층 인터뷰 및 설문조사 병행: 정량적 데이터와 정성적 데이터를 통합 분석하여, '${topic.title}'에 대한 다각적 이해를 도모하는 혼합 연구 설계.`, `파일럿 테스트 기반 실험 설계: 소규모 예비 실험을 통해 변수를 통제하고, 본 실험의 신뢰도와 타당도를 극대화하는 전략.`, `연구 윤리 고려사항: 연구 참여자의 권익 보호 및 데이터 보안을 위한 구체적인 프로토콜 제시.`];
-  };
-  const handleGenerateResearchMethods = async (topicId: string) => {
+  const handleGenerateResearchMethods = async (topicId: string, detailLevel?: string) => {
     setIsRegeneratingMethods(prev => ({
       ...prev,
       [topicId]: true
     }));
+    
     const topic = archivedTopics.find(t => t.id === topicId);
-    if (!topic) return;
-
-    // Simulate API call delay for generating research methods
-    setTimeout(() => {
-      const newMethods = generateResearchMethods(topic);
-      setTopicResearchMethods(prev => ({
-        ...prev,
-        [topicId]: newMethods
-      }));
+    if (!topic) {
       setIsRegeneratingMethods(prev => ({
         ...prev,
         [topicId]: false
       }));
-    }, 1500);
+      return;
+    }
+
+    try {
+      console.log('🔄 보관함에서 탐구 방법 생성 시작:', topic.title);
+      
+      // 실제 N8N API 호출
+      const response = await n8nPollingClient.requestResearchMethods({
+        topicName: topic.title,
+        timestamp: new Date().toISOString(),
+        source: "archive-page",
+        detailLevel: detailLevel || "detailed"
+      });
+
+      if (response.success && response.data) {
+        console.log('✅ N8N 탐구 방법 생성 성공:', response.data);
+        
+        // N8N 응답을 문자열 배열로 변환
+        let methods: string[] = [];
+        
+        if (typeof response.data === 'string') {
+          methods = [response.data];
+        } else if (Array.isArray(response.data)) {
+          methods = response.data.map(item => 
+            typeof item === 'string' ? item : JSON.stringify(item)
+          );
+        } else {
+          // 객체인 경우 JSON 문자열로 변환
+          methods = [JSON.stringify(response.data)];
+        }
+
+        setTopicResearchMethods(prev => ({
+          ...prev,
+          [topicId]: methods
+        }));
+        
+        toast({
+          title: "탐구 방법 생성 완료",
+          description: `${topic.title}에 대한 탐구 방법이 생성되었습니다.`,
+        });
+      } else {
+        console.error('❌ N8N 탐구 방법 생성 실패:', response);
+        toast({
+          title: "탐구 방법 생성 실패",
+          description: "다시 시도해주세요.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('❌ 탐구 방법 생성 중 오류:', error);
+      toast({
+        title: "오류 발생",
+        description: "탐구 방법 생성 중 오류가 발생했습니다.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRegeneratingMethods(prev => ({
+        ...prev,
+        [topicId]: false
+      }));
+    }
   };
   const handleDifficultyUp = async (topicId: string) => {
-    setIsRegeneratingMethods(prev => ({
-      ...prev,
-      [topicId]: true
-    }));
-    const topic = archivedTopics.find(t => t.id === topicId);
-    if (!topic) return;
-
-    // Simulate API call delay for difficulty up
-    setTimeout(() => {
-      const newMethods = generateResearchMethods(topic);
-      setTopicResearchMethods(prev => ({
-        ...prev,
-        [topicId]: newMethods
-      }));
-      setIsRegeneratingMethods(prev => ({
-        ...prev,
-        [topicId]: false
-      }));
-    }, 1500);
+    await handleGenerateResearchMethods(topicId, "very_detailed");
   };
+  
   const handleDifficultyDown = async (topicId: string) => {
-    setIsRegeneratingMethods(prev => ({
-      ...prev,
-      [topicId]: true
-    }));
-    const topic = archivedTopics.find(t => t.id === topicId);
-    if (!topic) return;
-
-    // Simulate API call delay for difficulty down
-    setTimeout(() => {
-      const newMethods = generateResearchMethods(topic);
-      setTopicResearchMethods(prev => ({
-        ...prev,
-        [topicId]: newMethods
-      }));
-      setIsRegeneratingMethods(prev => ({
-        ...prev,
-        [topicId]: false
-      }));
-    }, 1500);
+    await handleGenerateResearchMethods(topicId, "basic");
   };
   const handleMoreDetailed = async (topicId: string) => {
-    setIsRegeneratingMethods(prev => ({
-      ...prev,
-      [topicId]: true
-    }));
-    const topic = archivedTopics.find(t => t.id === topicId);
-    if (!topic) return;
-
-    // Simulate API call delay for more detailed
-    setTimeout(() => {
-      const newMethods = generateResearchMethods(topic);
-      setTopicResearchMethods(prev => ({
-        ...prev,
-        [topicId]: newMethods
-      }));
-      setIsRegeneratingMethods(prev => ({
-        ...prev,
-        [topicId]: false
-      }));
-    }, 1500);
+    await handleGenerateResearchMethods(topicId, "very_detailed");
   };
   const getTopicResearchMethods = (topicId: string) => {
     return topicResearchMethods[topicId] || [];
@@ -231,42 +232,69 @@ const Archive = () => {
                             </DialogDescription>
                           </DialogHeader>
                           
-                          {getTopicResearchMethods(topic.id).length > 0 ? <div className="space-y-4">
-                              <div className="flex items-center justify-center gap-2">
-                                <span className="text-sm font-medium">
-                                  {getTopicResearchMethods(topic.id).length}개의 탐구 방법
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-center gap-2">
-                                <Button variant="outline" size="sm" onClick={() => handleDifficultyUp(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1"> 
-                                  난이도 ⬆️ 
-                                </Button>
-                                <Button variant="outline" size="sm" onClick={() => handleDifficultyDown(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-1">
-                                  난이도 ⬇️ 
-                                </Button>
-                                <Button variant="outline" size="sm" onClick={() => handleMoreDetailed(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
-                                  더 자세히
-                                </Button>
-                              </div>
-                              <div className="space-y-3">
-                                {getTopicResearchMethods(topic.id).map((method, methodIndex) => <div key={methodIndex} className="p-3 bg-muted rounded-lg">
-                                    <div className="text-sm font-medium mb-1">방법 {methodIndex + 1}</div>
-                                    <div className="text-sm text-muted-foreground">{method}</div>
-                                  </div>)}
-                              </div>
-                            </div> : <div className="text-center py-8 space-y-4">
+                          <ResearchMethodsCard
+                            researchMethods={getTopicResearchMethods(topic.id)}
+                            isLoading={isRegeneratingMethods[topic.id] || false}
+                          />
+                          
+                          {getTopicResearchMethods(topic.id).length > 0 && (
+                            <div className="flex items-center justify-center gap-2 mt-4">
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => handleDifficultyUp(topic.id)} 
+                                disabled={isRegeneratingMethods[topic.id]}
+                                className="flex items-center gap-1"
+                              > 
+                                난이도 ⬆️ 
+                              </Button>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => handleDifficultyDown(topic.id)} 
+                                disabled={isRegeneratingMethods[topic.id]}
+                                className="flex items-center gap-1"
+                              >
+                                난이도 ⬇️ 
+                              </Button>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => handleGenerateResearchMethods(topic.id)} 
+                                disabled={isRegeneratingMethods[topic.id]}
+                                className="flex items-center gap-2"
+                              >
+                                {isRegeneratingMethods[topic.id] ? (
+                                  <>
+                                    <RefreshCw className="h-4 w-4 animate-spin" />
+                                    재생성 중...
+                                  </>
+                                ) : (
+                                  <>
+                                    <RefreshCw className="h-4 w-4" />
+                                    재생성
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          )}
+                          
+                          {getTopicResearchMethods(topic.id).length === 0 && !isRegeneratingMethods[topic.id] && (
+                            <div className="text-center py-8 space-y-4">
                               <div className="text-muted-foreground">
                                 아직 탐구 방법이 생성되지 않았습니다.
                               </div>
                               <div className="flex justify-center">
-                                <Button onClick={() => handleGenerateResearchMethods(topic.id)} disabled={isRegeneratingMethods[topic.id]} className="flex items-center gap-2">
-                                  {isRegeneratingMethods[topic.id] ? <>
-                                      <RefreshCw className="h-4 w-4 animate-spin" />
-                                      생성 중...
-                                    </> : '재생성'}
+                                <Button 
+                                  onClick={() => handleGenerateResearchMethods(topic.id)} 
+                                  disabled={isRegeneratingMethods[topic.id]} 
+                                  className="flex items-center gap-2"
+                                >
+                                  탐구 방법 생성하기
                                 </Button>
                               </div>
-                            </div>}
+                            </div>
+                          )}
                         </DialogContent>
                       </Dialog>
                     </TableCell>

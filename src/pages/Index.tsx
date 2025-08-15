@@ -27,13 +27,25 @@ const Index = () => {
             체계적인 학생부 관리를 위한 맞춤형 솔루션
           </p>
 
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-gradient-to-b from-black to-gray-800 text-white hover:from-gray-800 hover:to-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] transform hover:translate-y-[-2px] transition-all duration-200 border border-gray-700 min-w-[140px]">
-              <a href="/topic-generator">심화 세특 주제 만들기</a>
+          <div className="mt-12 flex flex-col gap-6 items-center">
+            {/* 체험하기 버튼 - 가장 주목도 높게 */}
+            <Button asChild className="bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 px-12 py-4 rounded-xl font-bold text-lg shadow-[0_12px_24px_rgba(147,51,234,0.4)] hover:shadow-[0_16px_32px_rgba(147,51,234,0.5)] transform hover:translate-y-[-3px] transition-all duration-300 border-2 border-purple-500 min-w-[280px] relative overflow-hidden group">
+              <a href="/topic-generator?demo=true" className="flex items-center justify-center gap-3">
+                <Zap className="w-6 h-6" />
+                <span>30초 체험하기 - 회원가입 없이!</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+              </a>
             </Button>
-            <Button variant="outline" asChild className="bg-gradient-to-b from-white to-gray-50 border-2 border-gray-300 text-gray-700 hover:from-gray-50 hover:to-gray-100 hover:border-gray-400 hover:text-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] transform hover:translate-y-[-2px] transition-all duration-200 min-w-[140px]">
-              <a href="/feedback">학생부 심폐 소생하기</a>
-            </Button>
+            
+            {/* 기존 버튼들 */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button asChild className="bg-gradient-to-b from-black to-gray-800 text-white hover:from-gray-800 hover:to-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.4)] transform hover:translate-y-[-2px] transition-all duration-200 border border-gray-700 min-w-[140px]">
+                <a href="/topic-generator">심화 세특 주제 만들기</a>
+              </Button>
+              <Button variant="outline" asChild className="bg-gradient-to-b from-white to-gray-50 border-2 border-gray-300 text-gray-700 hover:from-gray-50 hover:to-gray-100 hover:border-gray-400 hover:text-gray-900 px-8 py-3 rounded-lg font-medium text-base shadow-[0_8px_16px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_24px_rgba(0,0,0,0.15)] transform hover:translate-y-[-2px] transition-all duration-200 min-w-[140px]">
+                <a href="/feedback">학생부 심폐 소생하기</a>
+              </Button>
+            </div>
           </div>
         </section>
 

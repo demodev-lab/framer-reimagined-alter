@@ -10,7 +10,6 @@ import TopicResultsCard from "../TopicResultsCard";
 import SelectedTopicCard from "../SelectedTopicCard";
 import ResearchMethodsCard from "../ResearchMethodsCard";
 import { n8nPollingClient } from "@/utils/n8nPollingClient";
-import { useRef } from "react";
 
 interface TopicCarouselProps {
   group: any;
@@ -28,6 +27,7 @@ interface TopicCarouselProps {
   onRegenerateMethods: (rowId: number) => void;
   onUpdateResearchMethods?: (rowId: number, methods: string[]) => void;
   onTopicTypeChange: (rowId: number, type: string) => void;
+  onShowResearchMethods?: (rowId: number) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
   onOpenCareerSentenceDialog: () => void;
@@ -46,19 +46,19 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onRegenerateMethods,
   onUpdateResearchMethods,
   onTopicTypeChange,
+  onShowResearchMethods,
   onCareerSentenceSelect,
   onAddFollowUpRow,
   onOpenCareerSentenceDialog,
 }) => {
   const navigate = useNavigate();
-  const abortControllerRef = useRef<AbortController | null>(null);
   const lastRow = group.topicRows[group.topicRows.length - 1];
   const canAddFollowUp =
     lastRow?.stage === "topic_selected" && lastRow?.selectedTopic;
 
   const handleBackToGenerator = (rowId: number) => {
-    // 주제 생성기로 돌아가기
-    onDeleteTopic(rowId);
+    // 주제 재생성 (기존 입력 데이터로 새로운 주제 생성)
+    onRefreshTopic(rowId);
   };
 
   const handleGoToArchive = () => {
@@ -111,7 +111,6 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                               id: index,
                               주제명: topic.title,
                               탐구_주제_요약: topic.summary,
-                              실현_가능성: topic.feasibility,
                             }))
                           : undefined
                       }
@@ -146,6 +145,11 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         }
                         onGoBack={handleGoToArchive}
                         onGenerateResearchMethod={(methods) => {
+                          // 버튼 클릭 즉시 탐구 방법 섹션 표시
+                          if (onShowResearchMethods) {
+                            onShowResearchMethods(row.id);
+                          }
+                          
                           if (methods && Array.isArray(methods)) {
                             // N8N에서 받은 탐구 방법 데이터를 직접 상태에 반영
                             if (onUpdateResearchMethods) {
@@ -158,69 +162,11 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                         }}
                       />
 
-                      {/* 탐구 방법 카드 - 탐구 방법이 있거나 로딩 중일 때만 표시 */}
-                      {(row.researchMethods &&
-                        row.researchMethods.length > 0) ||
-                      row.isLoadingMethods ? (
+                      {/* 탐구 방법 카드 - 탐구 방법 생성 버튼을 눌렀을 때만 표시 */}
+                      {row.showResearchMethods ? (
                         <ResearchMethodsCard
                           researchMethods={row.researchMethods || []}
                           isLoading={row.isLoadingMethods || false}
-                          currentTopic={row.selectedTopic || ""}
-                          onGenerateDetailedMethods={async (currentTopic) => {
-                            console.log(
-                              "더 자세한 탐구 방법 생성 요청:",
-                              currentTopic
-                            );
-                            
-                            // 이전 요청이 진행 중이면 취소
-                            if (abortControllerRef.current) {
-                              abortControllerRef.current.abort();
-                            }
-                            
-                            // 새로운 AbortController 생성
-                            abortControllerRef.current = new AbortController();
-                            
-                            try {
-                              const response = await n8nPollingClient.requestResearchMethods(
-                                {
-                                  topicName: currentTopic,
-                                  detailLevel: "very_detailed",
-                                  timestamp: new Date().toISOString(),
-                                  source: "detailed-research-methods",
-                                },
-                                abortControllerRef.current.signal
-                              );
-
-                              if (response.success && response.data) {
-                                console.log("더 자세한 N8N 응답:", response.data);
-
-                                // 이전 탐구 방법 제거하고 새로운 방법으로 교체
-                                if (
-                                  Array.isArray(response.data) &&
-                                  response.data.length > 0 &&
-                                  onUpdateResearchMethods
-                                ) {
-                                  onUpdateResearchMethods(row.id, response.data);
-                                } else if (
-                                  response.data &&
-                                  typeof response.data === "object" &&
-                                  onUpdateResearchMethods
-                                ) {
-                                  onUpdateResearchMethods(row.id, [response.data]);
-                                }
-                              } else {
-                                console.error(
-                                  "더 자세한 탐구 방법 생성 실패:",
-                                  response.error
-                                );
-                              }
-                            } catch (error) {
-                              console.error(
-                                "더 자세한 탐구 방법 요청 중 오류:",
-                                error
-                              );
-                            }
-                          }}
                         />
                       ) : null}
                     </>

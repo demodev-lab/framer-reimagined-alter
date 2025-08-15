@@ -2,19 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { RotateCcw, ChevronLeft, ChevronRight, ArrowLeft, Archive } from "lucide-react";
+import { RotateCcw, ChevronLeft, ChevronRight, Archive } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import StructuredResearchMethod from "@/components/StructuredResearchMethod";
 import React, { useState } from "react";
 
 interface TopicDetail {
   id: number;
   주제명: string;
   탐구_주제_요약?: string;
-  실현_가능성?: string;
 }
 
 interface TopicResultsCardProps {
@@ -107,16 +107,6 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
               </div>
             </div>
             
-            {/* 실현 가능성 섹션 */}
-            <div className="border-l-4 border-orange-500 pl-3">
-              <div className="font-bold text-base text-gray-800 mb-2 flex items-center gap-2">
-                <span className="text-orange-600">⚡</span>
-                실현 가능성
-              </div>
-              <div className="text-sm text-gray-700 bg-orange-50 p-3 rounded-md border border-orange-100">
-                {currentItem.실현_가능성 || '실현 가능성 정보가 없습니다.'}
-              </div>
-            </div>
           </div>
         </Button>
       );
@@ -137,32 +127,9 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   const carouselContent = (
     <div className="relative">
       {/* 컨트롤 바 */}
-      <div className="flex items-center gap-3 mb-4">
-        {/* 왼쪽 화살표 버튼 - 주제 목록으로 돌아가기 */}
-        {onBackToTopicList && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onBackToTopicList}
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-                aria-label="주제 목록으로 돌아가기"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>주제 목록으로 돌아가기</p>
-            </TooltipContent>
-          </Tooltip>
-        )}
-        
+      <div className="mb-4">
         {/* 메인 컨텐츠 */}
-        <div className="flex-1">
-          {renderCarouselContent()}
-        </div>
-        
+        {renderCarouselContent()}
       </div>
       
       {/* 탐구 방법 영역 */}
@@ -176,11 +143,9 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
               <div className="animate-pulse rounded-md bg-muted h-4 w-3/4"></div>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-4">
               {researchMethods.map((method, index) => (
-                <div key={index} className="text-sm text-gray-700 bg-white p-3 rounded border border-gray-200">
-                  {method}
-                </div>
+                <StructuredResearchMethod key={index} method={method} index={index} />
               ))}
             </div>
           )}

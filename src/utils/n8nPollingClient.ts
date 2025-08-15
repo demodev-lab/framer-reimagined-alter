@@ -305,11 +305,22 @@ export class N8NPollingClient {
     },
     signal?: AbortSignal
   ): Promise<N8NPollingResponse<unknown>> {
-    return this.requestWithPolling({
+    const response = await this.requestWithPolling({
       endpoint: "protocol",
       data,
       signal,
     });
+
+    // 연구 방법 응답에서도 실현 가능성 데이터 필터링
+    if (response.success && response.data) {
+      const filteredData = this.filterFeasibilityData(response.data);
+      return {
+        ...response,
+        data: filteredData,
+      };
+    }
+
+    return response;
   }
 
   // 탐구 주제 생성 전용 메서드
@@ -320,11 +331,58 @@ export class N8NPollingClient {
     },
     signal?: AbortSignal
   ): Promise<N8NPollingResponse<unknown>> {
-    return this.requestWithPolling({
+    const response = await this.requestWithPolling({
       endpoint: "topics",
       data,
       signal,
     });
+
+    // 탐구 주제 응답에서도 실현 가능성 데이터 필터링
+    if (response.success && response.data) {
+      const filteredData = this.filterFeasibilityData(response.data);
+      return {
+        ...response,
+        data: filteredData,
+      };
+    }
+
+    return response;
+  }
+
+  // 실현 가능성 데이터 필터링 메서드
+  private filterFeasibilityData(data: any): any {
+    if (typeof data === 'string') {
+      // 문자열에서 실현 가능성 관련 내용 제거
+      return data
+        .replace(/실현[\s]*가능성[\s]*[:：]?[\s]*[^\.]*\.?/gi, '')
+        .replace(/실현[\s]*가능성[\s]*정보[\s]*없습니다\.?/gi, '')
+        .replace(/\d+%[\s]*\([^)]*화학[^)]*\)/gi, '')
+        .replace(/^\s*\d+%[\s]*.*$/gm, '')
+        .replace(/\n\s*\n/g, '\n')
+        .trim();
+    }
+    
+    if (Array.isArray(data)) {
+      return data.map(item => this.filterFeasibilityData(item));
+    }
+    
+    if (data && typeof data === 'object') {
+      const filtered = { ...data };
+      // 실현 가능성 관련 키 제거
+      delete filtered['실현 가능성'];
+      delete filtered['실현_가능성'];
+      delete filtered['feasibility'];
+      delete filtered['실현가능성'];
+      
+      // 모든 값에 대해 재귀적으로 필터링
+      Object.keys(filtered).forEach(key => {
+        filtered[key] = this.filterFeasibilityData(filtered[key]);
+      });
+      
+      return filtered;
+    }
+    
+    return data;
   }
 
   // 응답에서 텍스트 추출하는 헬퍼 메서드

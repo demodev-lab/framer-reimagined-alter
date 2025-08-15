@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(pnpm run lint:*)",
-      "Bash(pnpm tsc:*)"
+      "Bash(pnpm tsc:*)",
+      "Bash(pnpm run:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
