@@ -272,6 +272,12 @@ export const useTopicManager = () => {
           const topicTitles = generatedTopics.map(topic => topic.title);
           console.log('🎨 UI에 표시할 주제 제목들:', topicTitles);
           
+          // 첫 번째 주제를 자동으로 선택하여 바로 topic_selected 단계로 이동
+          const firstTopic = topicTitles[0];
+          const firstTopicSummary = generatedTopics[0]?.summary || '';
+          console.log('🎯 자동 선택된 주제:', firstTopic);
+          console.log('🎯 자동 선택된 주제 개요:', firstTopicSummary);
+          
           setCarouselGroups(prevGroups => {
             const newGroups = prevGroups.map(group => ({
               ...group,
@@ -281,7 +287,10 @@ export const useTopicManager = () => {
                       ...row, 
                       isLoadingTopics: false, 
                       generatedTopics: topicTitles,
-                      stage: 'topics_generated',
+                      selectedTopic: firstTopic,
+                      selectedTopicSummary: firstTopicSummary,
+                      stage: 'topic_selected',
+                      showResearchMethods: false,
                       // 원본 데이터도 저장 (실현 가능성 등 추가 정보를 위해)
                       detailedTopics: generatedTopics
                     }
@@ -301,7 +310,7 @@ export const useTopicManager = () => {
                   ? { 
                       ...row, 
                       isLoadingTopics: false, 
-                      generatedTopics: ["주제를 생성할 수 없습니다. N8N 응답 데이터를 확인해주세요."], 
+                      generatedTopics: ["주제를 생성할 수 없습니다. 데이터를 확인해주세요."], 
                       stage: 'topics_generated' 
                     }
                   : row
@@ -336,7 +345,7 @@ export const useTopicManager = () => {
       let errorMessage = '주제 생성에 실패했습니다.';
       
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        errorMessage = 'CORS 오류: N8N 서버 설정을 확인해주세요.';
+        errorMessage = 'CORS 오류: 서버 설정을 확인해주세요.';
       } else if (error.name === 'AbortError') {
         errorMessage = '요청이 취소되었습니다.';
       }
@@ -390,7 +399,7 @@ export const useTopicManager = () => {
       prevGroups.map(group => ({
         ...group,
         topicRows: group.topicRows.map(row =>
-          row.id === rowId ? { ...row, ...inputs, isLoadingTopics: true, generatedTopics: [] } : row
+          row.id === rowId ? { ...row, ...inputs, isLoadingTopics: true, generatedTopics: [], stage: 'topic_selected', selectedTopic: null, selectedTopicSummary: null, showResearchMethods: false } : row
         )
       }))
     );
@@ -405,22 +414,10 @@ export const useTopicManager = () => {
       prevGroups.map(group => ({
         ...group,
         topicRows: group.topicRows.map(row =>
-          row.id === rowId ? { ...row, selectedTopic: topic, stage: 'topic_selected', isLoadingMethods: true, researchMethods: [] } : row
+          row.id === rowId ? { ...row, selectedTopic: topic, stage: 'topic_selected', isLoadingMethods: false, researchMethods: [], showResearchMethods: false } : row
         )
       }))
     );
-
-    setTimeout(() => {
-      const methods = generateMethods(topic);
-      setCarouselGroups(prevGroups => 
-        prevGroups.map(group => ({
-          ...group,
-          topicRows: group.topicRows.map(row =>
-            row.id === rowId ? { ...row, isLoadingMethods: false, researchMethods: methods } : row
-          )
-        }))
-      );
-    }, 1500);
   };
 
   const handleRefreshTopic = (rowId: number) => {
@@ -582,6 +579,27 @@ export const useTopicManager = () => {
     );
   };
 
+  const handleGoBackToInput = (rowId: number) => {
+    setCarouselGroups(prevGroups =>
+      prevGroups.map(group => ({
+        ...group,
+        topicRows: group.topicRows.map(row =>
+          row.id === rowId ? { 
+            ...row, 
+            stage: 'initial',
+            selectedTopic: null,
+            selectedTopicSummary: null,
+            generatedTopics: [],
+            researchMethods: [],
+            showResearchMethods: false,
+            isLoadingTopics: false,
+            isLoadingMethods: false
+          } : row
+        )
+      }))
+    );
+  };
+
   return {
     topicRows,
     carouselGroups,
@@ -601,5 +619,6 @@ export const useTopicManager = () => {
     handleTopicTypeChange,
     handleShowResearchMethods,
     handleFollowUpChange,
+    handleGoBackToInput,
   };
 };

@@ -114,7 +114,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
       return (
         <Button
           variant="outline"
-          className="justify-start text-left h-auto whitespace-normal py-2 w-full"
+          className="justify-start text-left h-auto whitespace-normal py-2 w-full hover:bg-blue-50 hover:border-blue-300 hover:text-blue-800"
           onClick={() => isSelectable && onSelectTopic(currentItem.주제명)}
           disabled={!isSelectable}
         >
@@ -224,8 +224,9 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden min-h-0">
         {isLoading ? (
-          <div className="flex items-center justify-center h-full">
-            <p>생성 중...</p>
+          <div className="flex flex-col items-center justify-center h-full gap-4">
+            <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+            <p>탐구 주제 생성 중</p>
           </div>
         ) : totalItems === 0 ? (
           <div className="flex items-center justify-center h-full">

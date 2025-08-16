@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { formatCareerSentence, parseFormattedText } from '@/utils/textFormatter';
 
 interface CareerSentenceSectionProps {
   selectedCareerSentence: string | null;
@@ -15,13 +16,17 @@ const CareerSentenceSection: React.FC<CareerSentenceSectionProps> = ({
 }) => {
   if (!selectedCareerSentence) return null;
 
+  // 진로 문장 자동 줄바꿈 처리
+  const formattedCareerSentence = formatCareerSentence(selectedCareerSentence);
+  const parsedCareerSentence = parseFormattedText(formattedCareerSentence);
+
   return (
     <div className="w-full max-w-4xl mx-auto mb-6">
       <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <p className="font-semibold text-center text-green-800 mb-1">진로 문장</p>
-            <p className="text-center text-green-700">{selectedCareerSentence}</p>
+            <p className="text-center text-green-700">{parsedCareerSentence}</p>
           </div>
           <Tooltip>
             <TooltipTrigger asChild>

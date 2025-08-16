@@ -47,7 +47,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-8 space-y-4">
               <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-              <p className="text-sm text-gray-600">N8N에서 탐구 방법을 생성하는 중...</p>
+              <p className="text-sm text-gray-600">탐구 방법 구성 중</p>
             </div>
           ) : isN8NData && parsedMethods.length > 0 ? (
             // N8N 구조화된 데이터 렌더링
@@ -56,7 +56,7 @@ const ResearchMethodsCard: React.FC<ResearchMethodsCardProps> = ({
                 <div key={methodIndex} className="space-y-4">
                   {parsedMethods.length > 1 && (
                     <div className="text-lg font-bold text-center border-b pb-2">
-                      탐구 방법 {methodIndex + 1}
+                      탐구 방법
                     </div>
                   )}
 

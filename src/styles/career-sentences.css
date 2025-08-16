@@ -1,0 +1,22 @@
+/* 진로 문장 컨테이너 스크롤 스타일 */
+.career-sentences-container {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.career-sentences-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.career-sentences-container::-webkit-scrollbar-track {
+  background: #f7fafc;
+}
+
+.career-sentences-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.career-sentences-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}

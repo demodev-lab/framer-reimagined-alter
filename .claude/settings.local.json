@@ -6,7 +6,13 @@
       "Bash(pnpm run:*)",
       "Bash(rg:*)",
       "Bash(grep:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(lsof:*)",
+      "Bash(kill:*)",
+      "Bash(find:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run build:dev:*)"
     ],
     "deny": []
   }

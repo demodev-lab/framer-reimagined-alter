@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 import ResearchMethodsCard from "@/components/ResearchMethodsCard";
 import { n8nPollingClient } from "@/utils/n8nPollingClient";
+import { toast } from "sonner";
 
 const TopicGenerator = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const TopicGenerator = () => {
   const [generatedDemoTopics, setGeneratedDemoTopics] = useState<string[]>([]);
   const [selectedDemoTopic, setSelectedDemoTopic] = useState<string>("");
   const [generatedDemoResearchMethods, setGeneratedDemoResearchMethods] = useState<unknown[]>([]);
+  const [selectedDemoCareerSentence, setSelectedDemoCareerSentence] = useState<string>("");
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleOpenYouTubePopup = (videoId: string, title: string) => {
@@ -59,19 +61,11 @@ const TopicGenerator = () => {
   const getDemoDataBySelection = () => {
     const careerData = {
       "의사": {
-        careerSentences: selectedDemoCareer === "의사" && generatedCareerSentences.length > 0 ? generatedCareerSentences : [
-          "AI 기반 의료 영상 분석 기술로 조기 진단이 어려운 췌장암의 미세 병변 판독 오류로 인한 치료 시기 지연 문제를 해결하는 의사",
-          "3D 바이오 프린팅 기반 인공 장기 재생 기술로 만성 장기 부전 환자의 장기 이식 대기 시간 장기화 및 면역 거부 반응으로 인한 생존율 저하 문제를 해결하는 의사",
-          "증강 현실(AR) 기반 수술 내비게이션 시스템으로 복잡한 신경외과 수술 중 발생하는 중요 신경 및 혈관 손상 위험 증가 문제를 해결하는 의사"
-        ],
+        careerSentences: selectedDemoCareer === "의사" && generatedCareerSentences.length > 0 ? [generatedCareerSentences[0]] : [],
         subjects: ["공통과학", "생명과학", "화학"]
       },
       "반도체 공학자": {
-        careerSentences: selectedDemoCareer === "반도체 공학자" && generatedCareerSentences.length > 0 ? generatedCareerSentences : [
-          "머신 비전 기반 딥러닝 이미지 분석 및 공정 피드백 시스템 개발로 반도체 웨이퍼 표면의 미세 이물질 및 패턴 결함으로 인한 수율 저하를 해결하는 반도체 연구원",
-          "압전 센서 기반 실시간 진동 모니터링 및 능동 제어 시스템 개발로 반도체 리소그래피 공정 중 발생하는 외부 미세 진동으로 인한 패턴 정밀도 저하를 해결하는 반도체 연구원",
-          "열전도성 복합 소재 기반 3D 프린팅 방열 구조 설계 및 열 유동 시뮬레이션 기술로 소형 전자기기 및 IoT 디바이스 내 반도체 칩의 전반적인 발열로 인한 성능 저하 및 작동 수명 단축을 해결하는 반도체 연구원"
-        ],
+        careerSentences: selectedDemoCareer === "반도체 공학자" && generatedCareerSentences.length > 0 ? [generatedCareerSentences[0]] : [],
         subjects: ["수학(상)", "물리1", "화학1"]
       }
     };
@@ -83,7 +77,7 @@ const TopicGenerator = () => {
       careerSentences: currentCareerData.careerSentences,
       subjects: currentCareerData.subjects,
       // 실제 N8N에서 생성된 주제만 사용 (데모 데이터 완전 제거)
-      selectedTopic: generatedDemoTopic || "탐구 주제 생성 중..."
+      selectedTopic: selectedDemoTopic || "탐구 주제 생성 중..."
     };
   };
 
@@ -180,9 +174,7 @@ const TopicGenerator = () => {
         "증강 현실(AR) 기반 수술 내비게이션 시스템으로 복잡한 신경외과 수술 중 발생하는 중요 신경 및 혈관 손상 위험 증가 문제를 해결하는 의사"
       ],
       "반도체 공학자": [
-        "머신 비전 기반 딥러닝 이미지 분석 및 공정 피드백 시스템 개발로 반도체 웨이퍼 표면의 미세 이물질 및 패턴 결함으로 인한 수율 저하를 해결하는 반도체 연구원",
-        "압전 센서 기반 실시간 진동 모니터링 및 능동 제어 시스템 개발로 반도체 리소그래피 공정 중 발생하는 외부 미세 진동으로 인한 패턴 정밀도 저하를 해결하는 반도체 연구원",
-        "열전도성 복합 소재 기반 3D 프린팅 방열 구조 설계 및 열 유동 시뮬레이션 기술로 소형 전자기기 및 IoT 디바이스 내 반도체 칩의 전반적인 발열로 인한 성능 저하 및 작동 수명 단축을 해결하는 반도체 연구원"
+        "최적화된 게이트 구동 회로 설계 및 시뮬레이션으로 전력 반도체 스위칭 시 발생하는 고주파 노이즈로 인한 시스템 불안정성을 해결하는 반도체 연구원"
       ]
     };
     
@@ -206,10 +198,13 @@ const TopicGenerator = () => {
       // 새로운 AbortController 생성
       abortControllerRef.current = new AbortController();
       
+      // 체험 모드에서 사용할 진로 문장 결정
+      const careerSentenceToUse = selectedDemoCareerSentence || demoData.careerSentences[0];
+      
       // 탐구 주제 생성을 위한 데이터 준비
       const topicData = {
-        sentence: selectedCareerSentence || demoData.careerSentences[0],
-        진로문장: selectedCareerSentence || demoData.careerSentences[0],
+        sentence: careerSentenceToUse,
+        진로문장: careerSentenceToUse,
         교과과목: selectedDemoSubject,
         교과개념: "", // 체험 모드에서는 빈 값
         주제유형: "보고서 주제",
@@ -384,7 +379,7 @@ const TopicGenerator = () => {
     try {
       setIsLoading(true);
       console.log('🚀 N8N을 통한 탐구 방법 생성 시작...', { 
-        generatedDemoTopic 
+        selectedDemoTopic 
       });
       
       // 이전 요청이 진행 중이면 취소
@@ -420,19 +415,19 @@ const TopicGenerator = () => {
       } else {
         console.error('❌ N8N 탐구 방법 생성 실패:', response.error);
         
-        // 실패 시 기본 탐구 방법 사용
-        const defaultMethod = getDefaultResearchMethod(selectedDemoTopic);
-        setGeneratedDemoResearchMethods([defaultMethod]);
-        setDemoTopicStage("research_methods");
+        // N8N 실패 시 사용자에게 알림 후 재시도 유도
+        toast.error("탐구 방법 생성에 실패했습니다. 다시 시도해주세요.");
         setIsLoading(false);
+        return;
       }
     } catch (error) {
       console.error('💥 탐구 방법 생성 중 오류:', error);
       
-      // 오류 시 기본 탐구 방법 사용
-      const defaultMethod = getDefaultResearchMethod(selectedDemoTopic);
-      setGeneratedDemoResearchMethods([defaultMethod]);
-      setDemoTopicStage("research_methods");
+      if (error.name === 'AbortError') {
+        toast.info("요청이 취소되었습니다.");
+      } else {
+        toast.error("연결에 문제가 있습니다. 탐구 방법 생성을 다시 눌러주세요.");
+      }
       setIsLoading(false);
     }
   };
@@ -523,6 +518,7 @@ const TopicGenerator = () => {
     if (isDemo) {
       // 진로가 변경되면 모든 생성된 데이터 초기화
       setGeneratedCareerSentences([]);
+      setSelectedDemoCareerSentence(""); // 체험 모드 진로 문장 초기화
       setDemoTopicStage("initial");
       setGeneratedDemoTopics([]);
       setSelectedDemoTopic("");
@@ -534,12 +530,12 @@ const TopicGenerator = () => {
     }
   }, [selectedDemoCareer]);
 
-  // 체험 모드일 때 진로 문장 설정
+  // 체험 모드일 때 진로 문장 기본값 설정 (사용자가 선택하지 않은 경우에만)
   useEffect(() => {
-    if (isDemo && demoStep >= 2 && selectedCareerSentence !== demoData.careerSentences[0]) {
-      setSelectedCareerSentence(demoData.careerSentences[0]);
+    if (isDemo && demoStep >= 2 && !selectedDemoCareerSentence && demoData.careerSentences.length > 0) {
+      setSelectedDemoCareerSentence(demoData.careerSentences[0]);
     }
-  }, [isDemo, demoStep, selectedDemoCareer]);
+  }, [isDemo, demoStep, selectedDemoCareer, selectedDemoCareerSentence]);
 
   return <div className="min-h-screen bg-background font-sans">
       <Header />
@@ -586,10 +582,10 @@ const TopicGenerator = () => {
             {/* YouTube 버튼들 - 중앙 정렬 및 동일한 너비 적용 */}
             {!isDemo && (
               <div className="flex justify-center items-center gap-4 mt-6">
-                <Button onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")} className="bg-black text-white hover:bg-gray-800 px-6 py-2 w-40">
+                <Button onClick={() => handleOpenYouTubePopup("z4HfvrPA_kI", "어떻게 사용하나요?")} className="bg-gray-900 text-white hover:bg-gray-800 px-4 py-2 rounded-md font-medium transition-colors duration-200 w-40">
                   어떻게 사용하나요?
                 </Button>
-                <Button onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")} className="bg-black text-white hover:bg-gray-800 px-6 py-2 w-40">
+                <Button onClick={() => handleOpenYouTubePopup("-Orv-jTXkSs", "학생부 준비 방법")} className="bg-gray-900 text-white hover:bg-gray-800 px-4 py-2 rounded-md font-medium transition-colors duration-200 w-40">
                   학생부 준비 방법
                 </Button>
               </div>
@@ -608,10 +604,10 @@ const TopicGenerator = () => {
                       {demoStep === 0 && "진로 문장을 생성 중입니다..."}
                       {demoStep === 2 && demoTopicStage === "initial" && "탐구 주제를 생성 중입니다..."}
                       {demoTopicStage === "topic_selected" && "탐구 방법을 생성 중입니다..."}
-                      {(demoStep === 1 || (demoStep === 2 && demoTopicStage !== "initial") || demoTopicStage === "topics_generated") && "AI가 생성 중입니다..."}
+                      {(demoStep === 1 || (demoStep === 2 && demoTopicStage !== "initial") || demoTopicStage === "topics_generated") && "내용을 생성 중입니다..."}
                     </h3>
                     <p className="text-gray-600">
-                      {demoStep === 0 && "N8N AI가 맞춤형 진로 문장을 만들고 있어요 🎯"}
+                      {demoStep === 0 && "맞춤형 진로 문장을 만들고 있어요 🎯"}
                       {demoStep === 2 && demoTopicStage === "initial" && "선택한 진로와 과목에 맞는 탐구 주제를 만들고 있어요 📚"}
                       {demoTopicStage === "topic_selected" && "탐구 주제에 맞는 구체적인 연구 방법을 만들고 있어요 🔬"}
                       {(demoStep === 1 || (demoStep === 2 && demoTopicStage !== "initial") || demoTopicStage === "topics_generated") && "잠시만 기다려주세요 ⏱️"}
@@ -634,20 +630,20 @@ const TopicGenerator = () => {
                         <div 
                           key={index}
                           onClick={() => setSelectedDemoCareer(career)}
-                          className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                          className={`p-4 rounded-lg border-2 cursor-pointer transition-all h-12 flex items-center justify-center ${
                             career === selectedDemoCareer 
                               ? 'border-purple-500 bg-purple-100' 
                               : 'border-gray-300 bg-white hover:border-purple-300'
                           }`}
                         >
-                          <span className="font-medium">{career}</span>
+                          <span className="font-medium text-lg">{career}</span>
                         </div>
                       ))}
                     </div>
                     
                     <Button 
                       onClick={generateCareerSentenceWithN8N}
-                      className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg"
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white h-12 text-lg"
                     >
                       💭 진로 문장 생성하기
                     </Button>
@@ -661,22 +657,22 @@ const TopicGenerator = () => {
                   <div className="space-y-6">
                     <div className="text-center">
                       <h3 className="text-2xl font-bold mb-2">✨ 진로 문장 선택</h3>
-                      <p className="text-gray-600">AI가 {selectedDemoCareer} 직업에 맞는 진로 문장을 생성했어요</p>
+                      <p className="text-gray-600">{selectedDemoCareer} 직업에 맞는 진로 문장을 생성했어요</p>
                     </div>
                     
                     <div className="space-y-4">
                       {demoData.careerSentences.map((sentence, index) => (
                         <div 
                           key={index}
-                          onClick={() => setSelectedCareerSentence(sentence)}
+                          onClick={() => setSelectedDemoCareerSentence(sentence)}
                           className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                            sentence === selectedCareerSentence || (selectedCareerSentence === "" && index === 0)
+                            sentence === selectedDemoCareerSentence || (selectedDemoCareerSentence === "" && index === 0)
                               ? 'border-purple-500 bg-purple-100' 
                               : 'border-gray-300 bg-white hover:border-purple-300'
                           }`}
                         >
                           <p className="font-medium text-sm leading-relaxed break-words">{sentence}</p>
-                          {index === 0 && selectedCareerSentence === "" && (
+                          {index === 0 && selectedDemoCareerSentence === "" && (
                             <p className="text-sm text-purple-600 mt-2">✨ 추천</p>
                           )}
                         </div>
@@ -685,8 +681,8 @@ const TopicGenerator = () => {
                     
                     <Button 
                       onClick={() => {
-                        if (!selectedCareerSentence) {
-                          setSelectedCareerSentence(demoData.careerSentences[0]);
+                        if (!selectedDemoCareerSentence) {
+                          setSelectedDemoCareerSentence(demoData.careerSentences[0]);
                         }
                         simulateLoading(2);
                       }}
@@ -709,7 +705,7 @@ const TopicGenerator = () => {
 
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border">
                       <p className="text-sm text-gray-600 mb-2">선택된 진로</p>
-                      <p className="font-medium text-sm leading-relaxed break-words">{selectedCareerSentence || demoData.careerSentences[0]}</p>
+                      <p className="font-medium text-sm leading-relaxed break-words">{selectedDemoCareerSentence || demoData.careerSentences[0]}</p>
                     </div>
                     
                     <div>
@@ -770,7 +766,7 @@ const TopicGenerator = () => {
                                   {selectedDemoSubject}
                                 </span>
                                 <span>•</span>
-                                <span>AI 생성</span>
+                                <span>자동 생성</span>
                               </div>
                             </div>
                             <div className="flex items-center text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -850,12 +846,7 @@ const TopicGenerator = () => {
               {/* 탐구 방법 완성 & 회원가입 유도 */}
               {!isLoading && demoTopicStage === "research_methods" && (
                 <div className="space-y-6">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold mb-2">🎉 탐구 방법 완성!</h3>
-                    <p className="text-gray-600">고등학생도 쉽게 따라할 수 있는 실용적인 방법이에요</p>
-                  </div>
-                  
-                  {/* 실제 N8N에서 생성된 탐구 방법 사용 */}
+                  {/* 실제 N8N에서 생성된 탐구 방법 사용 - 일반 모드와 동일한 방식 */}
                   <ResearchMethodsCard 
                     researchMethods={generatedDemoResearchMethods}
                     isLoading={false}
@@ -864,22 +855,8 @@ const TopicGenerator = () => {
                   <Card className="p-6 bg-gradient-to-r from-green-100 to-green-50 border-green-200">
                     <div className="text-center space-y-4">
                       <h4 className="text-2xl font-bold text-green-800">체험 완료! 🎉</h4>
-                      <p className="text-lg text-green-700">실제 서비스는 더욱 놀라워요!</p>
+                      <p className="text-lg text-green-700">실제 서비스에서 여러분의 맞춤 진로 문장과 심화 탐구 주제를 얻으실 수 있습니다.</p>
                       
-                      <div className="grid grid-cols-2 gap-4 text-left">
-                        <div className="space-y-2">
-                          <p className="text-sm text-green-600">🎯 <strong>10배 더 정교한 AI</strong></p>
-                          <p className="text-xs text-gray-600">3만편 논문 분석 데이터</p>
-                          <p className="text-sm text-green-600">📚 <strong>무제한 주제 생성</strong></p>
-                          <p className="text-xs text-gray-600">매월 100개까지 가능</p>
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm text-green-600">💾 <strong>보관함 & 관리</strong></p>
-                          <p className="text-xs text-gray-600">진행상황 체크 기능</p>
-                          <p className="text-sm text-green-600">🏆 <strong>대학별 맞춤 분석</strong></p>
-                          <p className="text-xs text-gray-600">입시 전문가 검증</p>
-                        </div>
-                      </div>
                       
                       <Button 
                         onClick={() => navigate('/login')}
@@ -894,7 +871,7 @@ const TopicGenerator = () => {
               )}
             </div>
           ) : (
-            <TopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} />
+            <TopicGeneratorSection {...topicManager} carouselGroups={carouselGroups} selectedCareerSentence={selectedCareerSentence} setSelectedCareerSentence={setSelectedCareerSentence} handleGoBackToInput={topicManager.handleGoBackToInput} />
           )}
         </section>
       </main>

@@ -31,7 +31,7 @@ import { n8nPollingClient } from "@/utils/n8nPollingClient";
 import { useRef } from "react";
 
 interface SelectedTopicCardProps {
-  topic: string;
+  topic: string | null;
   subject: string;
   concept: string;
   topicNumber: number;
@@ -44,7 +44,10 @@ interface SelectedTopicCardProps {
   onTopicTypeChange: (type: string) => void;
   researchMethods?: string[];
   onGoBack?: () => void;
+  onGoBackToInput?: () => void;
   onGenerateResearchMethod?: (methods?: string[]) => void;
+  topicSummary?: string | null;
+  isLoadingTopics?: boolean;
 }
 
 const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
@@ -61,7 +64,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   onTopicTypeChange,
   researchMethods = [],
   onGoBack,
+  onGoBackToInput,
   onGenerateResearchMethod,
+  topicSummary,
+  isLoadingTopics = false,
 }) => {
   const { saveTopic } = useArchive();
   const navigate = useNavigate();
@@ -82,8 +88,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
   };
 
   const handleGoBackToInput = () => {
-    if (onGoBack) {
-      onGoBack();
+    if (onGoBackToInput) {
+      onGoBackToInput();
     }
   };
 
@@ -92,24 +98,24 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
       <Card className="flex-shrink-0">
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-2">
+            <CardTitle>세특 주제</CardTitle>
+          </div>
+          <div className="flex gap-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={handleGoBackToInput}
-                  aria-label="주제 목록으로 돌아가기"
+                  aria-label="주제 입력으로 돌아가기"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>주제 목록으로 돌아가기</p>
+                <p>주제 입력으로 돌아가기</p>
               </TooltipContent>
             </Tooltip>
-            <CardTitle>세특 주제 {topicNumber}</CardTitle>
-          </div>
-          <div className="flex gap-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -143,57 +149,57 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                 <p>{isLocked ? "주제 잠금 해제" : "주제 잠금"}</p>
               </TooltipContent>
             </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={onDelete}
-                  aria-label="주제 삭제"
-                  disabled={isLocked}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>주제 삭제</p>
-              </TooltipContent>
-            </Tooltip>
           </div>
         </CardHeader>
         <CardContent className="overflow-hidden min-h-0 flex flex-col">
-          <div>
-            <p className="text-lg font-semibold">{topic}</p>
-            <div className="border-t my-4" />
-            <dl className="space-y-2">
-              {subject && (
+          {isLoadingTopics ? (
+            <div className="flex flex-col items-center justify-center h-full gap-4 py-12">
+              <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+              <p>탐구 주제 생성 중</p>
+            </div>
+          ) : (
+            <div>
+              <p className="text-lg font-semibold">{topic || '주제를 생성 중입니다...'}</p>
+              <div className="border-t my-4" />
+              <dl className="space-y-2">
+                {subject && (
+                  <div className="flex">
+                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">
+                      교과 과목
+                    </dt>
+                    <dd className="font-medium">{subject}</dd>
+                  </div>
+                )}
+                {concept && (
+                  <div className="flex">
+                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">
+                      교과 개념
+                    </dt>
+                    <dd className="font-medium">{concept}</dd>
+                  </div>
+                )}
                 <div className="flex">
                   <dt className="w-20 font-semibold text-muted-foreground shrink-0">
-                    교과 과목
+                    주제 유형
                   </dt>
-                  <dd className="font-medium">{subject}</dd>
+                  <dd className="font-medium">{topicType}</dd>
                 </div>
-              )}
-              {concept && (
-                <div className="flex">
-                  <dt className="w-20 font-semibold text-muted-foreground shrink-0">
-                    교과 개념
-                  </dt>
-                  <dd className="font-medium">{concept}</dd>
-                </div>
-              )}
-              <div className="flex">
-                <dt className="w-20 font-semibold text-muted-foreground shrink-0">
-                  주제 유형
-                </dt>
-                <dd className="font-medium">{topicType}</dd>
-              </div>
-            </dl>
-          </div>
+                {topicSummary && (
+                  <div className="flex">
+                    <dt className="w-20 font-semibold text-muted-foreground shrink-0">
+                      주제 개요
+                    </dt>
+                    <dd className="font-medium leading-relaxed">{topicSummary}</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          )}
 
           {/* 탐구 방법 생성 버튼과 보관함 저장 버튼 */}
-          <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
-            {onGenerateResearchMethod && (
+          {!isLoadingTopics && (
+            <div className="flex justify-center gap-2 mt-4 pt-4 border-t">
+              {onGenerateResearchMethod && (
               <Button
                 onClick={async () => {
                   // 버튼 클릭 즉시 탐구 방법 섹션 표시
@@ -201,7 +207,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                     onGenerateResearchMethod();
                   }
                   
-                  toast.info("N8N에서 탐구 방법을 생성 중입니다...");
+                  toast.info("탐구 방법을 생성 중입니다...");
                   
                   // 이전 요청이 진행 중이면 취소
                   if (abortControllerRef.current) {
@@ -235,7 +241,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                       ) {
                         // 실제 탐구 방법 데이터가 있을 때만 상태 업데이트
                         toast.success(
-                          `N8N에서 ${researchMethods.length}개의 탐구 방법을 받았습니다!`
+                          `${researchMethods.length}개의 탐구 방법을 생성했습니다!`
                         );
                         onGenerateResearchMethod(researchMethods);
                       } else if (
@@ -243,7 +249,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                         typeof researchMethods === "object"
                       ) {
                         // 단일 객체인 경우 배열로 감싸서 전달
-                        toast.success("N8N에서 탐구 방법을 받았습니다!");
+                        toast.success("탐구 방법을 생성했습니다!");
                         onGenerateResearchMethod([researchMethods]);
                       } else {
                         console.log(
@@ -257,7 +263,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                       
                       if (response.status === 'timeout') {
                         toast.error(
-                          "N8N 서버 응답 시간이 초과되었습니다. 탐구 방법 생성을 다시 눌러주세요."
+                          "서버 응답 시간이 초과되었습니다. 탐구 방법 생성을 다시 눌러주세요."
                         );
                       } else if (response.status === 'cancelled') {
                         toast.info("요청이 취소되었습니다.");
@@ -274,7 +280,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                       toast.info("요청이 취소되었습니다.");
                     } else {
                       toast.error(
-                        "N8N 연결에 문제가 있습니다. 탐구 방법 생성을 다시 눌러주세요."
+                        "연결에 문제가 있습니다. 탐구 방법 생성을 다시 눌러주세요."
                       );
                     }
                   }
@@ -297,7 +303,8 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
               보관함 저장
               <Archive className="h-4 w-4" />
             </Button>
-          </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

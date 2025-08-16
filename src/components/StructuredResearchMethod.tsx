@@ -97,7 +97,7 @@ const StructuredResearchMethod: React.FC<StructuredResearchMethodProps> = ({ met
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       <div className="bg-blue-50 px-4 py-3 border-b">
-        <h3 className="font-semibold text-lg text-gray-900">탐구 방법 {index + 1}</h3>
+        <h3 className="font-semibold text-lg text-gray-900">탐구 방법</h3>
         {parsedMethod.탐구주제 && (
           <p className="text-sm text-gray-700 mt-1">{parsedMethod.탐구주제}</p>
         )}

@@ -18,9 +18,6 @@ const Header = () => {
   }, {
     name: "보관함",
     href: "/archive"
-  }, {
-    name: "학생부 분석",
-    href: "/feedback"
   }];
   return <header className={cn("sticky top-0 z-50 w-full border-b transition-all duration-300", scrolled ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm" : "border-transparent")}>
       <div className="container relative flex h-14 max-w-screen-2xl items-center justify-between">
@@ -31,13 +28,13 @@ const Header = () => {
           </a>
         </div>
         <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 md:flex">
-          {navLinks.map(link => <a key={link.name} href={link.href} className="text-base font-medium text-foreground transition-colors">
+          {navLinks.map(link => <a key={link.name} href={link.href} className="text-base font-medium text-foreground hover:text-purple-600 transition-colors duration-200">
               {link.name}
             </a>)}
         </nav>
         <div className="flex items-center gap-1">
-          <Button asChild>
-            <a href="/login" className="whitespace-nowrap font-medium">
+          <Button asChild className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 px-4 py-2 rounded-md font-medium transition-colors duration-200">
+            <a href="/login" className="whitespace-nowrap">
               로그인
             </a>
           </Button>

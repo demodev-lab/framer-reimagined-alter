@@ -68,7 +68,7 @@ const CareerSentenceGeneratorSection: React.FC<CareerSentenceGeneratorSectionPro
       const updateLoadingMessage = () => {
         const messages = [
           "진로 문장을 생성하고 있습니다...",
-          "AI가 열심히 작업 중입니다...",
+          "문장을 생성하고 있습니다...",
           "조금만 더 기다려주세요...",
           "거의 완성되었습니다..."
         ];

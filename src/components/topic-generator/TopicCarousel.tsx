@@ -28,6 +28,7 @@ interface TopicCarouselProps {
   onUpdateResearchMethods?: (rowId: number, methods: string[]) => void;
   onTopicTypeChange: (rowId: number, type: string) => void;
   onShowResearchMethods?: (rowId: number) => void;
+  onGoBackToInput?: (rowId: number) => void;
   onCareerSentenceSelect: (sentence: string) => void;
   onAddFollowUpRow: (groupId: number) => void;
   onOpenCareerSentenceDialog: () => void;
@@ -47,6 +48,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
   onUpdateResearchMethods,
   onTopicTypeChange,
   onShowResearchMethods,
+  onGoBackToInput,
   onCareerSentenceSelect,
   onAddFollowUpRow,
   onOpenCareerSentenceDialog,
@@ -130,7 +132,7 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                   {row.stage === "topic_selected" && (
                     <>
                       <SelectedTopicCard
-                        topic={row.selectedTopic!}
+                        topic={row.selectedTopic}
                         subject={row.subject}
                         concept={row.concept}
                         topicNumber={index + 1}
@@ -144,6 +146,9 @@ const TopicCarousel: React.FC<TopicCarouselProps> = ({
                           onTopicTypeChange(row.id, type)
                         }
                         onGoBack={handleGoToArchive}
+                        onGoBackToInput={() => onGoBackToInput?.(row.id)}
+                        topicSummary={row.selectedTopicSummary}
+                        isLoadingTopics={row.isLoadingTopics}
                         onGenerateResearchMethod={(methods) => {
                           // 버튼 클릭 즉시 탐구 방법 섹션 표시
                           if (onShowResearchMethods) {

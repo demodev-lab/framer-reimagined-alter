@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { SubjectCombobox } from "@/components/ui/subject-combobox";
 import React, { useState } from "react";
 import {
   Select,
@@ -13,7 +14,6 @@ import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
@@ -186,10 +186,10 @@ const TopicGeneratorCard = ({
               >
                 교과 과목
               </Button>
-              <Input
+              <SubjectCombobox
                 placeholder="예) 화학, 생명과학"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+                onValueChange={setSubject}
                 onClick={() => {
                   if (!selectedCareerSentence && onOpenCareerSentenceDialog) {
                     onOpenCareerSentenceDialog();
@@ -251,7 +251,6 @@ const TopicGeneratorCard = ({
                 <SelectContent>
                   <SelectItem value="보고서 주제">보고서 주제</SelectItem>
                   <SelectItem value="실험 주제">실험 주제</SelectItem>
-                  <SelectItem value="탐구 주제">탐구 주제</SelectItem>
                   <SelectItem value="프로젝트 주제">프로젝트 주제</SelectItem>
                 </SelectContent>
               </Select>
@@ -260,40 +259,45 @@ const TopicGeneratorCard = ({
             {showFollowUp && (
               <div className="flex items-center gap-4">
                 <div className="w-[110px] flex-shrink-0">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Toggle
-                          pressed={isFollowUp}
-                          onPressedChange={(pressed) =>
-                            onFollowUpChange && onFollowUpChange(pressed)
-                          }
-                          variant="outline"
-                          size="sm"
-                          className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
-                          aria-label="후속 탐구"
-                        >
-                          후속 탐구
-                        </Toggle>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>후속 탐구를 만들고 싶다면, 클릭하세요</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Toggle
+                        pressed={isFollowUp}
+                        onPressedChange={(pressed) =>
+                          onFollowUpChange && onFollowUpChange(pressed)
+                        }
+                        variant="outline"
+                        size="sm"
+                        className="w-full whitespace-nowrap data-[state=on]:bg-foreground data-[state=on]:text-background"
+                        aria-label="후속 탐구"
+                      >
+                        후속 탐구
+                      </Toggle>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" align="start" className="max-w-64">
+                      <p>이전 탐구를 선택하시면,<br />이어지는 탐구 주제가 생성됩니다.</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
                 <div className="flex-1"></div>
               </div>
             )}
 
             <div className="flex items-center gap-4">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="w-[110px] flex-shrink-0"
-              >
-                후속 탐구
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="w-[110px] flex-shrink-0"
+                  >
+                    후속 탐구
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="start" className="max-w-64">
+                  <p>이전 탐구를 선택하시면,<br />이어지는 탐구 주제가 생성됩니다.</p>
+                </TooltipContent>
+              </Tooltip>
               <Select
                 onValueChange={setSelectedFollowUpTopic}
                 value={selectedFollowUpTopic}

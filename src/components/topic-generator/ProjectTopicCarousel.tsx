@@ -545,7 +545,7 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
       // 타임아웃 에러와 일반 네트워크 에러 구분
       if (error instanceof Error && error.name === "AbortError") {
         setRegenerateError(
-          "AI 주제 생성에 예상보다 오랜 시간이 걸리고 있습니다. 잠시 후 다시 시도해주세요. (AI 생성은 보통 10-20분 정도 소요됩니다)"
+          "주제 생성에 예상보다 오랜 시간이 걸리고 있습니다. 잠시 후 다시 시도해주세요. (생성은 보통 10-20분 정도 소요됩니다)"
         );
       } else if (
         error instanceof TypeError &&
@@ -581,21 +581,21 @@ const ProjectTopicCarousel: React.FC<ProjectTopicCarouselProps> = ({
   // 로딩 메시지 생성
   const getLoadingMessage = () => {
     if (timeElapsed < 60) {
-      return "AI가 맞춤형 프로젝트 주제를 생성 중입니다...";
+      return "맞춤형 프로젝트 주제를 생성 중입니다...";
     } else if (timeElapsed < 300) {
-      return `AI가 고품질 주제를 생성 중입니다... (${formatTime(
+      return `고품질 주제를 생성 중입니다... (${formatTime(
         timeElapsed
       )} 경과)`;
     } else if (timeElapsed < 600) {
-      return `AI가 심도있는 분석을 진행 중입니다... (${formatTime(
+      return `심도있는 분석을 진행 중입니다... (${formatTime(
         timeElapsed
       )} 경과)`;
     } else if (timeElapsed < 1200) {
-      return `AI가 상세한 가이드라인을 작성 중입니다... (${formatTime(
+      return `상세한 가이드라인을 작성 중입니다... (${formatTime(
         timeElapsed
       )} 경과)`;
     } else {
-      return `AI가 최적의 주제를 완성하고 있습니다... (${formatTime(
+      return `최적의 주제를 완성하고 있습니다... (${formatTime(
         timeElapsed
       )} 경과)`;
     }
