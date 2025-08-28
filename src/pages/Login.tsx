@@ -1,8 +1,10 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Logo = () => (
   <a
@@ -23,10 +25,46 @@ const Logo = () => (
 );
 
 const Login = () => {
+  const { signInWithKakao, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
   // 뒤로가기: 히스토리가 있으면 뒤로, 아니면 /
   const handleBack = () => {
     if (window.history.length > 1) window.history.back();
     else window.location.href = "/";
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithKakao();
+    } catch (error) {
+      console.error('Kakao login error:', error);
+      toast({
+        title: "로그인 실패",
+        description: "카카오 로그인 중 문제가 발생했습니다. 다시 시도해주세요.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithGoogle();
+    } catch (error) {
+      console.error('Google login error:', error);
+      toast({
+        title: "로그인 실패",
+        description: "구글 로그인 중 문제가 발생했습니다. 다시 시도해주세요.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,10 +112,8 @@ const Login = () => {
               "bg-[#FEE500] text-[#000000] hover:bg-[#FEE500]/90 active:bg-[#FEE500]/80",
               "transition-colors drop-shadow-[0_2px_8px_rgba(254,229,0,0.15)]"
             )}
-            onClick={() => {
-              // 카카오 로그인 로직 추가 예정
-              console.log('카카오 로그인 클릭');
-            }}
+            onClick={handleKakaoLogin}
+            disabled={loading}
             type="button"
           >
             <svg width="20" height="18" viewBox="0 0 20 18" fill="none">
@@ -113,10 +149,8 @@ const Login = () => {
               "bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100",
               "transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
             )}
-            onClick={() => {
-              // 구글 로그인 로직 추가 예정
-              console.log('구글 로그인 클릭');
-            }}
+            onClick={handleGoogleLogin}
+            disabled={loading}
             type="button"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

@@ -19,7 +19,8 @@ const Archive = () => {
     archivedTopics,
     updateTopicStatus,
     updateTopicPriority,
-    deleteTopic
+    deleteTopic,
+    loading
   } = useArchive();
   const [sortOrder, setSortOrder] = useState<string>('date');
   const [isRegeneratingMethods, setIsRegeneratingMethods] = useState<Record<string, boolean>>({});
@@ -28,7 +29,7 @@ const Archive = () => {
     if (sortOrder === 'date') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     } else if (sortOrder === 'alphabetical') {
-      return a.title.localeCompare(b.title, 'ko');
+      return a.topic.localeCompare(b.topic, 'ko');
     }
     return 0;
   });
@@ -43,8 +44,6 @@ const Archive = () => {
         return 'default';
       case 'Low':
         return 'secondary';
-      case 'None':
-        return 'outline';
       default:
         return 'outline';
     }
@@ -146,7 +145,8 @@ const Archive = () => {
     await handleGenerateResearchMethods(topicId, "very_detailed");
   };
   const getTopicResearchMethods = (topicId: string) => {
-    return topicResearchMethods[topicId] || [];
+    const topic = archivedTopics.find(t => t.id === topicId);
+    return topic?.researchMethods || topicResearchMethods[topicId] || [];
   };
   return <div className="min-h-screen bg-background">
       <Header />
@@ -179,16 +179,27 @@ const Archive = () => {
           </DropdownMenu>
         </div>
 
-        {sortedTopics.length === 0 ? <div className="text-center py-12">
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-flex items-center gap-2">
+              <div className="w-6 h-6 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+              <p className="text-muted-foreground">주제를 불러오는 중...</p>
+            </div>
+          </div>
+        ) : sortedTopics.length === 0 ? (
+          <div className="text-center py-12">
             <p className="text-muted-foreground">저장된 주제가 없습니다.</p>
-          </div> : <div className="bg-card rounded-lg border">
+          </div>
+        ) : (
+          <div className="bg-card rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px] text-center">No.</TableHead>
                   <TableHead className="text-center">Title</TableHead>
                   <TableHead className="w-[120px] text-center">과목</TableHead>
-                  <TableHead className="w-[120px] text-center">주제 유형</TableHead>
+                  <TableHead className="w-[120px] text-center">상태</TableHead>
+                  <TableHead className="w-[120px] text-center">우선순위</TableHead>
                   <TableHead className="text-center">탐구 방법</TableHead>
                   <TableHead className="text-center">
               </TableHead>
@@ -199,9 +210,9 @@ const Archive = () => {
                     <TableCell className="font-medium text-center">{index + 1}</TableCell>
                     <TableCell className="text-center">
                       <div className="space-y-1">
-                        <div className="font-medium">{topic.title}</div>
+                        <div className="font-medium">{topic.topic}</div>
                         <div className="flex justify-center text-sm text-muted-foreground">
-                          <span>교과 개념 : {topic.concept || '-'}</span>
+                          <span>생성일: {new Date(topic.createdAt).toLocaleDateString('ko-KR')}</span>
                         </div>
                       </div>
                     </TableCell>
@@ -211,9 +222,53 @@ const Archive = () => {
                         </Badge> : <span className="text-xs text-muted-foreground">-</span>}
                     </TableCell>
                     <TableCell className="text-center">
-                      <Badge className={`text-xs ${getTopicTypeColor(topic.topicType)}`}>
-                        {topic.topicType}
-                      </Badge>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="gap-1">
+                            <Badge 
+                              variant={
+                                topic.status === 'Done' ? 'default' :
+                                topic.status === 'In Progress' ? 'secondary' : 'outline'
+                              }
+                              className="text-xs"
+                            >
+                              {topic.status === 'Todo' ? '할 일' :
+                               topic.status === 'In Progress' ? '진행 중' : '완료'}
+                            </Badge>
+                            <ChevronDown className="h-3 w-3" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuRadioGroup value={topic.status} onValueChange={(value) => updateTopicStatus(topic.id, value as ArchivedTopic['status'])}>
+                            <DropdownMenuRadioItem value="Todo">할 일</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="In Progress">진행 중</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="Done">완료</DropdownMenuRadioItem>
+                          </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="gap-1">
+                            <Badge 
+                              variant={getPriorityBadgeVariant(topic.priority)}
+                              className="text-xs"
+                            >
+                              {topic.priority === 'High' ? '높음' :
+                               topic.priority === 'Medium' ? '보통' : '낮음'}
+                            </Badge>
+                            <ChevronDown className="h-3 w-3" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuRadioGroup value={topic.priority} onValueChange={(value) => updateTopicPriority(topic.id, value as ArchivedTopic['priority'])}>
+                            <DropdownMenuRadioItem value="High">높음</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="Medium">보통</DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="Low">낮음</DropdownMenuRadioItem>
+                          </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                     <TableCell className="text-center">
                       <Dialog>
@@ -228,7 +283,7 @@ const Archive = () => {
                           <DialogHeader className="text-center">
                             <DialogTitle>탐구 방법</DialogTitle>
                             <DialogDescription>
-                              {topic.title}에 대한 탐구 방법입니다.
+                              {topic.topic}에 대한 탐구 방법입니다.
                             </DialogDescription>
                           </DialogHeader>
                           
@@ -306,7 +361,8 @@ const Archive = () => {
                   </TableRow>)}
               </TableBody>
             </Table>
-          </div>}
+          </div>
+        )}
       </main>
     </div>;
 };
