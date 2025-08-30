@@ -3,6 +3,8 @@ import { TopicRow } from '@/types/index';
 import { toast } from 'sonner';
 import { useCareerSentence } from '@/contexts/CareerSentenceContext';
 import { n8nPollingClient } from '@/utils/n8nPollingClient';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface CarouselGroup {
   id: number;
@@ -14,7 +16,10 @@ const TOPIC_MANAGER_STORAGE_KEY = 'topic_manager_state';
 
 export const useTopicManager = () => {
   const { selectedCareerSentence, setSelectedCareerSentence } = useCareerSentence();
+  const { user } = useAuth();
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [carouselGroups, setCarouselGroups] = useState<CarouselGroup[]>([
     {
       id: 1,
@@ -38,34 +43,193 @@ export const useTopicManager = () => {
   const [lockedTopics, setLockedTopics] = useState<string[]>([]);
   const [followUpStates, setFollowUpStates] = useState<Record<number, boolean>>({ 1: false });
 
-  // localStorage에서 상태 로드 (진로 문장 제외)
-  useEffect(() => {
+  // Supabase에서 사용자별 세션 로드
+  const loadSessionFromSupabase = async () => {
+    if (!supabase || !user) {
+      console.log('🔍 Supabase 또는 사용자 없음 - localStorage 사용');
+      // 로그인하지 않은 경우 localStorage 사용
+      try {
+        const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
+        if (savedState) {
+          const parsed = JSON.parse(savedState);
+          setCarouselGroups(parsed.carouselGroups);
+          setLockedTopics(parsed.lockedTopics);
+          setFollowUpStates(parsed.followUpStates);
+        }
+      } catch (error) {
+        console.error('Failed to load from localStorage:', error);
+      }
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      console.log('🔍 사용자별 topic_sessions 로드 중...', user.id);
+      
+      // 사용자의 가장 최근 세션 조회
+      const { data, error } = await supabase
+        .from('topic_sessions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== 'PGRST116' && error.code !== '42P01') { // PGRST116은 no rows returned, 42P01은 table does not exist
+        console.error('Failed to load topic session:', error);
+        // 테이블이 없는 경우 localStorage 사용
+        if (error.message?.includes('topic_sessions') || error.code === '42P01') {
+          console.log('⚠️ topic_sessions 테이블이 존재하지 않습니다. localStorage를 사용합니다.');
+          const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
+          if (savedState) {
+            const parsed = JSON.parse(savedState);
+            setCarouselGroups(parsed.carouselGroups);
+            setLockedTopics(parsed.lockedTopics);
+            setFollowUpStates(parsed.followUpStates);
+          }
+          setIsLoading(false);
+          return;
+        }
+        throw error;
+      }
+
+      if (data) {
+        console.log('✅ 기존 세션 로드:', data);
+        setSessionId(data.id);
+        setCarouselGroups(data.carousel_groups);
+        setLockedTopics(data.locked_topics);
+        setFollowUpStates(data.follow_up_states);
+      } else {
+        // 세션이 없으면 새로 생성
+        console.log('📝 새 세션 생성 중...');
+        const { data: newSession, error: createError } = await supabase
+          .from('topic_sessions')
+          .insert({
+            user_id: user.id,
+            carousel_groups: carouselGroups,
+            locked_topics: lockedTopics,
+            follow_up_states: followUpStates
+          })
+          .select()
+          .single();
+
+        if (createError) throw createError;
+
+        console.log('✅ 새 세션 생성됨:', newSession);
+        setSessionId(newSession.id);
+      }
+
+      // localStorage에서 마이그레이션 (한 번만)
+      await migrateFromLocalStorage();
+    } catch (error) {
+      console.error('Failed to load/create topic session:', error);
+      toast.error('세션을 불러오는 데 실패했습니다.');
+      
+      // 실패 시 localStorage 폴백
+      try {
+        const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
+        if (savedState) {
+          const parsed = JSON.parse(savedState);
+          setCarouselGroups(parsed.carouselGroups);
+          setLockedTopics(parsed.lockedTopics);
+          setFollowUpStates(parsed.followUpStates);
+        }
+      } catch (localError) {
+        console.error('Failed to load from localStorage:', localError);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // localStorage에서 Supabase로 마이그레이션
+  const migrateFromLocalStorage = async () => {
+    if (!user || !sessionId) return;
+
+    const migrationKey = `topic_migrated_${user.id}`;
+    if (localStorage.getItem(migrationKey)) {
+      console.log('✅ 이미 마이그레이션 완료됨');
+      return;
+    }
+
     try {
       const savedState = localStorage.getItem(TOPIC_MANAGER_STORAGE_KEY);
-      if (savedState) {
-        const parsed = JSON.parse(savedState);
-        setCarouselGroups(parsed.carouselGroups);
-        setLockedTopics(parsed.lockedTopics);
-        setFollowUpStates(parsed.followUpStates);
-      }
-    } catch (error) {
-      console.error('Failed to load topic manager state from localStorage:', error);
-    }
-  }, []);
+      if (!savedState) return;
 
-  // 상태가 변경될 때마다 localStorage에 저장 (진로 문장 제외)
-  useEffect(() => {
-    try {
-      const stateToSave = {
-        carouselGroups,
-        lockedTopics,
-        followUpStates
-      };
-      localStorage.setItem(TOPIC_MANAGER_STORAGE_KEY, JSON.stringify(stateToSave));
+      const parsed = JSON.parse(savedState);
+      if (!parsed.carouselGroups || parsed.carouselGroups.length === 0) return;
+
+      console.log('🔄 localStorage에서 마이그레이션 중...');
+
+      // 기존 세션 업데이트
+      const { error } = await supabase
+        .from('topic_sessions')
+        .update({
+          carousel_groups: parsed.carouselGroups,
+          locked_topics: parsed.lockedTopics || [],
+          follow_up_states: parsed.followUpStates || {}
+        })
+        .eq('id', sessionId);
+
+      if (error) throw error;
+
+      // 마이그레이션 완료 표시
+      localStorage.setItem(migrationKey, 'true');
+      toast.success('기존 데이터가 동기화되었습니다.');
     } catch (error) {
-      console.error('Failed to save topic manager state to localStorage:', error);
+      console.error('Failed to migrate from localStorage:', error);
     }
-  }, [carouselGroups, lockedTopics, followUpStates]);
+  };
+
+  // 사용자 변경 시 세션 다시 로드
+  useEffect(() => {
+    loadSessionFromSupabase();
+  }, [user]);
+
+  // Supabase에 상태 저장 (디바운스 적용)
+  const saveToSupabaseRef = useRef<NodeJS.Timeout>();
+  
+  useEffect(() => {
+    if (!supabase || !user || !sessionId || isLoading) return;
+
+    // 디바운스: 1초 후 저장
+    clearTimeout(saveToSupabaseRef.current);
+    saveToSupabaseRef.current = setTimeout(async () => {
+      try {
+        console.log('💾 Supabase에 세션 저장 중...');
+        const { error } = await supabase
+          .from('topic_sessions')
+          .update({
+            carousel_groups: carouselGroups,
+            locked_topics: lockedTopics,
+            follow_up_states: followUpStates,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', sessionId);
+
+        if (error) throw error;
+        console.log('✅ 세션 저장 완료');
+      } catch (error) {
+        console.error('Failed to save to Supabase:', error);
+        // 실패 시 localStorage에 백업
+        try {
+          const stateToSave = {
+            carouselGroups,
+            lockedTopics,
+            followUpStates
+          };
+          localStorage.setItem(TOPIC_MANAGER_STORAGE_KEY, JSON.stringify(stateToSave));
+        } catch (localError) {
+          console.error('Failed to save to localStorage:', localError);
+        }
+      }
+    }, 1000);
+
+    // 클린업
+    return () => {
+      clearTimeout(saveToSupabaseRef.current);
+    };
+  }, [carouselGroups, lockedTopics, followUpStates, sessionId, user, isLoading]);
 
   // Get all topic rows flattened for compatibility
   const topicRows = carouselGroups.flatMap(group => group.topicRows);
@@ -600,6 +764,75 @@ export const useTopicManager = () => {
     );
   };
 
+  // 디버깅용 함수들
+  const clearTopicSession = async () => {
+    if (!supabase || !user || !sessionId) {
+      console.log('❌ 세션 클리어 실패: 로그인 필요');
+      toast.error('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('topic_sessions')
+        .delete()
+        .eq('id', sessionId);
+
+      if (error) throw error;
+
+      // 로컬 상태 초기화
+      setCarouselGroups([{
+        id: 1,
+        topicRows: [{
+          id: 1,
+          stage: 'initial',
+          subject: '',
+          concept: '',
+          request: '',
+          generatedTopics: [],
+          isLoadingTopics: false,
+          selectedTopic: null,
+          researchMethods: [],
+          isLoadingMethods: false,
+          showResearchMethods: false,
+          isLocked: false,
+          topicType: '보고서 주제',
+        }]
+      }]);
+      setLockedTopics([]);
+      setFollowUpStates({ 1: false });
+      setSessionId(null);
+
+      // localStorage도 클리어
+      localStorage.removeItem(TOPIC_MANAGER_STORAGE_KEY);
+      
+      toast.success('세션이 초기화되었습니다.');
+      
+      // 새 세션 생성
+      await loadSessionFromSupabase();
+    } catch (error) {
+      console.error('Failed to clear session:', error);
+      toast.error('세션 초기화에 실패했습니다.');
+    }
+  };
+
+  const debugSessionInfo = () => {
+    console.log('=== Topic Manager Debug Info ===');
+    console.log('👤 User ID:', user?.id);
+    console.log('🆔 Session ID:', sessionId);
+    console.log('📊 Carousel Groups:', carouselGroups);
+    console.log('🔒 Locked Topics:', lockedTopics);
+    console.log('🔄 Follow-up States:', followUpStates);
+    console.log('⏳ Loading:', isLoading);
+    console.log('================================');
+  };
+
+  // 개발용: 전역 함수로 노출
+  if (typeof window !== 'undefined') {
+    (window as any).clearTopicSession = clearTopicSession;
+    (window as any).debugSessionInfo = debugSessionInfo;
+  }
+
   return {
     topicRows,
     carouselGroups,
@@ -620,5 +853,6 @@ export const useTopicManager = () => {
     handleShowResearchMethods,
     handleFollowUpChange,
     handleGoBackToInput,
+    isLoading,
   };
 };
