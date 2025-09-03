@@ -224,7 +224,7 @@ const StructuredResearchMethod: React.FC<StructuredResearchMethodProps> = ({ met
             <SectionHeader icon={BarChart} title="데이터 분석 및 결과 도출" sectionKey="analysis" />
             <CollapsibleContent className="px-4 pb-3">
               <div className="space-y-4">
-                {(parsedMethod.데이터분석및결과도출?.['분석 방법'] || parsedMethod.데이터분석및결과도출?.[분석방법]) && (
+                {(parsedMethod.데이터분석및결과도출?.['분석 방법'] || parsedMethod.데이터분석및결과도출?.['분석 방법']) && (
                   <div>
                     <h4 className="font-medium text-gray-800 mb-2">분석 방법</h4>
                     <ul className="space-y-2">

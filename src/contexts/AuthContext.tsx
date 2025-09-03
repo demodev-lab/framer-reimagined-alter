@@ -24,17 +24,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
+    // 초기 세션 확인
+    const initializeAuth = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          console.error('Error getting session:', error)
+        }
+        
+        setSession(session)
+        setUser(session?.user ?? null)
+        setLoading(false)
+        
+        // 세션이 있으면 사용자 정보 로그
+        if (session?.user) {
+          console.log('User authenticated:', {
+            id: session.user.id,
+            email: session.user.email,
+            provider: session.user.app_metadata?.provider,
+            created_at: session.user.created_at
+          })
+        }
+      } catch (err) {
+        console.error('Auth initialization error:', err)
+        setLoading(false)
+      }
+    }
 
+    initializeAuth()
+
+    // 인증 상태 변경 리스너
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event: any, session: Session | null) => {
+      console.log('Auth state changed:', event)
       setSession(session)
       setUser(session?.user ?? null)
+      
+      // 로그인 성공 시 사용자 정보 로그
+      if (event === 'SIGNED_IN' && session?.user) {
+        console.log('User signed in:', {
+          id: session.user.id,
+          email: session.user.email,
+          provider: session.user.app_metadata?.provider
+        })
+      }
     })
 
     return () => subscription.unsubscribe()

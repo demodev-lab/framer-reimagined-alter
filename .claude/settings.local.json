@@ -24,5 +24,10 @@
       "mcp__supabase__search_docs"
     ],
     "deny": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "playwright",
+    "context7",
+    "supabase"
+  ]
 }

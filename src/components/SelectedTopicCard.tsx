@@ -75,11 +75,10 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
 
   const handleArchiveSave = () => {
     saveTopic({
-      title: topic,
+      topic: topic,  // ArchivedTopic 타입에 맞게 수정
       subject,
-      concept,
-      topicType,
       researchMethods,
+      isLocked: false,
     });
   };
 
@@ -231,7 +230,7 @@ const SelectedTopicCard: React.FC<SelectedTopicCardProps> = ({
                       console.log("N8N 응답:", response.data);
 
                       // N8N 응답 데이터를 직접 전달 (원본 객체 그대로)
-                      const researchMethods = response.data;
+                      const researchMethods: any = response.data;
 
                       console.log("파싱된 탐구 방법들:", researchMethods);
 

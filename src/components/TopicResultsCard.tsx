@@ -14,7 +14,7 @@ import React, { useState } from "react";
 interface TopicDetail {
   id: number;
   주제명: string;
-  탐구_주제_요약?: string;
+  탐구주제요약?: string;
 }
 
 interface TopicResultsCardProps {
@@ -55,7 +55,9 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   
   // 캐러셀에 표시할 데이터 결정
-  const carouselData = showDetailedView && detailedTopics ? detailedTopics : topics.map((topic, index) => ({ id: index, 주제명: topic }));
+  const carouselData: TopicDetail[] = showDetailedView && detailedTopics 
+    ? detailedTopics 
+    : topics.map((topic, index) => ({ id: index, 주제명: topic, 탐구주제요약: undefined }));
   const totalItems = carouselData.length;
   
   // 네비게이션 핸들러
@@ -103,7 +105,7 @@ const TopicResultsCard: React.FC<TopicResultsCardProps> = ({
                 탐구 주제 요약
               </div>
               <div className="text-sm text-gray-700 bg-green-50 p-3 rounded-md border border-green-100 leading-relaxed">
-                {currentItem.탐구_주제_요약 || '요약 정보가 없습니다.'}
+                {currentItem.탐구주제요약 || '요약 정보가 없습니다.'}
               </div>
             </div>
             

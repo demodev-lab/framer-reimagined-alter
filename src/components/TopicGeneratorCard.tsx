@@ -315,7 +315,7 @@ const TopicGeneratorCard = ({
                   {archivedTopics.length > 0 &&
                     archivedTopics.map((topic) => (
                       <SelectItem key={topic.id} value={topic.id}>
-                        {topic.title}
+                        {topic.topic}
                       </SelectItem>
                     ))}
                 </SelectContent>

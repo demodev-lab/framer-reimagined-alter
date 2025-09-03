@@ -4,6 +4,23 @@ import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
+// Helper function to map subject/type to valid topic_type values
+const mapToValidTopicType = (subject?: string): 'basic' | 'advanced' | 'research' | 'project' => {
+  // Default to 'research' if no subject provided
+  if (!subject) return 'research';
+  
+  // Map based on keywords or patterns in the subject
+  const lowerSubject = subject.toLowerCase();
+  
+  // You can customize this mapping based on your needs
+  if (lowerSubject.includes('기초') || lowerSubject.includes('basic')) return 'basic';
+  if (lowerSubject.includes('심화') || lowerSubject.includes('advanced')) return 'advanced';
+  if (lowerSubject.includes('프로젝트') || lowerSubject.includes('project')) return 'project';
+  
+  // Default to 'research' for general subjects
+  return 'research';
+};
+
 interface ArchiveContextType {
   archivedTopics: ArchivedTopic[];
   saveTopic: (topic: Omit<ArchivedTopic, 'id' | 'createdAt' | 'status' | 'priority'>) => Promise<void>;
@@ -140,7 +157,7 @@ export const ArchiveProvider: React.FC<ArchiveProviderProps> = ({ children }) =>
           .insert({
             user_id: user.id,
             title: localTopic.topic,
-            topic_type: localTopic.subject || 'research',
+            topic_type: mapToValidTopicType(localTopic.subject),
             status: localTopic.status || 'Todo',
             priority: localTopic.priority || 'Medium',
             is_locked: localTopic.isLocked || false,
@@ -247,25 +264,38 @@ export const ArchiveProvider: React.FC<ArchiveProviderProps> = ({ children }) =>
 
   // 새 topic 저장
   const saveTopic = async (topic: Omit<ArchivedTopic, 'id' | 'createdAt' | 'status' | 'priority'>) => {
-    if (!supabase || !user) {
+    if (!supabase) {
+      toast.error('Supabase 설정이 올바르지 않습니다.');
+      return;
+    }
+    
+    if (!user) {
       toast.error('로그인이 필요합니다.');
+      return;
+    }
+    
+    // Verify session is valid
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error('세션이 만료되었습니다. 다시 로그인해주세요.');
       return;
     }
 
     try {
       console.log('💾 저장할 topic 데이터:', topic);
       console.log('👤 현재 사용자:', user.id);
+      console.log('📌 subject 값:', topic.subject);
+      console.log('🏷️ 매핑된 topic_type:', mapToValidTopicType(topic.subject));
 
       // topics 테이블에 저장
       const insertData = {
         user_id: user.id,
-        title: topic.topic,
-        topic_type: topic.subject || 'research',
+        title: topic.topic,  // ArchivedTopic의 topic 필드 사용
+        topic_type: mapToValidTopicType(topic.subject),
         status: 'Todo',
         priority: 'Medium',
-        is_locked: topic.isLocked || false,
-        concept_id: null, // 명시적으로 null 설정
-        sentence_id: null // 명시적으로 null 설정
+        is_locked: topic.isLocked || false
+        // concept_id, sentence_id는 제거 (DB에서 NOT NULL이면 사용 안함)
       };
 
       console.log('📝 Supabase에 삽입할 데이터:', insertData);
