@@ -2,6 +2,10 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { 
+  saveSentence, 
+  getLatestSentence
+} from '@/lib/sentences';
 
 interface CareerSentenceContextType {
   selectedCareerSentence: string | null;
@@ -45,25 +49,10 @@ export const CareerSentenceProvider: React.FC<CareerSentenceProviderProps> = ({ 
 
     try {
       // 사용자의 가장 최근 진로 문장 조회
-      const { data, error } = await supabase
-        .from('sentences')
-        .select('content, job, requirement')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(1);
-
-      console.log('🔍 Supabase sentences 쿼리 결과:', { data, error });
-
-      if (error) {
-        console.error('Error loading career sentence:', error);
-        // 에러 시 localStorage 폴백
-        const savedCareerSentence = localStorage.getItem(CAREER_SENTENCE_STORAGE_KEY);
-        if (savedCareerSentence) {
-          setSelectedCareerSentenceState(savedCareerSentence);
-        }
-      } else if (data && data.length > 0) {
-        const sentence = data[0];
-        const fullSentence = `${sentence.job}${sentence.requirement ? ` ${sentence.requirement}` : ''}에 관심이 있어서, ${sentence.content}`;
+      const latestSentence = await getLatestSentence(user.id);
+      
+      if (latestSentence) {
+        const fullSentence = `${latestSentence.job}${latestSentence.requirement ? ` ${latestSentence.requirement}` : ''}에 관심이 있어서, ${latestSentence.content}`;
         console.log('✅ 로드된 진로 문장:', fullSentence);
         setSelectedCareerSentenceState(fullSentence);
       } else {
@@ -97,6 +86,7 @@ export const CareerSentenceProvider: React.FC<CareerSentenceProviderProps> = ({ 
     loadCareerSentence();
   }, [user]);
 
+
   // 진로 문장 저장
   const saveCareerSentenceToSupabase = async (sentence: string) => {
     if (!supabase || !user) return false;
@@ -116,20 +106,7 @@ export const CareerSentenceProvider: React.FC<CareerSentenceProviderProps> = ({ 
         content = match[3];
       }
 
-      const { error } = await supabase
-        .from('sentences')
-        .insert({
-          user_id: user.id,
-          content: content,
-          job: job,
-          requirement: requirement
-        });
-
-      if (error) {
-        console.error('Failed to save career sentence to Supabase:', error);
-        return false;
-      }
-
+      await saveSentence(user.id, content, job, requirement);
       console.log('✅ 진로 문장 Supabase에 저장 성공');
       return true;
     } catch (error) {
@@ -163,6 +140,7 @@ export const CareerSentenceProvider: React.FC<CareerSentenceProviderProps> = ({ 
       console.error('Failed to save career sentence:', error);
     }
   };
+
 
   // 디버깅용 함수
   const clearCareerSentenceStorage = () => {
