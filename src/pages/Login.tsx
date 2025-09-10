@@ -122,26 +122,6 @@ const Login = () => {
             <span className="tracking-tight">카카오로 계속하기</span>
           </Button>
 
-          {/* 네이버 로그인 버튼 */}
-          <Button
-            className={cn(
-              "w-full h-11 font-semibold text-base gap-2 rounded-xl shadow-sm border-0",
-              "bg-[#03C75A] text-white hover:bg-[#03C75A]/90 active:bg-[#03C75A]/80",
-              "transition-colors drop-shadow-[0_2px_8px_rgba(3,199,90,0.15)]"
-            )}
-            onClick={() => {
-              // 네이버 로그인 로직 추가 예정
-              console.log('네이버 로그인 클릭');
-            }}
-            type="button"
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M13.6 0H6.4v7.5L10.7 12V20H18V12.5L13.6 7.5V0z" fill="currentColor"/>
-              <path d="M6.4 20h7.3v-7.5L9.3 8V0H2v7.5L6.4 12.5V20z" fill="currentColor"/>
-            </svg>
-            <span className="tracking-tight">네이버로 계속하기</span>
-          </Button>
-
           {/* 구글 로그인 버튼 */}
           <Button
             className={cn(
